@@ -6,4 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\travellog.data\travellog.data.csproj" />
+    <ProjectReference Include="..\travellog.models\travellog.models.csproj" />
+  </ItemGroup>
+
 </Project>
