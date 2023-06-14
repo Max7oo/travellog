@@ -6,6 +6,6 @@ public class Place
     public string Country { get; set; }
     public string City { get; set; }
     public int Rating { get; set; }
-    public DateTime? VisitedAt { get; set; }
+    public DateOnly VisitedAt { get; set; }
     public int StayedFor { get; set; }
 }

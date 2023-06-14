@@ -1,4 +1,5 @@
-﻿using travellog.models;
+﻿using Microsoft.AspNetCore.Mvc;
+using travellog.models;
 using travellog.repository;
 
 namespace travellog.wwwapi;
@@ -10,10 +11,12 @@ public static class PlaceAPI
         app.MapGet("/places", GetAll);
         app.MapGet("/places/{id}", GetById);
         app.MapPost("/places", Add);
-        app.MapPut("/places", Update);
-        app.MapDelete("/places", Delete);
+        app.MapPatch("/places", Update);
+        app.MapDelete("/places/{id}", Delete);
     }
 
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> GetAll(IPlaceRepository context)
     {
         try
@@ -28,6 +31,8 @@ public static class PlaceAPI
         }
     }
 
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> GetById(int id, IPlaceRepository context)
     {
         try
@@ -45,13 +50,15 @@ public static class PlaceAPI
             return Results.Problem(ex.Message);
         }
     }
+
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     private static async Task<IResult> Add(Place place, IPlaceRepository context)
     {
         try
         {
-            if (context.Add(place)) return Results.Ok();
-            return Results.NotFound();
-
+            var result = context.Add(place);
+            return result != null ? Results.Ok(result) : Results.NotFound();
         }
         catch (Exception ex)
         {
@@ -74,6 +81,9 @@ public static class PlaceAPI
             return Results.Problem(ex.Message);
         }
     }
+
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> Delete(int id, IPlaceRepository context)
     {
         try

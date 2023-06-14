@@ -12,7 +12,7 @@ using travellog.data;
 namespace travellog.data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230612131415_InitialMigration")]
+    [Migration("20230613132825_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -45,8 +45,8 @@ namespace travellog.data.Migrations
                     b.Property<int>("StayedFor")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("VisitedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("VisitedAt")
+                        .HasColumnType("date");
 
                     b.HasKey("Id");
 

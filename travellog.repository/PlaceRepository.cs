@@ -5,15 +5,15 @@ namespace travellog.repository
 {
     public class PlaceRepository : IPlaceRepository
     {
-        public bool Add(Place place)
+        public Place Add(Place place)
         {
             using (var db = new DatabaseContext())
             {
                 db.Places.Add(place);
                 db.SaveChanges();
-                return true;
+                return place;
             }
-            return false;
+            return null;
         }
 
         public bool Delete(int id)

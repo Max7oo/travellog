@@ -42,8 +42,8 @@ namespace travellog.data.Migrations
                     b.Property<int>("StayedFor")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("VisitedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("VisitedAt")
+                        .HasColumnType("date");
 
                     b.HasKey("Id");
 

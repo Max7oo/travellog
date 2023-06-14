@@ -15,11 +15,12 @@ Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "travellog.wwwreact", "trave
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E05960D7-AA26-4FEF-B2B0-272CA101A8DE}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
 		README.md = README.md
 		UserStories.md = UserStories.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "travellog.data", "travellog.data\travellog.data.csproj", "{F418F737-CDFF-4387-BB67-5D4106C3039E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "travellog.data", "travellog.data\travellog.data.csproj", "{F418F737-CDFF-4387-BB67-5D4106C3039E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
