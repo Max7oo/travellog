@@ -14,7 +14,7 @@ function PlacesView() {
   }, [])
 
   if (!place) {
-    return <p>Loading</p>
+    return <div className="spinner-container"><div className="loading-spinner"></div></div>
   }
 
   return (

@@ -26,10 +26,6 @@ function PlacesPost(props) {
     res.json().then(data => setPlaces([...places, data]))
     
     navigate('/')
-    // await fetch("https://localhost:7209/places")
-    // .then(res => res.json())
-    // .then(data => setPlaces(data))
-    // navigate('/')
   };
 
   const handleChange = (e) => {

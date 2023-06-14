@@ -6,6 +6,7 @@ import PlacesView from './components/PlacesView';
 import PlacesPost from './components/PlacesPost';
 import PlacesEdit from './components/PlacesEdit';
 import PlacesDelete from './components/PlacesDelete';
+import PlacesRequest from "./components/PlacesRequest";
 
 import './App.css';
 
@@ -32,11 +33,12 @@ function App() {
       </nav>
       <main>
         <Routes>
-          <Route path='/' element={<PlacesList loading={loading} places={places} />} />
+          <Route path='/' element={<PlacesList loading={loading} setPlaces={setPlaces} places={places} />} />
           <Route path='/places/:id' element={<PlacesView />} />
           <Route path='/places/add' element={<PlacesPost setPlaces={setPlaces} places={places}/>} />
           <Route path='/places/edit/:id' element={<PlacesEdit setPlaces={setPlaces} places={places}/>} />
           <Route path='/places/delete/:id' element={<PlacesDelete setPlaces={setPlaces} places={places}/>} />
+          <Route path='/places/request' element={<PlacesRequest />} />
         </Routes>
       </main>
     </>
