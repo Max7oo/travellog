@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using travellog.models;
 
 namespace travellog.models
 {

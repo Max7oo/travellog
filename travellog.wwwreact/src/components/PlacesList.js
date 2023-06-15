@@ -1,9 +1,22 @@
-import { useState } from "react"
-import { Link } from "react-router-dom"
+import { useState ,useEffect } from "react"
+import { Link, useParams } from "react-router-dom"
+
+import Nav from "./Nav";
 
 function PlacesList(props) {
-  const { loading, places, setPlaces } = props
+  const params = useParams()
+
+  const { places, setPlaces } = props
+  const [ loading, setLoading ] = useState(false);
   const [ order, setOrder ] = useState("ASC");
+  
+  useEffect(function() {
+    setLoading(true)
+    fetch(`https://localhost:7209/${params.userName}/places`)
+      .then(res => res.json())
+      .then(data => setPlaces(data))
+      .then((e) => {setLoading(false)})
+  }, [params.userName, setPlaces])
 
   const cityList = []
   function addToCityList(place) {
@@ -12,7 +25,6 @@ function PlacesList(props) {
     } else {
     cityList.push(place.city);
     }
-    console.log(cityList);
   }
 
   const sortingABC = (col) => {
@@ -51,6 +63,7 @@ function PlacesList(props) {
 
   return (
     <>
+      <Nav />
       <header>
         <h2>Places</h2>
       </header>
@@ -67,7 +80,7 @@ function PlacesList(props) {
           </tr>
         </thead>
         <tbody>
-          {loading ? (<div className="spinner-container"><div className="loading-spinner"></div></div>) : (<></>)}
+          <tr><th>{loading ? (<div className="spinner-container"><div className="loading-spinner"></div></div>) : (<></>)}</th></tr>
           {places.map((place, index) => {
             const { country, city, rating, visitedAt, stayedFor } = place
             return (

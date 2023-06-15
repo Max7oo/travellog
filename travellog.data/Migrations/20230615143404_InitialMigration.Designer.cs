@@ -12,7 +12,7 @@ using travellog.data;
 namespace travellog.data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230613132825_InitialMigration")]
+    [Migration("20230615143404_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -107,7 +107,7 @@ namespace travellog.data.Migrations
                         .IsRequired();
 
                     b.HasOne("travellog.models.User", "User")
-                        .WithMany("UserPlace")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -115,11 +115,6 @@ namespace travellog.data.Migrations
                     b.Navigation("Place");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("travellog.models.User", b =>
-                {
-                    b.Navigation("UserPlace");
                 });
 #pragma warning restore 612, 618
         }

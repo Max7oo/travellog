@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams, Link } from "react-router-dom";
 
+import Nav from "./Nav";
+
 function PlacesDelete(props) {
-    const { setPlaces } = props
-    const [place, setPlace] = useState()
-  
     const navigate = useNavigate()
     const params = useParams()
+
+    const { setPlaces } = props
+    const [ place, setPlace ] = useState()
 
     useEffect(function() {
         fetch(`https://localhost:7209/places/${params.id}`)
           .then(res => res.json())
           .then(data => setPlace(data))
-    }, [])
+    })
 
     const deletePlace = async (e) => {
         await fetch(`https://localhost:7209/places/${params.id}`, {
@@ -28,10 +30,10 @@ function PlacesDelete(props) {
 
     if (!place) {
         return <div className="spinner-container"><div className="loading-spinner"></div></div>
-    }
-
+    } else {
     return (
-        <div>
+        <>
+            <Nav />
             <div>
                 <p>{place.country}</p>
                 <p>{place.city}</p>
@@ -48,8 +50,8 @@ function PlacesDelete(props) {
                 <Link to={'/'}>No</Link>
                 </button>
             </div>
-        </div>
-    )
+        </>
+    )}
 }
 
 export default PlacesDelete

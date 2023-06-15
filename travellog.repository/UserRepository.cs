@@ -5,15 +5,15 @@ namespace travellog.repository
 {
     public class UserRepository : IUserRepository
     {
-        public bool Add(User user)
+        public User Add(User user)
         {
             using (var db = new DatabaseContext())
             {
                 db.Users.Add(user);
                 db.SaveChanges();
-                return true;
+                return user;
             }
-            return false;
+            return null;
         }
 
         public bool Delete(int id)

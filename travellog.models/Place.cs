@@ -1,4 +1,6 @@
-﻿namespace travellog.models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace travellog.models;
 
 public class Place
 {

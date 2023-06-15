@@ -1,16 +1,16 @@
 import { useState } from "react"
 import { useLocation } from 'react-router-dom'
 
-function PlacesRequest() {
-    const [messageChatGPT, setMessageChatGPT] = useState()
-    const [loading, setLoading] = useState(false);
+import Nav from "./Nav";
 
+function PlacesRequest() {
     const location = useLocation()
+
+    const [ messageChatGPT, setMessageChatGPT]  = useState()
+    const [ loading, setLoading ] = useState(false);
     const { cityList } = location.state
     
     const API_KEY = ""
-
-    console.log(cityList.toString())
 
     const systemMessage = {
         role: "system",
@@ -45,6 +45,7 @@ function PlacesRequest() {
 
     return (
         <>
+            <Nav />
             <header>
                 <h2>Request</h2>
             </header>

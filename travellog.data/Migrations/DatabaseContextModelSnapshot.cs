@@ -104,7 +104,7 @@ namespace travellog.data.Migrations
                         .IsRequired();
 
                     b.HasOne("travellog.models.User", "User")
-                        .WithMany("UserPlace")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -112,11 +112,6 @@ namespace travellog.data.Migrations
                     b.Navigation("Place");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("travellog.models.User", b =>
-                {
-                    b.Navigation("UserPlace");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,5 @@
-﻿using travellog.models;
+﻿using Microsoft.AspNetCore.Mvc;
+using travellog.models;
 using travellog.repository;
 
 namespace travellog.wwwapi;
@@ -10,10 +11,12 @@ public static class UserAPI
         app.MapGet("/users", GetAll);
         app.MapGet("/users/{id}", GetById);
         app.MapPost("/users", Add);
-        app.MapPut("/users", Update);
-        app.MapDelete("/users", Delete);
+        app.MapPatch("/users", Update);
+        app.MapDelete("/users/{id}", Delete);
     }
 
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> GetAll(IUserRepository context)
     {
         try
@@ -28,15 +31,17 @@ public static class UserAPI
         }
     }
 
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> GetById(int id, IUserRepository context)
     {
         try
         {
             return await Task.Run(() =>
             {
-                var person = context.GetById(id);
-                if (person == null) return Results.NotFound();
-                return Results.Ok(person);
+                var user = context.GetById(id);
+                if (user == null) return Results.NotFound();
+                return Results.Ok(user);
             });
 
         }
@@ -45,13 +50,15 @@ public static class UserAPI
             return Results.Problem(ex.Message);
         }
     }
+
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     private static async Task<IResult> Add(User user, IUserRepository context)
     {
         try
         {
-            if (context.Add(user)) return Results.Ok();
-            return Results.NotFound();
-
+            var result = context.Add(user);
+            return result != null ? Results.Ok(result) : Results.NotFound();
         }
         catch (Exception ex)
         {
@@ -74,6 +81,9 @@ public static class UserAPI
             return Results.Problem(ex.Message);
         }
     }
+
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> Delete(int id, IUserRepository context)
     {
         try
