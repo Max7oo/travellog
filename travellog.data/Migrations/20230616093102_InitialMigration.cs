@@ -13,23 +13,6 @@ namespace travellog.data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Places",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Country = table.Column<string>(type: "text", nullable: true),
-                    City = table.Column<string>(type: "text", nullable: true),
-                    Rating = table.Column<int>(type: "integer", nullable: false),
-                    VisitedAt = table.Column<DateOnly>(type: "date", nullable: false),
-                    StayedFor = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Places", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -45,25 +28,23 @@ namespace travellog.data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserPlaces",
+                name: "Places",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<int>(type: "integer", nullable: false),
-                    PlaceId = table.Column<int>(type: "integer", nullable: false)
+                    Country = table.Column<string>(type: "text", nullable: true),
+                    City = table.Column<string>(type: "text", nullable: true),
+                    Rating = table.Column<int>(type: "integer", nullable: false),
+                    VisitedAt = table.Column<DateOnly>(type: "date", nullable: false),
+                    StayedFor = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserPlaces", x => x.Id);
+                    table.PrimaryKey("PK_Places", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserPlaces_Places_PlaceId",
-                        column: x => x.PlaceId,
-                        principalTable: "Places",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserPlaces_Users_UserId",
+                        name: "FK_Places_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -71,22 +52,14 @@ namespace travellog.data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserPlaces_PlaceId",
-                table: "UserPlaces",
-                column: "PlaceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserPlaces_UserId",
-                table: "UserPlaces",
+                name: "IX_Places_UserId",
+                table: "Places",
                 column: "UserId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "UserPlaces");
-
             migrationBuilder.DropTable(
                 name: "Places");
 

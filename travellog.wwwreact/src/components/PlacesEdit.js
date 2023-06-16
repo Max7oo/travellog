@@ -19,24 +19,24 @@ function PlacesEdit(props) {
   const [ formData, setFormData ] = useState(initialState)
 
   useEffect(function() {
-    fetch(`https://localhost:7209/places/${params.id}`)
+    fetch(`https://localhost:7209/${params.userName}/places/${params.id}`)
       .then(res => res.json())
       .then(data => setFormData(data))
-  })
+  }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await fetch(`https://localhost:7209/places`, {
+    await fetch(`https://localhost:7209/${params.userName}/places`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formData)
     });
-    await fetch("https://localhost:7209/places")
+    await fetch(`https://localhost:7209/${params.userName}/places`)
     .then(res => res.json())
     .then(data => setPlaces(data))
-    navigate('/')
+    navigate(`/${params.userName}/places`)
   };
 
   const handleChange = (e) => {
@@ -69,7 +69,7 @@ function PlacesEdit(props) {
             Save edits
           </button>
           <button className="button blue">
-          <Link to={'/'}>Cancel</Link>
+          <Link to={`/${params.userName}/places`}>Cancel</Link>
           </button>
         </div>
       </form>

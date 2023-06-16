@@ -8,21 +8,21 @@ public static class PlaceAPI
 {
     public static void ConfigurePlaceAPI(this WebApplication app)
     {
-        app.MapGet("/places", GetAll);
-        app.MapGet("/places/{id}", GetById);
-        app.MapPost("/places", Add);
-        app.MapPatch("/places", Update);
-        app.MapDelete("/places/{id}", Delete);
+        app.MapGet("/{userName}/places", GetAll);
+        app.MapGet("/{userName}/places/{id}", GetById);
+        app.MapPost("/{userName}/places", Add);
+        app.MapPatch("/{userName}/places", Update);
+        app.MapDelete("/{userName}/places/{id}", Delete);
     }
 
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    private static async Task<IResult> GetAll(IPlaceRepository context)
+    private static async Task<IResult> GetAll(string userName, IPlaceRepository context)
     {
         try
         {
             return await Task.Run(() => {
-                return Results.Ok(context.GetAll());
+                return Results.Ok(context.GetAll().Where(i => i.UserId == context.GetUserId(userName)));
             });
         }
         catch (Exception ex)
@@ -33,7 +33,7 @@ public static class PlaceAPI
 
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    private static async Task<IResult> GetById(int id, IPlaceRepository context)
+    private static async Task<IResult> GetById(string userName, int id, IPlaceRepository context)
     {
         try
         {
@@ -53,10 +53,11 @@ public static class PlaceAPI
 
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    private static async Task<IResult> Add(Place place, IPlaceRepository context)
+    private static async Task<IResult> Add(string userName, Place place, IPlaceRepository context)
     {
         try
         {
+            place.UserId = context.GetUserId(userName);
             var result = context.Add(place);
             return result != null ? Results.Ok(result) : Results.NotFound();
         }
@@ -84,7 +85,7 @@ public static class PlaceAPI
 
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    private static async Task<IResult> Delete(int id, IPlaceRepository context)
+    private static async Task<IResult> Delete(string userName, int id, IPlaceRepository context)
     {
         try
         {

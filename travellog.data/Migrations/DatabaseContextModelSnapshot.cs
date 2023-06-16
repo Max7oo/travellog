@@ -42,10 +42,15 @@ namespace travellog.data.Migrations
                     b.Property<int>("StayedFor")
                         .HasColumnType("integer");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
                     b.Property<DateOnly>("VisitedAt")
                         .HasColumnType("date");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Places");
                 });
@@ -72,44 +77,13 @@ namespace travellog.data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("travellog.models.UserPlace", b =>
+            modelBuilder.Entity("travellog.models.Place", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("PlaceId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PlaceId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserPlaces");
-                });
-
-            modelBuilder.Entity("travellog.models.UserPlace", b =>
-                {
-                    b.HasOne("travellog.models.Place", "Place")
-                        .WithMany()
-                        .HasForeignKey("PlaceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("travellog.models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Place");
 
                     b.Navigation("User");
                 });

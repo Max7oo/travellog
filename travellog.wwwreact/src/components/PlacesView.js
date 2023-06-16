@@ -9,7 +9,7 @@ function PlacesView() {
   const [ place, setPlace ] = useState(false)
 
   useEffect(function() {
-    fetch(`https://localhost:7209/places/${params.id}`)
+    fetch(`https://localhost:7209/${params.userName}/places/${params.id}`)
       .then(res => res.json())
       .then(data => setPlace(data))
   })

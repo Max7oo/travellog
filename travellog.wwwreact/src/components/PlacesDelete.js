@@ -11,18 +11,18 @@ function PlacesDelete(props) {
     const [ place, setPlace ] = useState()
 
     useEffect(function() {
-        fetch(`https://localhost:7209/places/${params.id}`)
+        fetch(`https://localhost:7209/${params.userName}/places/${params.id}`)
           .then(res => res.json())
           .then(data => setPlace(data))
     })
 
     const deletePlace = async (e) => {
-        await fetch(`https://localhost:7209/places/${params.id}`, {
+        await fetch(`https://localhost:7209/${params.userName}/places/${params.id}`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
         }});
-        await fetch("https://localhost:7209/places")
+        await fetch(`https://localhost:7209/${params.userName}/places`)
         .then(res => res.json())
         .then(data => setPlaces(data))
         navigate('/')

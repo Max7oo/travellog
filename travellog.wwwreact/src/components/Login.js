@@ -17,7 +17,7 @@ function Login() {
     useEffect(function() {
         fetch('https://localhost:7209/users')
         .then(res => res.json())
-        .then(data => setUsers(...users, data))
+        .then(data => setUsers(data))
     })
 
     const handleSubmit = async (e) => {

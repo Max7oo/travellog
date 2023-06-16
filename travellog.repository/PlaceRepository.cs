@@ -58,5 +58,18 @@ namespace travellog.repository
             }
             return false;
         }
+
+        public int GetUserId(string userName)
+        {
+            using (var db = new DatabaseContext())
+            {
+                var user = db.Users.Where(u => u.UserName == userName).FirstOrDefault();
+                if (user != null)
+                {
+                    return user.Id;
+                }
+            }
+            return -1;
+        }
     }
 }

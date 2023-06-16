@@ -10,7 +10,7 @@ function PlacesRequest() {
     const [ loading, setLoading ] = useState(false);
     const { cityList } = location.state
     
-    const API_KEY = ""
+    const API_KEY = "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"
 
     const systemMessage = {
         role: "system",
@@ -21,6 +21,7 @@ function PlacesRequest() {
         role: "user",
         content: `Where should I go next based on the following cities: ${cityList.toString()}`
     }
+    
     const apiRequestBody = {
         "model": "gpt-3.5-turbo",
         "messages": [systemMessage, theMessage]

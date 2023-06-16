@@ -91,15 +91,15 @@ function PlacesList(props) {
                 <th>{rating}</th>
                 <th>{visitedAt}</th>
                 <th>{stayedFor}</th>
-                <th><Link to={`/places/${place.id}`}>View</Link>
-                    <Link to={`/places/edit/${place.id}`}>Edit</Link>
-                    <Link to={`/places/delete/${place.id}`}>Delete</Link></th>
+                <th><Link to={`/${params.userName}/places/${place.id}`}>View</Link>
+                    <Link to={`/${params.userName}/places/edit/${place.id}`}>Edit</Link>
+                    <Link to={`/${params.userName}/places/delete/${place.id}`}>Delete</Link></th>
               </tr>
             )
           })}
         </tbody>
       </table>
-      <Link to={`/places/request`} state={{ cityList: cityList }}>Request</Link>
+      <Link to={`/${params.userName}/places/request`} state={{ cityList: cityList }}>Request</Link>
     </>
   )
 }

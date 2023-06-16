@@ -25,8 +25,8 @@ function Nav() {
             <nav>
                 <h2>Menu</h2>
                 <ul>
-                    <li><Link to="/places" element={<PlacesList />}>Places you have been</Link></li>
-                    <li><Link to="/places/add" element={<PlacesPost />}>Add new place</Link></li>
+                    <li><Link to={`/${params.userName}/places`} element={<PlacesList />}>Places you have been</Link></li>
+                    <li><Link to={`/${params.userName}/places/add`} element={<PlacesPost />}>Add new place</Link></li>
                     <li><Link to="/login" element={<Login />}>Log out</Link></li>
                 </ul>
             </nav>

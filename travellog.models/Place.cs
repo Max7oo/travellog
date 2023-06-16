@@ -10,4 +10,8 @@ public class Place
     public int Rating { get; set; }
     public DateOnly VisitedAt { get; set; }
     public int StayedFor { get; set; }
+
+    [ForeignKey("User")]
+    public int UserId { get; set; }
+    public User User { get; set; }
 }

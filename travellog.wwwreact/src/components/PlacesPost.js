@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import Nav from "./Nav"
 
@@ -13,22 +13,24 @@ const initialState = {
 
 function PlacesPost(props) {
   const navigate = useNavigate()
+  const params = useParams()
 
   const { setPlaces, places } = props
   const [ formData, setFormData ] = useState(initialState)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch("https://localhost:7209/places", {
+    const res = await fetch(`https://localhost:7209/${params.userName}/places`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formData)
     });
-    res.json().then(data => setPlaces([...places, data]))
-    
-    navigate('/places')
+    res.json().then(data => {
+      setPlaces([...places, data])
+      navigate(`/${params.userName}/places`)
+    })
   };
 
   const handleChange = (e) => {
@@ -37,7 +39,6 @@ function PlacesPost(props) {
 
   return (
     <>
-      <Nav />
       <form className="form-stack contact-form" onSubmit={handleSubmit}>
         <h2>Create place</h2>
 
