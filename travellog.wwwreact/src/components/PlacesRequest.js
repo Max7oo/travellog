@@ -10,7 +10,7 @@ function PlacesRequest() {
     const [ loading, setLoading ] = useState(false);
     const { cityList } = location.state
     
-    const API_KEY = "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"
+    const API_KEY = ""
 
     const systemMessage = {
         role: "system",
