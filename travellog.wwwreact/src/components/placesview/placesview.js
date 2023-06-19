@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 
-import Nav from "./Nav";
+import Nav from "../nav/nav";
 
 function PlacesView() {
   const params = useParams()
@@ -12,7 +12,7 @@ function PlacesView() {
     fetch(`https://localhost:7209/${params.userName}/places/${params.id}`)
       .then(res => res.json())
       .then(data => setPlace(data))
-  })
+  }, [])
 
   if (!place) {
       return <div className="spinner-container"><div className="loading-spinner"></div></div>
@@ -20,13 +20,15 @@ function PlacesView() {
   return (
     <>
       <Nav />
-      <div>
-        <p>{place.country}</p>
-        <p>{place.city}</p>
-        <p>{place.rating}</p>
-        <p>{place.visitedAt}</p>
-        <p>{place.stayedFor}</p>
-      </div>
+      <section>
+        <div>
+          <p>{place.country}</p>
+          <p>{place.city}</p>
+          <p>{place.rating}</p>
+          <p>{place.visitedAt}</p>
+          <p>{place.stayedFor}</p>
+        </div>
+      </section>
     </>
   )}
 }

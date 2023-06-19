@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useLocation } from 'react-router-dom'
 
-import Nav from "./Nav";
+import Nav from "../nav/nav";
 
 function PlacesRequest() {
     const location = useLocation()
@@ -10,7 +10,7 @@ function PlacesRequest() {
     const [ loading, setLoading ] = useState(false);
     const { cityList } = location.state
     
-    const API_KEY = "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"
+    const API_KEY = ""
 
     const systemMessage = {
         role: "system",
@@ -47,23 +47,24 @@ function PlacesRequest() {
     return (
         <>
             <Nav />
-            <header>
+            <section>
                 <h2>Request</h2>
-            </header>
-            <ul>
-                {cityList?.map((name, index) => {
-                    return (
-                        <li key={index}>
-                            <p>{name}</p>
-                        </li>
-                    );
-                })}
-                <button onClick={handleSubmit}>Send request</button>
-            </ul>
-            <h2>Response</h2>
-            {loading ? (<div className="spinner-container"><div className="loading-spinner"></div></div>) : (<></>)}
-            <p>Click the request button to receive a response.</p>
-            <p>{messageChatGPT}</p>
+
+                <ul>
+                    {cityList?.map((name, index) => {
+                        return (
+                            <li key={index}>
+                                <p>{name}</p>
+                            </li>
+                        );
+                    })}
+                    <button onClick={handleSubmit}>Send request</button>
+                </ul>
+                <h2>Response</h2>
+                {loading ? (<div className="spinner-container"><div className="loading-spinner"></div></div>) : (<></>)}
+                <p>Click the request button to receive a response.</p>
+                <p>{messageChatGPT}</p>
+            </section>
         </>
     )
 }

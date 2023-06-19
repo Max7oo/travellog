@@ -1,0 +1,35 @@
+.header__left {
+  max-width: 50%;
+}
+
+.header__left__cta {
+  width: 70%;
+  border-bottom: 3px solid black;
+}
+
+.header__left__cta p:hover {
+  color: #ea4c89;
+}
+
+.header__left__cta__plane {
+  transition: transform 350ms ease-out;
+}
+
+.header__left__cta:hover .header__left__cta__plane { 
+  -webkit-transform:rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+  
+    transition: transform 350ms ease-out;
+}
+
+.header__right {
+  max-width: 50%;
+}
+
+.header__right__img {
+  width: 80%;
+  margin-left: 20%;
+}

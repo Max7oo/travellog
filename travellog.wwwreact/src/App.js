@@ -1,25 +1,26 @@
 import { useState } from "react"
 import { Route, Routes } from "react-router-dom"
 
-import Nav from "./components/Nav"
-import Login from "./components/Login";
-import SignUp from "./components/SignUp";
-import PlacesList from './components/PlacesList';
-import PlacesView from './components/PlacesView';
-import PlacesPost from './components/PlacesPost';
-import PlacesEdit from './components/PlacesEdit';
-import PlacesDelete from './components/PlacesDelete';
-import PlacesRequest from "./components/PlacesRequest";
+import Home from "./components/home/home";
+import Login from "./components/login/login";
+import SignUp from "./components/signup/signup";
+import PlacesList from './components/placeslist/placeslist';
+import PlacesView from './components/placesview/placesview';
+import PlacesPost from './components/placespost/placespost';
+import PlacesEdit from './components/placesedit/placesedit';
+import PlacesDelete from './components/placesdelete/placesdelete';
+import PlacesRequest from "./components/placesrequest/placesrequest";
 
 import './App.css';
 
 function App() {
-  const [places, setPlaces] = useState([])
+  const [ places, setPlaces ] = useState([])
 
   return (
     <>
       <main>
         <Routes>
+          <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<SignUp />} />
           <Route path='/:userName/places' element={<PlacesList setPlaces={setPlaces} places={places} />} />

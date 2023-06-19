@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 
-import Nav from "./Nav";
+import Nav from "../nav/nav";
 
 const initialState = {
     email: "",
@@ -18,14 +18,15 @@ function Login() {
         fetch('https://localhost:7209/users')
         .then(res => res.json())
         .then(data => setUsers(data))
-    })
+    }, [])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         for (var i = 0; i < users.length; i++) {
             if (users[i].email === formData.email) {
                 if (users[i].password === formData.password) {
-                    navigate(`/${users[i].userName}/places`);
+                    const user = {id: users[i].id, userName: users[i].userName}
+                    navigate(`/${user.userName}/places`, { state: user });
                 } else {
                     console.log("Wrong password")
                 }
@@ -35,6 +36,8 @@ function Login() {
         }
     };
 
+
+
     const handleChange = (e) => {
         setFormData({...formData, [e.target.name]: e.target.value })
     };
@@ -42,21 +45,23 @@ function Login() {
     return (
         <>
             <Nav />
-            <form className="form-stack contact-form" onSubmit={handleSubmit}>
-                <h2>Login</h2>
+            <section>
+                <form onSubmit={handleSubmit}>
+                    <h2>Login</h2>
 
-                <label htmlFor="email">email:</label>
-                <input id="email" name="email" type="email" required onChange={handleChange} value={formData.email}  />
+                    <label htmlFor="email">Email:</label>
+                    <input id="email" name="email" type="email" placeholder="email@email.com" required onChange={handleChange} value={formData.email}  />
 
-                <label htmlFor="password">password:</label>
-                <input id="password" name="password" type="password" minLength="8" required onChange={handleChange} value={formData.password} />
+                    <label htmlFor="password">Password:</label>
+                    <input id="password" name="password" type="password" placeholder="••••••••" minLength="8" required onChange={handleChange} value={formData.password} />
 
-                <div className="actions-section">
-                    <button className="button blue" type="submit">
-                    Login
-                    </button>
-                </div>
-            </form>
+                    <div>
+                        <button type="submit">
+                        Login
+                        </button>
+                    </div>
+                </form>
+            </section>
         </>
     )
 }

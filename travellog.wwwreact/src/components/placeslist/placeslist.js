@@ -1,7 +1,7 @@
 import { useState ,useEffect } from "react"
 import { Link, useParams } from "react-router-dom"
 
-import Nav from "./Nav";
+import Nav from "../nav/nav";
 
 function PlacesList(props) {
   const params = useParams()
@@ -64,42 +64,43 @@ function PlacesList(props) {
   return (
     <>
       <Nav />
-      <header>
+      <section>
         <h2>Places</h2>
-      </header>
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th onClick={() => sortingABC("country")}>Country</th>
-            <th onClick={() => sortingABC("city")}>City</th>
-            <th onClick={() => sortingNUM("rating")}>Rating</th>
-            <th>VisitedAt</th>
-            <th onClick={() => sortingNUM("stayedFor")}>StayedFor</th>
-            <th>Edit</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><th>{loading ? (<div className="spinner-container"><div className="loading-spinner"></div></div>) : (<></>)}</th></tr>
-          {places.map((place, index) => {
-            const { country, city, rating, visitedAt, stayedFor } = place
-            return (
-              <tr key={index}>
-                <th><input type="checkbox" id={place.city} name="addToCityList" onClick={() => addToCityList(place)}/></th>
-                <th>{country}</th>
-                <th>{city}</th>
-                <th>{rating}</th>
-                <th>{visitedAt}</th>
-                <th>{stayedFor}</th>
-                <th><Link to={`/${params.userName}/places/${place.id}`}>View</Link>
-                    <Link to={`/${params.userName}/places/edit/${place.id}`}>Edit</Link>
-                    <Link to={`/${params.userName}/places/delete/${place.id}`}>Delete</Link></th>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
-      <Link to={`/${params.userName}/places/request`} state={{ cityList: cityList }}>Request</Link>
+      
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th onClick={() => sortingABC("country")}>Country</th>
+              <th onClick={() => sortingABC("city")}>City</th>
+              <th onClick={() => sortingNUM("rating")}>Rating</th>
+              <th>VisitedAt</th>
+              <th onClick={() => sortingNUM("stayedFor")}>StayedFor</th>
+              <th>Edit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th>{loading ? (<div className="spinner-container"><div className="loading-spinner"></div></div>) : (<></>)}</th></tr>
+            {places.map((place, index) => {
+              const { country, city, rating, visitedAt, stayedFor } = place
+              return (
+                <tr key={index}>
+                  <th><input type="checkbox" id={place.city} name="addToCityList" onClick={() => addToCityList(place)}/></th>
+                  <th>{country}</th>
+                  <th>{city}</th>
+                  <th>{rating}</th>
+                  <th>{visitedAt}</th>
+                  <th>{stayedFor}</th>
+                  <th><Link to={`/${params.userName}/places/${place.id}`}>View</Link>
+                      <Link to={`/${params.userName}/places/edit/${place.id}`}>Edit</Link>
+                      <Link to={`/${params.userName}/places/delete/${place.id}`}>Delete</Link></th>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+        <Link to={`/${params.userName}/places/request`} state={{ cityList: cityList }}>Request</Link>
+      </section>
     </>
   )
 }
