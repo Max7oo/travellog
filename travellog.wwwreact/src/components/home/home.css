@@ -3,11 +3,11 @@
 }
 
 .header__left__cta {
-  width: 70%;
+  max-width: 400px;
   border-bottom: 3px solid black;
 }
 
-.header__left__cta p:hover {
+.header__left__cta:hover p {
   color: #ea4c89;
 }
 

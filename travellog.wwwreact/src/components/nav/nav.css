@@ -1,6 +1,6 @@
 ul {
     padding-inline-start: 50px;
-    padding-top: 20px;
+    padding-top: 50px;
     margin-block-start: 0;
     margin-block-end: 0;
 
@@ -33,7 +33,7 @@ li:hover {
     gap: 50px;
 
     border-radius: 25px 25px 0 0;
-    background-color: #91d4e0;
+    background-color: #86c7d3;
 }
 
 .nav__cta li {

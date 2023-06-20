@@ -16,7 +16,7 @@ header {
   
   padding: 50px;
   border-radius: 25px 0px 25px 25px;
-  background-color: #91d4e0;
+  background: linear-gradient(0.25turn, #b3eaf7,#86c7d3, #86c7d3);
 }
 
 section {
@@ -27,7 +27,8 @@ section {
   
   padding: 50px;
   border-radius: 25px 0px 25px 25px;
-  background-color: #91d4e0;
+  background: linear-gradient(0.25turn, #b3eaf7,#86c7d3, #86c7d3);
+
 }
 
 span {
@@ -103,7 +104,6 @@ input {
   border-radius: 5px;
 }
 
-
 /* Loading loading-spinner */
 @keyframes spinner {
     0% {
@@ -121,4 +121,25 @@ input {
     border-top: 10px solid #383636; /* Black */
     border-radius: 50%;
     animation: spinner 1.5s linear infinite;
+}
+
+/* Information styling */
+.item__info {
+  margin-top: 25px;
+}
+
+.item__info table {
+  margin-bottom: 0;
+}
+
+.item__info th:last-child {
+  font-weight: 300;
+}
+
+.item__options {
+  margin-top: 25px;
+}
+
+.item__options button {
+  margin-right: 25px;
 }
