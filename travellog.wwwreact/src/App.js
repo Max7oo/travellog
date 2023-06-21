@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 
-import Nav from "./components/nav/nav";
 import Home from "./components/home/home";
 import Login from "./components/login/login";
 import SignUp from "./components/signup/signup";
@@ -11,8 +10,11 @@ import PlacesPost from "./components/placespost/placespost";
 import PlacesEdit from "./components/placesedit/placesedit";
 import PlacesDelete from "./components/placesdelete/placesdelete";
 import PlacesRequest from "./components/placesrequest/placesrequest";
+import Footer from "./components/footer/footer";
 
 import "./App.css";
+import PlacesSuggested from "./components/placessuggested/placessuggested";
+import SuggestedView from "./components/placessuggested/suggestedview";
 
 function App() {
   const [places, setPlaces] = useState([]);
@@ -42,8 +44,17 @@ function App() {
             element={<PlacesDelete places={places} setPlaces={setPlaces} />}
           />
           <Route path="/:userName/places/request" element={<PlacesRequest />} />
+          <Route
+            path="/:userName/places/suggested"
+            element={<PlacesSuggested />}
+          />
+          <Route
+            path="/:userName/places/suggested/:id"
+            element={<SuggestedView />}
+          />
         </Routes>
       </main>
+      <Footer />
     </>
   );
 }

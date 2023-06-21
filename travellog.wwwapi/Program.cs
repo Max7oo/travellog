@@ -11,6 +11,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPlaceRepository, PlaceRepository>();
+builder.Services.AddScoped<ISuggestionRepository, SuggestionRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -47,6 +48,7 @@ if (app.Environment.IsDevelopment())
 
 app.ConfigureUserAPI();
 app.ConfigurePlaceAPI();
+app.ConfigureSuggestionAPI();
 
 app.UseHttpsRedirection();
 

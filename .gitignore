@@ -363,7 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /travellog.data/appsettings.json
 /travellog.wwwapi/appsettings.json
-/travellog.wwwreact/src/components/PlacesRequest.js
-/travellog.wwwapi/appsettings.json
-/travellog.data/appsettings - Copy.json
-/travellog.data/appsettings.json
+/travellog.wwwreact/.env

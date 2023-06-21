@@ -49,6 +49,9 @@ function Nav() {
               <Link to={`/${params.userName}/places/add`}>
                 <li>Add new place</li>
               </Link>
+              <Link to={`/${params.userName}/places/suggested`}>
+                <li>Previous suggestions</li>
+              </Link>
               <Link to="/login">
                 <li>Log out</li>
               </Link>

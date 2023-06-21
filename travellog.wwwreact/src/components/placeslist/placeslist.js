@@ -1,15 +1,18 @@
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
 import Nav from "../nav/nav";
 import "./placeslist.css";
+import filter from "../../images/filter.png";
 
 function PlacesList(props) {
   const params = useParams();
+  const navigate = useNavigate();
 
   const { places, setPlaces } = props;
   const [loading, setLoading] = useState(false);
   const [order, setOrder] = useState("ASC");
+  const [isShown, setIsShown] = useState(false);
 
   useEffect(
     function () {
@@ -63,6 +66,15 @@ function PlacesList(props) {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (cityList.length > 0) {
+      navigate(`/${params.userName}/places/request`, { state: cityList });
+    } else {
+      setIsShown((current) => !current);
+    }
+  };
+
   return (
     <>
       <Nav />
@@ -73,11 +85,36 @@ function PlacesList(props) {
           <thead>
             <tr>
               <th></th>
-              <th onClick={() => sortingABC("country")}>Country</th>
-              <th onClick={() => sortingABC("city")}>City</th>
-              <th onClick={() => sortingNUM("rating")}>Rating</th>
-              <th>Visited at</th>
-              <th onClick={() => sortingNUM("stayedFor")}>Stayed for (days)</th>
+              <th onClick={() => sortingABC("country")}>
+                <span>
+                  Country
+                  <img src={filter} alt="filter" />
+                </span>
+              </th>
+              <th onClick={() => sortingABC("city")}>
+                <span>
+                  City
+                  <img src={filter} alt="filter" />
+                </span>
+              </th>
+              <th onClick={() => sortingNUM("rating")}>
+                <span>
+                  Rating
+                  <img src={filter} alt="filter" />
+                </span>
+              </th>
+              <th onClick={() => sortingNUM("visitedAt")}>
+                <span>
+                  Visited on
+                  <img src={filter} alt="filter" />
+                </span>
+              </th>
+              <th onClick={() => sortingNUM("stayedFor")}>
+                <span>
+                  Stayed for (days)
+                  <img src={filter} alt="filter" />
+                </span>
+              </th>
               <th></th>
             </tr>
           </thead>
@@ -130,12 +167,10 @@ function PlacesList(props) {
           Receive travel advise based on the selected cities above by clicking
           on the 'Request' button.
         </p>
-        <Link
-          to={`/${params.userName}/places/request`}
-          state={{ cityList: cityList }}
-        >
-          <button className="request">Request</button>
-        </Link>
+        <button className="request" onClick={handleSubmit}>
+          Request
+        </button>
+        {isShown && <p className="red">Select one or more cities.</p>}
       </section>
     </>
   );

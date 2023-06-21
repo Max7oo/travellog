@@ -1,3 +1,7 @@
+.item__info .response {
+    padding: 0px;
+}
+
 .response {
     padding: 25px;
     margin: 25px 0px 0px 0px;
@@ -8,6 +12,14 @@
 
 .response P, .response h2 {
     color: #91d4e0;
+}
+
+.response h3 {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: #91d4e0;
+    margin-top: 25px;
 }
 
 .response ul, .response ol {

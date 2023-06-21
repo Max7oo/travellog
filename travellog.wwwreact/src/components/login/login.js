@@ -13,6 +13,8 @@ function Login() {
 
   const [formData, setFormData] = useState(initialState);
   const [users, setUsers] = useState([]);
+  const [isEmailPassword, setIsEmailPassword] = useState(false);
+  const [isPassword, setIsPassword] = useState(false);
 
   useEffect(function () {
     fetch("https://localhost:7209/users")
@@ -28,10 +30,10 @@ function Login() {
           const user = { id: users[i].id, userName: users[i].userName };
           navigate(`/${user.userName}/places`);
         } else {
-          console.log("Wrong password");
+          setIsPassword((current) => !current);
         }
       } else {
-        console.log("Wrong email and/or password");
+        setIsEmailPassword((current) => !current);
       }
     }
   };
@@ -69,6 +71,10 @@ function Login() {
             onChange={handleChange}
             value={formData.password}
           />
+          {isPassword && <p className="red">Password is wrong.</p>}
+          {isEmailPassword && (
+            <p className="red">Email and/or password is wrong.</p>
+          )}
 
           <div>
             <button type="submit">Login</button>

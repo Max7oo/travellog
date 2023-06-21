@@ -77,7 +77,7 @@ function PlacesEdit(props) {
             value={formData.rating}
           />
 
-          <label htmlFor="visitedAt">Visited at:</label>
+          <label htmlFor="visitedAt">Visited on:</label>
           <input
             id="visitedAt"
             name="visitedAt"

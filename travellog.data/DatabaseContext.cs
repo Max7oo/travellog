@@ -18,5 +18,6 @@ namespace travellog.data
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Place> Places { get; set; }
+        public DbSet<Suggestion> Suggestions { get; set; }
     }
 }

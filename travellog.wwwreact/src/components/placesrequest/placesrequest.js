@@ -1,21 +1,30 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 import Nav from "../nav/nav";
+import "./placesrequest.css";
+
+const initialState = {
+  basedOn: "",
+  suggestionText: "",
+};
 
 function PlacesRequest() {
   const location = useLocation();
+  const params = useParams();
 
   const [messageChatGPT, setMessageChatGPT] = useState();
   const [loading, setLoading] = useState(false);
-  const { cityList } = location.state;
-
-  const API_KEY = "";
+  const cityList = location.state;
+  const [isRequested, setIsRequested] = useState(true);
+  const [isShown, setIsShown] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+  const [suggestion, setSuggestion] = useState(initialState);
 
   const systemMessage = {
     role: "system",
     content:
-      "Recall the given list of cities and make three suggestions for cities to visit based on the list, including a top three to do list.",
+      "Format the following response in html, first sentence is h3. Recall the given list of cities. Based on the given list of cities, make three suggestions for cities to visit and give a top three to do list for each of those suggested cities.",
   };
 
   const theMessage = {
@@ -31,10 +40,12 @@ function PlacesRequest() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setIsRequested((current) => !current);
+    setIsShown((current) => !current);
     await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
-        Authorization: "Bearer " + API_KEY,
+        Authorization: "Bearer " + process.env.REACT_APP_CHATGPT_API_KEY,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(apiRequestBody),
@@ -44,10 +55,27 @@ function PlacesRequest() {
       })
       .then((data) => {
         setMessageChatGPT(data.choices[0].message.content);
+        setSuggestion({
+          basedOn: cityList.toString(),
+          suggestionText: data.choices[0].message.content,
+        });
       })
       .then(() => {
         setLoading(false);
+        setIsSaved((current) => !current);
       });
+  };
+
+  const handleSave = async (e) => {
+    e.preventDefault();
+    await fetch(`https://localhost:7209/${params.userName}/suggestions`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(suggestion),
+    });
+    setIsSaved((current) => !current);
   };
 
   return (
@@ -55,29 +83,40 @@ function PlacesRequest() {
       <Nav />
       <section>
         <h2>Request</h2>
-
-        <ul>
+        <div className="item">
           {cityList?.map((name, index) => {
             return (
-              <li key={index}>
-                <p>
-                  City {index}: {name}
-                </p>
-              </li>
+              <p key={index}>
+                City {index}: {name}
+              </p>
             );
           })}
-          <button onClick={handleSubmit}>Send request</button>
-        </ul>
-        <h2>Response</h2>
-        {loading ? (
-          <div className="spinner-container">
-            <div className="loading-spinner"></div>
-          </div>
-        ) : (
-          <></>
+        </div>
+        {isRequested && (
+          <>
+            <div className="item">
+              <p>
+                By clicking on 'Send request' you are asking for travel advise
+                based on the list of cities above.
+              </p>
+            </div>
+            <button onClick={handleSubmit}>Send request</button>
+          </>
         )}
-        <p>Click the request button to receive a response.</p>
-        <p>{messageChatGPT}</p>
+        {isShown && (
+          <div className="response">
+            <h2>Response:</h2>
+            {loading ? (
+              <div className="spinner-container">
+                <div className="loading-spinner"></div>
+              </div>
+            ) : (
+              <></>
+            )}
+            <div dangerouslySetInnerHTML={{ __html: messageChatGPT }} />
+          </div>
+        )}
+        {isSaved && <button onClick={handleSave}>Save suggestion</button>}
       </section>
     </>
   );

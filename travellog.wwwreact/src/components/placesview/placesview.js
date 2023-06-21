@@ -25,7 +25,7 @@ function PlacesView() {
       <>
         <Nav />
         <section>
-          <h2>You are currently viewing: {place.city}</h2>
+          <h2>You are viewing: {place.city}</h2>
           <div className="item__info">
             <table>
               <thead>
