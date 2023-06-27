@@ -6,25 +6,36 @@ import "./placeslist.css";
 import filter from "../../images/filter.png";
 
 function PlacesList(props) {
-  const params = useParams();
   const navigate = useNavigate();
+  const params = useParams();
 
   const { places, setPlaces } = props;
+  const userName = localStorage.getItem("UserName")
   const [loading, setLoading] = useState(false);
   const [order, setOrder] = useState("ASC");
   const [isShown, setIsShown] = useState(false);
 
   useEffect(
     function () {
+      if (localStorage.length === 0) {
+        navigate(`/`)
+      } else if (userName !== params.userName) {
+        navigate(`/`)
+      }
+    }
+  )
+
+  useEffect(
+    function () {
       setLoading(true);
-      fetch(`https://localhost:7209/${params.userName}/places`)
+      fetch(`https://localhost:7209/${userName}/places`)
         .then((res) => res.json())
         .then((data) => setPlaces(data))
         .then((e) => {
           setLoading(false);
         });
     },
-    [params.userName, setPlaces]
+    [userName, setPlaces]
   );
 
   const cityList = [];
@@ -69,7 +80,7 @@ function PlacesList(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (cityList.length > 0) {
-      navigate(`/${params.userName}/places/request`, { state: cityList });
+      navigate(`/${userName}/places/request`, { state: cityList });
     } else {
       setIsShown((current) => !current);
     }
@@ -148,13 +159,13 @@ function PlacesList(props) {
                   <th>{visitedAt}</th>
                   <th>{stayedFor}</th>
                   <th>
-                    <Link to={`/${params.userName}/places/${place.id}`}>
+                    <Link to={`/${userName}/places/${place.id}`}>
                       <button className="view">View</button>
                     </Link>
-                    <Link to={`/${params.userName}/places/edit/${place.id}`}>
+                    <Link to={`/${userName}/places/edit/${place.id}`}>
                       <button className="edit">Edit</button>
                     </Link>
-                    <Link to={`/${params.userName}/places/delete/${place.id}`}>
+                    <Link to={`/${userName}/places/delete/${place.id}`}>
                       <button className="delete">Delete</button>
                     </Link>
                   </th>

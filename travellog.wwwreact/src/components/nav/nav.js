@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import "./nav.css";
 
@@ -6,7 +6,16 @@ import location from "../../images/location.svg";
 import Home from "../home/home";
 
 function Nav() {
+  const navigate = useNavigate();
   const params = useParams();
+
+  const userName = localStorage.getItem("UserName")
+
+  const handleLogOut = async (e) => {
+    e.preventDefault();
+    localStorage.clear();
+    navigate(`/`)
+  };
 
   if (!params.userName) {
     return (
@@ -43,16 +52,16 @@ function Nav() {
               </span>
             </Link>
             <div className="nav__cta">
-              <Link to={`/${params.userName}/places`}>
+              <Link to={`/${userName}/places`}>
                 <li>Places you have been</li>
               </Link>
-              <Link to={`/${params.userName}/places/add`}>
+              <Link to={`/${userName}/places/add`}>
                 <li>Add new place</li>
               </Link>
-              <Link to={`/${params.userName}/places/suggested`}>
+              <Link to={`/${userName}/places/suggested`}>
                 <li>Previous suggestions</li>
               </Link>
-              <Link to="/login">
+              <Link onClick={handleLogOut}>
                 <li>Log out</li>
               </Link>
             </div>

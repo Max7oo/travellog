@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import "./home.css";
@@ -5,6 +6,7 @@ import "./home.css";
 import Nav from "../nav/nav";
 import earth from "../../images/earth.png";
 import plane from "../../images/plane.svg";
+
 
 function Home() {
   return (

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 import Home from "./components/home/home";
 import Login from "./components/login/login";
@@ -15,6 +15,7 @@ import Footer from "./components/footer/footer";
 import "./App.css";
 import PlacesSuggested from "./components/placessuggested/placessuggested";
 import SuggestedView from "./components/placessuggested/suggestedview";
+
 
 function App() {
   const [places, setPlaces] = useState([]);
@@ -52,6 +53,7 @@ function App() {
             path="/:userName/places/suggested/:id"
             element={<SuggestedView />}
           />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </main>
       <Footer />

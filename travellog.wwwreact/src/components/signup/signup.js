@@ -12,18 +12,23 @@ const initialState = {
 function SignUp() {
   const navigate = useNavigate();
 
+  const [isShown, setIsShown] = useState(false);
   const [formData, setFormData] = useState(initialState);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await fetch("https://localhost:7209/users", {
+    const res = await fetch("https://localhost:7209/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formData),
     });
-    navigate("/login");
+    if (res.status === 404 ) {
+      setIsShown(true);
+    } else if (res.status === 200) {
+      navigate("/login");
+    }
   };
 
   const handleChange = (e) => {
@@ -74,6 +79,7 @@ function SignUp() {
           <div>
             <button type="submit">Create account</button>
           </div>
+          {isShown && <p className="red">Username and/or email already exists.</p>}
         </form>
       </section>
     </>

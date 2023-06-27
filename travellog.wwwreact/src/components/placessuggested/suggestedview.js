@@ -1,12 +1,27 @@
-import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import Nav from "../nav/nav";
 import "./placessuggested.css";
+import React from "react";
 
 function SuggestedView() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const params = useParams();
 
   const suggestion = location.state;
+  const userName = localStorage.getItem("UserName")
+
+  useEffect(
+    function () {
+      if (localStorage.length === 0) {
+        navigate(`/`)
+      } else if (userName !== params.userName) {
+        navigate(`/`)
+      }
+    }
+  )
 
   if (!suggestion) {
     return (

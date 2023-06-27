@@ -1,15 +1,27 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import Nav from "../nav/nav";
 
 function PlacesView() {
   const params = useParams();
+  const navigate = useNavigate();
 
   const [place, setPlace] = useState(false);
+  const userName = localStorage.getItem("UserName")
+
+  useEffect(
+    function () {
+      if (localStorage.length === 0) {
+        navigate(`/`)
+      } else if (userName !== params.userName) {
+        navigate(`/`)
+      }
+    }
+  )
 
   useEffect(function () {
-    fetch(`https://localhost:7209/${params.userName}/places/${params.id}`)
+    fetch(`https://localhost:7209/${userName}/places/${params.id}`)
       .then((res) => res.json())
       .then((data) => setPlace(data));
   }, []);
