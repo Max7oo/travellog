@@ -62,3 +62,15 @@ input[type=checkbox] {
     margin-right: 25px;
     cursor: pointer;
 }
+
+#map {
+    width: 600px;
+    height: 600px;
+}
+
+.marker {
+    background-color: black;
+    height: 100px;
+    width: 100px;
+    position: relative;
+}

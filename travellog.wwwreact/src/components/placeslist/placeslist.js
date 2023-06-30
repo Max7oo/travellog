@@ -1,5 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
+import { Wrapper } from "@googlemaps/react-wrapper";
+import { createRoot } from "react-dom/client";
 
 import Nav from "../nav/nav";
 import "./placeslist.css";
@@ -14,6 +16,7 @@ function PlacesList(props) {
   const [loading, setLoading] = useState(false);
   const [order, setOrder] = useState("ASC");
   const [isShown, setIsShown] = useState(false);
+  const google = window.google;
 
   useEffect(
     function () {
@@ -85,6 +88,78 @@ function PlacesList(props) {
       setIsShown((current) => !current);
     }
   };
+
+  const mapOptions = {
+    madId: process.env.NEXT_PUBLIC_MAP_ID,
+    center: { lat: 43.66, lng: -79.39 },
+    zoom: 10,
+    disableDefaultUI: true,
+  }
+
+  function MyMap() {
+    const [ map, setMap ] = useState();
+    const ref = useRef();
+
+    useEffect(() => {
+      setMap(new google.maps.Map(ref.current, mapOptions))
+    }, [])
+    return (
+      <>
+        <div ref={ref} id="map"/>
+        {map && <City map={map} />}
+      </>
+    )
+  }
+
+  const cityData = {
+    A: {
+      name: "Toronto",
+      position: { lat: 43.66, lng: -79.39  }
+    },
+    B: {
+      name: "Amsterdam",
+      position: { lat: 53.66, lng: -79.39 }
+    }
+  }
+
+  function City({map}) {
+    const [ data, setData ] = useState(cityData);
+
+    return (
+      <>
+        {Object.entries(data).map(([key, city]) => (
+          <Marker key={key} map={map} position={city.position}>
+            <div className="marker">
+              <h2>{city.name}</h2>
+            </div>
+          </Marker>
+        ))}
+      </>
+    )
+  }
+
+   function Marker({map, children, position}) {
+    const markerRef = useRef();
+    const rootRef = useRef();
+    
+    useEffect(() => {
+      if (!rootRef.current) {
+        const container = document.createElement("div");
+        rootRef.current = createRoot(container);
+        
+        markerRef.current = new google.maps.marker.AdvancedMarkerView({
+          position,
+          content: container,
+        });
+      }
+    }, []);
+
+    useEffect(() => {
+      rootRef.current.render(children)
+      markerRef.current.position = position;
+      console.log(markerRef.current.map = map);
+    }, [map, position, children])
+  }
 
   return (
     <>
@@ -182,6 +257,11 @@ function PlacesList(props) {
           Request
         </button>
         {isShown && <p className="red">Select one or more cities.</p>}
+
+        <Wrapper apiKey={process.env.REACT_APP_GOOGLE_API_KEY} version="beta" libraries={["marker"]}>
+          <MyMap />
+        </Wrapper>
+
       </section>
     </>
   );
