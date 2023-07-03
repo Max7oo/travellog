@@ -84,6 +84,7 @@ function PlacesRequest() {
       <section>
         <h2>Request</h2>
         <div className="item">
+          <p>Your request is based on the following cities:</p>
           {cityList?.map((name, index) => {
             return (
               <p key={index}>
