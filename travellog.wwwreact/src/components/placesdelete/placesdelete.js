@@ -8,17 +8,28 @@ function PlacesDelete(props) {
   const params = useParams();
 
   const { setPlaces } = props;
+  const userName = localStorage.getItem("UserName")
   const [place, setPlace] = useState();
 
+  useEffect(
+    function () {
+      if (localStorage.length === 0) {
+        navigate(`/`)
+      } else if (userName !== params.userName) {
+        navigate(`/`)
+      }
+    }
+  )
+
   useEffect(function () {
-    fetch(`https://localhost:7209/${params.userName}/places/${params.id}`)
+    fetch(`https://localhost:7209/${userName}/places/${params.id}`)
       .then((res) => res.json())
       .then((data) => setPlace(data));
   }, []);
 
   const deletePlace = async (e) => {
     await fetch(
-      `https://localhost:7209/${params.userName}/places/${params.id}`,
+      `https://localhost:7209/${userName}/places/${params.id}`,
       {
         method: "DELETE",
         headers: {
@@ -26,10 +37,10 @@ function PlacesDelete(props) {
         },
       }
     );
-    await fetch(`https://localhost:7209/${params.userName}/places`)
+    await fetch(`https://localhost:7209/${userName}/places`)
       .then((res) => res.json())
       .then((data) => setPlaces(data));
-    navigate(`/${params.userName}/places`);
+    navigate(`/${userName}/places`);
   };
 
   if (!place) {

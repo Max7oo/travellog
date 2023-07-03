@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 
 import Nav from "../nav/nav";
 import "./placesrequest.css";
@@ -12,14 +12,26 @@ const initialState = {
 function PlacesRequest() {
   const location = useLocation();
   const params = useParams();
+  const navigate = useNavigate();
 
   const [messageChatGPT, setMessageChatGPT] = useState();
   const [loading, setLoading] = useState(false);
   const cityList = location.state;
+  const userName = localStorage.getItem("UserName")
   const [isRequested, setIsRequested] = useState(true);
   const [isShown, setIsShown] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [suggestion, setSuggestion] = useState(initialState);
+
+  useEffect(
+    function () {
+      if (localStorage.length === 0) {
+        navigate(`/`)
+      } else if (userName !== params.userName) {
+        navigate(`/`)
+      }
+    }
+  )
 
   const systemMessage = {
     role: "system",
@@ -68,7 +80,7 @@ function PlacesRequest() {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    await fetch(`https://localhost:7209/${params.userName}/suggestions`, {
+    await fetch(`https://localhost:7209/${userName}/suggestions`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

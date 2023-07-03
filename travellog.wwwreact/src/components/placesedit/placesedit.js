@@ -17,24 +17,35 @@ function PlacesEdit(props) {
   const params = useParams();
 
   const { setPlaces } = props;
+  const userName = localStorage.getItem("UserName")
   const [formData, setFormData] = useState(initialState);
 
+  useEffect(
+    function () {
+      if (localStorage.length === 0) {
+        navigate(`/`)
+      } else if (userName !== params.userName) {
+        navigate(`/`)
+      }
+    }
+  )
+
   useEffect(function () {
-    fetch(`https://localhost:7209/${params.userName}/places/${params.id}`)
+    fetch(`https://localhost:7209/${userName}/places/${params.id}`)
       .then((res) => res.json())
       .then((data) => setFormData(data));
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await fetch(`https://localhost:7209/${params.userName}/places`, {
+    await fetch(`https://localhost:7209/${userName}/places`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formData),
     });
-    await fetch(`https://localhost:7209/${params.userName}/places`)
+    await fetch(`https://localhost:7209/${userName}/places`)
       .then((res) => res.json())
       .then((data) => setPlaces(data));
     navigate(`/${params.userName}/places`);
@@ -97,7 +108,7 @@ function PlacesEdit(props) {
 
           <div>
             <button type="submit">Save edits</button>
-            <Link to={`/${params.userName}/places`}>
+            <Link to={`/${userName}/places`}>
               <button className="cancel">Cancel</button>
             </Link>
           </div>
