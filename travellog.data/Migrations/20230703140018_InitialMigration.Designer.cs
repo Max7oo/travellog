@@ -12,7 +12,7 @@ using travellog.data;
 namespace travellog.data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230616093102_InitialMigration")]
+    [Migration("20230703140018_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -58,6 +58,30 @@ namespace travellog.data.Migrations
                     b.ToTable("Places");
                 });
 
+            modelBuilder.Entity("travellog.models.Suggestion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BasedOn")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SuggestionText")
+                        .HasColumnType("text");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Suggestions");
+                });
+
             modelBuilder.Entity("travellog.models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -72,6 +96,9 @@ namespace travellog.data.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("text");
 
+                    b.Property<string>("Salt")
+                        .HasColumnType("text");
+
                     b.Property<string>("UserName")
                         .HasColumnType("text");
 
@@ -81,6 +108,17 @@ namespace travellog.data.Migrations
                 });
 
             modelBuilder.Entity("travellog.models.Place", b =>
+                {
+                    b.HasOne("travellog.models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("travellog.models.Suggestion", b =>
                 {
                     b.HasOne("travellog.models.User", "User")
                         .WithMany()

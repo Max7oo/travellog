@@ -1,32 +1,31 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { Wrapper } from "@googlemaps/react-wrapper";
-import { createRoot } from "react-dom/client";
+import "mapbox-gl/dist/mapbox-gl.css";
+import Map, { Marker } from "react-map-gl";
 
 import Nav from "../nav/nav";
 import "./placeslist.css";
 import filter from "../../images/filter.png";
+import pin from "../../images/pin.svg";
 
 function PlacesList(props) {
   const navigate = useNavigate();
   const params = useParams();
 
   const { places, setPlaces } = props;
-  const userName = localStorage.getItem("UserName")
+  const userName = localStorage.getItem("UserName");
   const [loading, setLoading] = useState(false);
   const [order, setOrder] = useState("ASC");
   const [isShown, setIsShown] = useState(false);
-  const google = window.google;
+  const [cityData] = useState([]);
 
-  useEffect(
-    function () {
-      if (localStorage.length === 0) {
-        navigate(`/`)
-      } else if (userName !== params.userName) {
-        navigate(`/`)
-      }
+  useEffect(function () {
+    if (localStorage.length === 0) {
+      navigate(`/`);
+    } else if (userName !== params.userName) {
+      navigate(`/`);
     }
-  )
+  });
 
   useEffect(
     function () {
@@ -40,6 +39,24 @@ function PlacesList(props) {
     },
     [userName, setPlaces]
   );
+
+  useEffect(function () {
+    places.map((place) => {
+      const { country, city } = place;
+      fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${city}%2C%20${country}.json?proximity=ip&access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          cityData.push({
+            name: place.city,
+            latitude: data.features[0].center[1],
+            longitude: data.features[0].center[0],
+          });
+        });
+      return cityData;
+    });
+  });
 
   const cityList = [];
   function addToCityList(place) {
@@ -88,78 +105,6 @@ function PlacesList(props) {
       setIsShown((current) => !current);
     }
   };
-
-  const mapOptions = {
-    madId: process.env.NEXT_PUBLIC_MAP_ID,
-    center: { lat: 43.66, lng: -79.39 },
-    zoom: 10,
-    disableDefaultUI: true,
-  }
-
-  function MyMap() {
-    const [ map, setMap ] = useState();
-    const ref = useRef();
-
-    useEffect(() => {
-      setMap(new google.maps.Map(ref.current, mapOptions))
-    }, [])
-    return (
-      <>
-        <div ref={ref} id="map"/>
-        {map && <City map={map} />}
-      </>
-    )
-  }
-
-  const cityData = {
-    A: {
-      name: "Toronto",
-      position: { lat: 43.66, lng: -79.39  }
-    },
-    B: {
-      name: "Amsterdam",
-      position: { lat: 53.66, lng: -79.39 }
-    }
-  }
-
-  function City({map}) {
-    const [ data, setData ] = useState(cityData);
-
-    return (
-      <>
-        {Object.entries(data).map(([key, city]) => (
-          <Marker key={key} map={map} position={city.position}>
-            <div className="marker">
-              <h2>{city.name}</h2>
-            </div>
-          </Marker>
-        ))}
-      </>
-    )
-  }
-
-   function Marker({map, children, position}) {
-    const markerRef = useRef();
-    const rootRef = useRef();
-    
-    useEffect(() => {
-      if (!rootRef.current) {
-        const container = document.createElement("div");
-        rootRef.current = createRoot(container);
-        
-        markerRef.current = new google.maps.marker.AdvancedMarkerView({
-          position,
-          content: container,
-        });
-      }
-    }, []);
-
-    useEffect(() => {
-      rootRef.current.render(children)
-      markerRef.current.position = position;
-      console.log(markerRef.current.map = map);
-    }, [map, position, children])
-  }
 
   return (
     <>
@@ -257,11 +202,35 @@ function PlacesList(props) {
           Request
         </button>
         {isShown && <p className="red">Select one or more cities.</p>}
-
-        <Wrapper apiKey={process.env.REACT_APP_GOOGLE_API_KEY} version="beta" libraries={["marker"]}>
-          <MyMap />
-        </Wrapper>
-
+        <div className="mapbox">
+          <Map
+            mapboxAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+            initialViewState={{
+              latitude: 48.2082,
+              longitude: 16.3738,
+              zoom: 3,
+            }}
+            width="100%"
+            height="100%"
+            mapStyle="mapbox://styles/mapbox/streets-v9"
+          >
+            {cityData.map((place, index) => {
+              const { name, latitude, longitude } = place;
+              return (
+                <Marker
+                  key={index}
+                  latitude={latitude}
+                  longitude={longitude}
+                  anchor="bottom"
+                >
+                  <div className="marker">
+                    <img src={pin} className="marker__img" alt={name} />
+                  </div>
+                </Marker>
+              );
+            })}
+          </Map>
+        </div>
       </section>
     </>
   );

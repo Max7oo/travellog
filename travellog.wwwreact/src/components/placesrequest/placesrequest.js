@@ -17,21 +17,19 @@ function PlacesRequest() {
   const [messageChatGPT, setMessageChatGPT] = useState();
   const [loading, setLoading] = useState(false);
   const cityList = location.state;
-  const userName = localStorage.getItem("UserName")
+  const userName = localStorage.getItem("UserName");
   const [isRequested, setIsRequested] = useState(true);
   const [isShown, setIsShown] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [suggestion, setSuggestion] = useState(initialState);
 
-  useEffect(
-    function () {
-      if (localStorage.length === 0) {
-        navigate(`/`)
-      } else if (userName !== params.userName) {
-        navigate(`/`)
-      }
+  useEffect(function () {
+    if (localStorage.length === 0) {
+      navigate(`/`);
+    } else if (userName !== params.userName) {
+      navigate(`/`);
     }
-  )
+  });
 
   const systemMessage = {
     role: "system",

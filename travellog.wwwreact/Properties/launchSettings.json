@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "travellog.wwwreact": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:53035;http://localhost:53036"
+    }
+  }
+}
