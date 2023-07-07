@@ -1,12 +1,15 @@
 ul {
     padding-inline-start: 50px;
-    padding-top: 50px;
-    margin-block-start: 0;
+    margin-block-start: 1em;
     margin-block-end: 0;
 
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+nav ul a {
+    z-index: 99;
 }
 
 li {
@@ -22,6 +25,7 @@ li {
 
 li:hover {
   color: #ea4c89;
+  cursor: pointer;
 }
 
 .nav__cta {
@@ -36,12 +40,21 @@ li:hover {
     background-color: #86c7d3;
 }
 
-.nav__cta li {
+.nav__cta a .current-page-desktop {
+    color: #ea4c89;
+}
+
+.nav__cta a li {
     color: #0f1322;
 }
 
 .nav__cta li:hover {
   color: #ea4c89;
+}
+
+.current-page {
+    color: white;
+    background-color: #ea4c89;
 }
 
 span {
@@ -52,3 +65,82 @@ span {
 span img {
     height: 25px;
 }
+
+.nav__mobile, .nav__mobile__items, .nav__mobile__items__active {
+    display: none;
+}
+
+@media only screen and (max-width: 1110px) {
+    .nav__cta {
+        display: none;
+    }
+  
+    .nav__mobile {
+          display: flex;
+    }
+
+    .nav__mobile {
+        z-index: 99;
+        padding-inline-start: 50px;
+        padding-inline-end: 50px;
+
+        display: flex;
+        justify-content: space-between;
+        gap: 50px;
+
+        border-radius: 25px 25px 0 0;
+        background-color: #86c7d3;
+    }
+
+    .nav__mobile li {
+        color: #0f1322;
+    }
+
+    .is-active li {
+        color: #ea4c89;
+      }
+
+    .nav__mobile__items {
+        position: fixed;
+        top: 0;
+        left: 100%;
+        width: 100%;
+        min-height: 100vh;
+        display: block;
+        background-color: #0f1322;
+        padding-top: 160px;
+        z-index: 98;
+        transition: 0.5s;
+    }
+
+    .nav__mobile__items__active {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        min-height: 100vh;
+        display: block;
+        background-color: #0f1322;
+        padding-top: 160px;
+        z-index: 98;
+        transition: 0.5s;
+    }
+
+    nav nav {
+        text-align: center;
+    }
+
+    nav nav li {
+        margin: 0 auto 16px;
+        padding: 12px 16px;
+        color: #0f1322;
+        width: fit-content;
+        background-color: #86c7d3;
+        border-radius: 25px;
+    }
+
+    nav nav li:hover {
+        color: white;
+        background-color: #ea4c89;
+    }
+  }

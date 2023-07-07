@@ -24,7 +24,7 @@ function SignUp() {
       },
       body: JSON.stringify(formData),
     });
-    if (res.status === 404 ) {
+    if (res.status === 404) {
       setIsShown(true);
     } else if (res.status === 200) {
       navigate("/login");
@@ -38,7 +38,7 @@ function SignUp() {
   return (
     <>
       <Nav />
-      <section>
+      <section className="fs">
         <form onSubmit={handleSubmit}>
           <h2>Sign up</h2>
 
@@ -79,7 +79,9 @@ function SignUp() {
           <div>
             <button type="submit">Create account</button>
           </div>
-          {isShown && <p className="red">Username and/or email already exists.</p>}
+          {isShown && (
+            <p className="red">Username and/or email already exists.</p>
+          )}
         </form>
       </section>
     </>

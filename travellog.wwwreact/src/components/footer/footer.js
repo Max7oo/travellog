@@ -13,7 +13,7 @@ function Footer() {
             Max de Ruiter
           </a>
         </p>
-        <div>
+        <div className="social-icons">
           <a
             href="https://www.instagram.com/feedofmax/"
             target="_blank"

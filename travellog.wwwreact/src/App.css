@@ -3,12 +3,12 @@
 /* Elements */
 html {
   max-width: 100vw;
-  padding: 0px 50px 20px 50px;
+  padding: 30px 50px 30px 50px;
   background-color: #0f1322;
 }
 
 header {
-  max-height: 100%;
+  min-height: calc(100vh - 300px);
   max-width: 100%;
   display: flex;
   align-items: center;
@@ -19,7 +19,7 @@ header {
 }
 
 section {
-  max-height: 100%;
+  min-height: calc(100vh - 300px);
   max-width: 100%;
   display: block;
   align-items: center;
@@ -27,7 +27,6 @@ section {
   padding: 50px;
   border-radius: 25px 0px 25px 25px;
   background: linear-gradient(0.25turn, #b3eaf7,#86c7d3, #86c7d3);
-
 }
 
 span {
@@ -38,6 +37,7 @@ span {
 
 button {
   margin-top: 25px;
+  margin-right: 25px;
   padding: 10px 25px 10px 25px;
 
   font-family: 'Raleway', sans-serif;
@@ -55,6 +55,14 @@ button {
 
 button:hover {
   background-color: #0f1322
+}
+
+.buttons {
+  display: flex;
+}
+
+.buttons button:last-child {
+  margin-right: 0px;
 }
 
 /* Text styling */
@@ -171,4 +179,119 @@ input {
 
 .item__options button {
   margin-right: 25px;
+}
+
+@media only screen and (max-width: 2010px) {
+  .large-hide {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 1785px) {
+  .large-hide {
+    display: flex;
+  }
+}
+
+@media only screen and (max-width: 1135px) {
+  .large-hide {
+    display: none;
+  }
+
+  h1 {
+    font-size: 3.5rem
+  }
+}
+
+@media only screen and (max-width: 940px) {
+  .medium-hide {
+    display: none;
+  }
+
+  h1 {
+    font-size: 3rem
+  }
+
+  header {
+    display: block
+  }
+}
+
+@media only screen and (max-width: 735px) {
+  .medium-small-hide {
+    display: none;
+  }
+
+  header {
+    min-height: calc(100vh - 295px);
+  }
+}
+
+@media only screen and (max-width: 620px) {
+  .small-hide {
+    display: none;
+  }
+
+  h1 {
+    font-size: 2.5rem
+  }
+
+  h2 {
+    font-size: 2.25rem;
+  }
+}
+
+@media only screen and (max-width: 545px) {
+  .mobile-hide {
+    display: none;
+  }
+
+  html {
+    padding: 10px;
+  }
+
+  header {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    padding: 20px;
+    min-height: calc(100vh - 220px);
+  }
+
+  section {
+    height: 100%;
+    min-height: calc(100vh - 260px);
+  }
+
+  input {
+    width: calc(100% - 6px);
+  }
+
+  h1 {
+    font-size: 2rem
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  th {
+    padding: 5px 10px 5px 0px;
+  }
+
+  th button {
+    margin-right: 0px;
+  }
+}
+
+@media only screen and (max-width: 470px) {
+  .small-mobile-hide {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 470px) {
+  .mini-mobile-hide {
+    display: none;
+  }
 }

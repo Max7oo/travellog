@@ -17,18 +17,16 @@ function PlacesEdit(props) {
   const params = useParams();
 
   const { setPlaces } = props;
-  const userName = localStorage.getItem("UserName")
+  const userName = localStorage.getItem("UserName");
   const [formData, setFormData] = useState(initialState);
 
-  useEffect(
-    function () {
-      if (localStorage.length === 0) {
-        navigate(`/`)
-      } else if (userName !== params.userName) {
-        navigate(`/`)
-      }
+  useEffect(function () {
+    if (localStorage.length === 0) {
+      navigate(`/`);
+    } else if (userName !== params.userName) {
+      navigate(`/`);
     }
-  )
+  });
 
   useEffect(function () {
     fetch(`https://localhost:7209/${userName}/places/${params.id}`)
@@ -53,6 +51,10 @@ function PlacesEdit(props) {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const goBack = () => {
+    navigate(-1);
   };
 
   return (
@@ -106,9 +108,9 @@ function PlacesEdit(props) {
             value={formData.stayedFor}
           />
 
-          <div>
+          <div className="buttons">
             <button type="submit">Save edits</button>
-            <Link to={`/${userName}/places`}>
+            <Link onClick={goBack}>
               <button className="cancel">Cancel</button>
             </Link>
           </div>

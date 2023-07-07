@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import Nav from "../nav/nav";
 
@@ -8,17 +8,15 @@ function PlacesView() {
   const navigate = useNavigate();
 
   const [place, setPlace] = useState(false);
-  const userName = localStorage.getItem("UserName")
+  const userName = localStorage.getItem("UserName");
 
-  useEffect(
-    function () {
-      if (localStorage.length === 0) {
-        navigate(`/`)
-      } else if (userName !== params.userName) {
-        navigate(`/`)
-      }
+  useEffect(function () {
+    if (localStorage.length === 0) {
+      navigate(`/`);
+    } else if (userName !== params.userName) {
+      navigate(`/`);
     }
-  )
+  });
 
   useEffect(function () {
     fetch(`https://localhost:7209/${userName}/places/${params.id}`)
@@ -64,6 +62,12 @@ function PlacesView() {
               </thead>
             </table>
           </div>
+          <Link to={`/${userName}/places/edit/${place.id}`}>
+            <button className="edit">Edit</button>
+          </Link>
+          <Link to={`/${userName}/places/delete/${place.id}`}>
+            <button className="delete">Delete</button>
+          </Link>
         </section>
       </>
     );

@@ -8,18 +8,16 @@ function PlacesDelete(props) {
   const params = useParams();
 
   const { setPlaces } = props;
-  const userName = localStorage.getItem("UserName")
+  const userName = localStorage.getItem("UserName");
   const [place, setPlace] = useState();
 
-  useEffect(
-    function () {
-      if (localStorage.length === 0) {
-        navigate(`/`)
-      } else if (userName !== params.userName) {
-        navigate(`/`)
-      }
+  useEffect(function () {
+    if (localStorage.length === 0) {
+      navigate(`/`);
+    } else if (userName !== params.userName) {
+      navigate(`/`);
     }
-  )
+  });
 
   useEffect(function () {
     fetch(`https://localhost:7209/${userName}/places/${params.id}`)
@@ -28,19 +26,20 @@ function PlacesDelete(props) {
   }, []);
 
   const deletePlace = async (e) => {
-    await fetch(
-      `https://localhost:7209/${userName}/places/${params.id}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    await fetch(`https://localhost:7209/${userName}/places/${params.id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     await fetch(`https://localhost:7209/${userName}/places`)
       .then((res) => res.json())
       .then((data) => setPlaces(data));
     navigate(`/${userName}/places`);
+  };
+
+  const goBack = () => {
+    navigate(-1);
   };
 
   if (!place) {
@@ -84,8 +83,8 @@ function PlacesDelete(props) {
           <div className="item__options">
             <p>Are you sure you want to delete this place?</p>
             <button onClick={deletePlace}>Yes</button>
-            <Link to={"/"}>
-              <button>No</button>
+            <Link onClick={goBack}>
+              <button className="cancel">No</button>
             </Link>
           </div>
         </section>

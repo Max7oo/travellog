@@ -7,20 +7,18 @@ import "./placessuggested.css";
 function PlacesSuggested() {
   const params = useParams();
   const navigate = useNavigate();
-  
+
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
-  const userName = localStorage.getItem("UserName")
+  const userName = localStorage.getItem("UserName");
 
-  useEffect(
-    function () {
-      if (localStorage.length === 0) {
-        navigate(`/`)
-      } else if (userName !== params.userName) {
-        navigate(`/`)
-      }
+  useEffect(function () {
+    if (localStorage.length === 0) {
+      navigate(`/`);
+    } else if (userName !== params.userName) {
+      navigate(`/`);
     }
-  )
+  });
 
   useEffect(
     function () {
@@ -38,7 +36,7 @@ function PlacesSuggested() {
   return (
     <>
       <Nav />
-      <section>
+      <section className="fs">
         <h2>Previous suggestions</h2>
 
         <table>

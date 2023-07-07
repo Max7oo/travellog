@@ -16,22 +16,24 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await fetch(`https://localhost:7209/users/${formData.userName}/${formData.password}`)
-    .then((res) => {
-      if (!res.ok) {
-        setIsShown(true)
-      }
-      return res.json()
-    })
-    .then((data) => {
-      if(data) {
-        localStorage.setItem("UserId", data.id)
-        localStorage.setItem("UserName", data.userName)
-        localStorage.setItem("Email", data.email)
-        navigate(`/${formData.userName}/places`);
-      }
-    })
-    .catch((e) => {})
+    await fetch(
+      `https://localhost:7209/users/${formData.userName}/${formData.password}`
+    )
+      .then((res) => {
+        if (!res.ok) {
+          setIsShown(true);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        if (data) {
+          localStorage.setItem("UserId", data.id);
+          localStorage.setItem("UserName", data.userName);
+          localStorage.setItem("Email", data.email);
+          navigate(`/${formData.userName}/places`);
+        }
+      })
+      .catch((e) => {});
   };
 
   const handleChange = (e) => {
@@ -41,7 +43,7 @@ function Login() {
   return (
     <>
       <Nav />
-      <section>
+      <section className="fs">
         <form onSubmit={handleSubmit}>
           <h2>Login</h2>
 

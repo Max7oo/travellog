@@ -16,31 +16,26 @@ function PlacesPost(props) {
   const params = useParams();
 
   const { setPlaces, places } = props;
-  const userName = localStorage.getItem("UserName")
+  const userName = localStorage.getItem("UserName");
   const [formData, setFormData] = useState(initialState);
 
-  useEffect(
-    function () {
-      if (localStorage.length === 0) {
-        navigate(`/`)
-      } else if (userName !== params.userName) {
-        navigate(`/`)
-      }
+  useEffect(function () {
+    if (localStorage.length === 0) {
+      navigate(`/`);
+    } else if (userName !== params.userName) {
+      navigate(`/`);
     }
-  )
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch(
-      `https://localhost:7209/${userName}/places`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      }
-    );
+    const res = await fetch(`https://localhost:7209/${userName}/places`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
     res.json().then((data) => {
       setPlaces([...places, data]);
       navigate(`/${userName}/places`);
