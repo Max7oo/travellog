@@ -2,22 +2,23 @@ import { useState, useEffect } from "react";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 
 import Nav from "../nav/nav";
-import "./placesrequest.css";
+import "./placesadvice.css";
 
 const initialState = {
   basedOn: "",
   suggestionText: "",
 };
 
-function PlacesRequest() {
-  const location = useLocation();
+function PlacesRequest(props) {
   const params = useParams();
   const navigate = useNavigate();
 
+  const { places, setPlaces } = props;
+  const userName = localStorage.getItem("UserName");
+  const [cityList] = useState([]);
+
   const [messageChatGPT, setMessageChatGPT] = useState();
   const [loading, setLoading] = useState(false);
-  const cityList = location.state;
-  const userName = localStorage.getItem("UserName");
   const [isRequested, setIsRequested] = useState(true);
   const [isShown, setIsShown] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
@@ -30,6 +31,30 @@ function PlacesRequest() {
       navigate(`/`);
     }
   });
+
+  useEffect(
+    function () {
+      setLoading(true);
+      fetch(`https://localhost:7209/${userName}/places`)
+        .then((res) => res.json())
+        .then((data) => {
+          data.sort((a, b) => (a.city > b.city) ? 1 : -1)
+          setPlaces(data) 
+        })
+        .then((e) => {
+          setLoading(false);
+        });
+    },
+    [userName, setPlaces]
+  );
+
+  function addToCityList(place) {
+    if (cityList.includes(place.city)) {
+      cityList.splice(cityList.indexOf(`${place.city}`), 1);
+    } else {
+      cityList.push(place.city);
+    }
+  }
 
   const systemMessage = {
     role: "system",
@@ -93,16 +118,35 @@ function PlacesRequest() {
       <Nav />
       <section>
         <h2>Request</h2>
-        <div className="item">
-          <p>Your request is based on the following cities:</p>
-          {cityList?.map((name, index) => {
-            return (
-              <p key={index}>
-                City {index}: {name}
-              </p>
-            );
-          })}
-        </div>
+        <p className="item">Select cities, from the list of cities you have been to, that you want to base the travel advice on.</p>
+        <table>
+          <tbody>
+          {loading ? (
+                <div className="spinner-container">
+                  <div className="loading-spinner"></div>
+                </div>
+              ) : (
+                <></>
+              )}
+        {places.map((place, index) => {
+          const { country, city } = place;
+          return (
+            <tr className="tr-align-center" key={index}>
+              <th className="th-small">
+                <input
+                  type="checkbox"
+                  id={place.city}
+                  name="addToCityList"
+                  onClick={() => addToCityList(place)}
+                />
+              </th>
+              <th>{city}, {country}</th>
+            </tr>
+          );
+        })}
+        </tbody>
+        </table>
+
         {isRequested && (
           <>
             <div className="item">

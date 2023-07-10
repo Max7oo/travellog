@@ -23,6 +23,16 @@ function SuggestedView() {
     }
   )
 
+  const deletePlace = async (e) => {
+    await fetch(`https://localhost:7209/${userName}/suggestions/${params.id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    navigate(`/${userName}/places/suggested`);
+  };
+
   if (!suggestion) {
     return (
       <div className="spinner-container">
@@ -44,6 +54,7 @@ function SuggestedView() {
               />
             </div>
           </div>
+            <button onClick={deletePlace}>Delete suggestion</button>
         </section>
       </>
     );

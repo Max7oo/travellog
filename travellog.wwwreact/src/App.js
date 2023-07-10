@@ -9,12 +9,12 @@ import PlacesView from "./components/placesview/placesview";
 import PlacesPost from "./components/placespost/placespost";
 import PlacesEdit from "./components/placesedit/placesedit";
 import PlacesDelete from "./components/placesdelete/placesdelete";
-import PlacesRequest from "./components/placesrequest/placesrequest";
+import PlacesAdvice from "./components/placesadvice/placesadvice";
+import PlacesSuggested from "./components/placessuggested/placessuggested";
+import SuggestedView from "./components/placessuggested/suggestedview";
 import Footer from "./components/footer/footer";
 
 import "./App.css";
-import PlacesSuggested from "./components/placessuggested/placessuggested";
-import SuggestedView from "./components/placessuggested/suggestedview";
 
 
 function App() {
@@ -44,7 +44,7 @@ function App() {
             path="/:userName/places/delete/:id"
             element={<PlacesDelete places={places} setPlaces={setPlaces} />}
           />
-          <Route path="/:userName/places/request" element={<PlacesRequest />} />
+          <Route path="/:userName/places/advice" element={<PlacesAdvice places={places} setPlaces={setPlaces}/>} />
           <Route
             path="/:userName/places/suggested"
             element={<PlacesSuggested />}

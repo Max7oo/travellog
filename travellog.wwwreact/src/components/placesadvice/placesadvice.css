@@ -1,3 +1,13 @@
+.th-small {
+    width: 25px;
+    text-align: center;
+}
+
+.tr-align-center {
+    display: flex;
+    align-items: center;
+}
+
 .response {
     padding: 25px;
     margin: 25px 0px 0px 0px;

@@ -18,9 +18,7 @@ function PlacesList(props) {
   const userName = localStorage.getItem("UserName");
   const [loading, setLoading] = useState(false);
   const [order, setOrder] = useState("ASC");
-  const [isShown, setIsShown] = useState(false);
   const [cityData] = useState([]);
-  const [cityList] = useState([]);
 
   useEffect(function () {
     if (localStorage.length === 0) {
@@ -61,14 +59,6 @@ function PlacesList(props) {
     });
   });
 
-  function addToCityList(place) {
-    if (cityList.includes(place.city)) {
-      cityList.splice(cityList.indexOf(`${place.city}`), 1);
-    } else {
-      cityList.push(place.city);
-    }
-  }
-
   const sortingABC = (col) => {
     if (order === "ASC") {
       const sorted = [...places].sort((a, b) =>
@@ -96,15 +86,6 @@ function PlacesList(props) {
       const sorted = [...places].sort((a, b) => (a[col] < b[col] ? 1 : -1));
       setPlaces(sorted);
       setOrder("ASC");
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (cityList.length > 0) {
-      navigate(`/${userName}/places/request`, { state: cityList });
-    } else {
-      setIsShown(true);
     }
   };
 
@@ -176,8 +157,7 @@ function PlacesList(props) {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th>
+
                     {loading ? (
                       <div className="spinner-container">
                         <div className="loading-spinner"></div>
@@ -185,8 +165,6 @@ function PlacesList(props) {
                     ) : (
                       <></>
                     )}
-                  </th>
-                </tr>
                 {currentPlaces.map((place, index) => {
                   const { country, city, rating, visitedAt, stayedFor } = place;
                   return (
@@ -239,14 +217,6 @@ function PlacesList(props) {
                 </p>
               ))}
             </div>
-            <p>
-              Receive travel advise based on the selected cities above by
-              clicking on the 'Request' button.
-            </p>
-            <button className="request" onClick={handleSubmit}>
-              Request
-            </button>
-            {isShown && <p className="red">Select one or more cities.</p>}
           </div>
 
           <div className="mapbox">

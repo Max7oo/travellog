@@ -22,9 +22,6 @@ function Nav() {
     setOpenMenu((openMenu) => !openMenu);
   };
 
-  console.log("/" + userName + "/places");
-  console.log(window.location.pathname.toString());
-
   if (!userName) {
     return (
       <>
@@ -130,7 +127,7 @@ function Nav() {
                       : ""
                   }
                 >
-                  Places you have been
+                  Places
                 </li>
               </Link>
               <Link to={`/${userName}/places/add`}>
@@ -142,7 +139,19 @@ function Nav() {
                       : ""
                   }
                 >
-                  Add new place
+                  New place
+                </li>
+              </Link>
+              <Link to={`/${userName}/places/advice`}>
+                <li
+                  className={
+                    window.location.pathname.toString() ===
+                    "/" + userName + "/places/advice"
+                      ? "current-page-desktop"
+                      : ""
+                  }
+                >
+                  Travel advice
                 </li>
               </Link>
               <Link to={`/${userName}/places/suggested`}>
@@ -181,7 +190,7 @@ function Nav() {
                       : ""
                   }
                 >
-                  Places you have been
+                  Places
                 </li>
               </Link>
               <Link to={`/${userName}/places/add`}>
@@ -193,7 +202,19 @@ function Nav() {
                       : ""
                   }
                 >
-                  Add new place
+                  New place
+                </li>
+              </Link>
+              <Link to={`/${userName}/places/advice`}>
+                <li
+                  className={
+                    window.location.pathname.toString() ===
+                    "/" + userName + "/places/advice"
+                      ? "current-page-desktop"
+                      : ""
+                  }
+                >
+                  Travel advice
                 </li>
               </Link>
               <Link to={`/${userName}/places/suggested`}>

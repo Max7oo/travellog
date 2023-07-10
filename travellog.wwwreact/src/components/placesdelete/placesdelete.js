@@ -32,9 +32,6 @@ function PlacesDelete(props) {
         "Content-Type": "application/json",
       },
     });
-    await fetch(`https://localhost:7209/${userName}/places`)
-      .then((res) => res.json())
-      .then((data) => setPlaces(data));
     navigate(`/${userName}/places`);
   };
 
