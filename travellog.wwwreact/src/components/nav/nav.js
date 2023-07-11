@@ -139,7 +139,7 @@ function Nav() {
                       : ""
                   }
                 >
-                  New place
+                  Add place
                 </li>
               </Link>
               <Link to={`/${userName}/places/advice`}>
@@ -202,7 +202,7 @@ function Nav() {
                       : ""
                   }
                 >
-                  New place
+                  Add place
                 </li>
               </Link>
               <Link to={`/${userName}/places/advice`}>

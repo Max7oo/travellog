@@ -9,6 +9,7 @@ const initialState = {
   rating: "",
   visitedAt: "",
   stayedFor: "",
+  uploadImage: ""
 };
 
 function PlacesPost(props) {
@@ -28,6 +29,7 @@ function PlacesPost(props) {
   });
 
   const handleSubmit = async (e) => {
+    console.log(formData)
     e.preventDefault();
     const res = await fetch(`https://localhost:7209/${userName}/places`, {
       method: "POST",
@@ -51,7 +53,7 @@ function PlacesPost(props) {
       <Nav />
       <section>
         <form className="form-stack contact-form" onSubmit={handleSubmit}>
-          <h2>Add city</h2>
+          <h2>Add place</h2>
 
           <label htmlFor="country">Country:</label>
           <input
@@ -101,6 +103,9 @@ function PlacesPost(props) {
             onChange={handleChange}
             value={formData.stayedFor}
           />
+
+          <label htmlFor="uploadImage">Upload image:</label>
+          <input id="uploadImage" name="uploadImage" type="file" accept="image/png, image/jpeg" onChange={handleChange} />
 
           <div className="actions-section">
             <button className="button blue" type="submit">

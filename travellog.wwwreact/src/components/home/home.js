@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import "./home.css";
 
@@ -9,6 +9,17 @@ import plane from "../../images/plane.svg";
 
 
 function Home() {
+  const navigate = useNavigate()
+  const userName = localStorage.getItem("UserName");
+
+  useEffect(function() {
+      if (userName) {
+        navigate(`/${userName}/places`);
+      }
+    }
+  )
+
+  if (!userName) {
   return (
     <>
       <Nav />
@@ -38,7 +49,7 @@ function Home() {
         </div>
       </header>
     </>
-  );
+  )} 
 }
 
 export default Home;

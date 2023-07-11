@@ -110,10 +110,16 @@ function PlacesList(props) {
 
         <div className="content">
           <div className="table">
+          {loading ? (
+                      <div className="spinner-container">
+                        <div className="loading-spinner"></div>
+                      </div>
+                    ) : (
+                      <></>
+                    )}
             <table>
               <thead>
                 <tr>
-                  {/* <th className="mobile-hide"></th> */}
                   <th
                     className="medium-small-hide"
                     onClick={() => sortingABC("country")}
@@ -157,26 +163,10 @@ function PlacesList(props) {
                 </tr>
               </thead>
               <tbody>
-
-                    {loading ? (
-                      <div className="spinner-container">
-                        <div className="loading-spinner"></div>
-                      </div>
-                    ) : (
-                      <></>
-                    )}
                 {currentPlaces.map((place, index) => {
                   const { country, city, rating, visitedAt, stayedFor } = place;
                   return (
                     <tr key={index}>
-                      {/* <th className="mobile-hide">
-                        <input
-                          type="checkbox"
-                          id={place.city}
-                          name="addToCityList"
-                          onClick={() => addToCityList(place)}
-                        />
-                      </th> */}
                       <th className="medium-small-hide">{country}</th>
                       <th>{city}</th>
                       <th>{rating}</th>

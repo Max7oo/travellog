@@ -119,8 +119,6 @@ function PlacesRequest(props) {
       <section>
         <h2>Request</h2>
         <p className="item">Select cities, from the list of cities you have been to, that you want to base the travel advice on.</p>
-        <table>
-          <tbody>
           {loading ? (
                 <div className="spinner-container">
                   <div className="loading-spinner"></div>
@@ -128,6 +126,8 @@ function PlacesRequest(props) {
               ) : (
                 <></>
               )}
+        <table>
+          <tbody>
         {places.map((place, index) => {
           const { country, city } = place;
           return (
