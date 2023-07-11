@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import Nav from "../nav/nav";
+import defaultImage from "../../images/default-image.jpg";
+
+const defaultImageSrc = defaultImage
 
 const initialState = {
   country: "",
@@ -9,7 +12,9 @@ const initialState = {
   rating: "",
   visitedAt: "",
   stayedFor: "",
-  uploadImage: ""
+  imageName: "",
+  imageSrc: defaultImageSrc,
+  imageFile: null
 };
 
 function PlacesPost(props) {
@@ -18,7 +23,8 @@ function PlacesPost(props) {
 
   const { setPlaces, places } = props;
   const userName = localStorage.getItem("UserName");
-  const [formData, setFormData] = useState(initialState);
+  const [values, setValues] = useState(initialState);
+  const [errors, setErros] = useState({})
 
   useEffect(function () {
     if (localStorage.length === 0) {
@@ -28,25 +34,77 @@ function PlacesPost(props) {
     }
   });
 
+  const validate = () => {
+    let temp = {}
+    temp.country = values.country === "" ? false:true;
+    temp.city = values.city === "" ? false:true;
+    temp.rating = values.rating === "" ? false:true;
+    temp.visitedAt = values.visitedAt === "" ? false:true;
+    temp.stayedFor = values.stayedFor === "" ? false:true;
+    temp.imageSrc = values.imageSrc === defaultImageSrc ? false:true;
+    setErros(temp)
+    return Object.values(temp).every(x => x===true)
+  }
+
+  const applyErrorClass = field => ((field in errors && errors[field] === false) ? "invalid-field" : "")
+
+  console.log(values.imageName)
+  console.log(values.imageFile)
+
   const handleSubmit = async (e) => {
-    console.log(formData)
     e.preventDefault();
-    const res = await fetch(`https://localhost:7209/${userName}/places`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-    res.json().then((data) => {
-      setPlaces([...places, data]);
-      navigate(`/${userName}/places`);
-    });
+    if (validate()) {
+      var formData = new FormData()
+      formData = [
+        { country: values.country },
+        { city: values.city },
+        { rating: values.rating },
+        { visitedAt: values.visitedAt },
+        { stayedFor: values.stayedFor },
+        { imageName: values.imageName },
+        { imageFile: values.imageFile },
+      ]
+      console.log(formData)
+      const res = await fetch(`https://localhost:7209/${userName}/places`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      res.json().then((data) => {
+        console.log(data)
+        setPlaces([...places, data]);
+        navigate(`/${userName}/places`);
+      });
+    }
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setValues({ ...values, [e.target.name]: e.target.value });
   };
+
+  const showPreview = (e) => {
+    if(e.target.files && e.target.files[0]) {
+      let imageFile = e.target.files[0]
+      const reader = new FileReader()
+      reader.onload = x => {
+        setValues({
+          ...values,
+          imageFile,
+          imageName: e.target.files[0].name,
+          imageSrc: x.target.result
+        })
+      }
+      reader.readAsDataURL(imageFile)
+    } else {
+      setValues({
+        ...values,
+        imageFile: null,
+        imageSrc: defaultImageSrc
+      })
+    }
+  }
 
   return (
     <>
@@ -62,7 +120,8 @@ function PlacesPost(props) {
             type="text"
             placeholder="The Netherlands"
             onChange={handleChange}
-            value={formData.country}
+            value={values.country}
+            className={applyErrorClass('country')}
           />
 
           <label htmlFor="city">City:</label>
@@ -72,7 +131,8 @@ function PlacesPost(props) {
             type="text"
             placeholder="Amsterdam"
             onChange={handleChange}
-            value={formData.city}
+            value={values.city}
+            className={applyErrorClass('city')}
           />
 
           <label htmlFor="rating">Rating:</label>
@@ -82,7 +142,8 @@ function PlacesPost(props) {
             type="number"
             placeholder="10"
             onChange={handleChange}
-            value={formData.rating}
+            value={values.rating}
+            className={applyErrorClass('rating')}
           />
 
           <label htmlFor="visitedAt">Visited at:</label>
@@ -91,7 +152,8 @@ function PlacesPost(props) {
             name="visitedAt"
             type="date"
             onChange={handleChange}
-            value={formData.visitedAt}
+            value={values.visitedAt}
+            className={applyErrorClass('visitedAt')}
           />
 
           <label htmlFor="stayedFor">Stayed for (days):</label>
@@ -101,11 +163,13 @@ function PlacesPost(props) {
             type="number"
             placeholder="∞"
             onChange={handleChange}
-            value={formData.stayedFor}
+            value={values.stayedFor}
+            className={applyErrorClass('stayedFor')}
           />
 
-          <label htmlFor="uploadImage">Upload image:</label>
-          <input id="uploadImage" name="uploadImage" type="file" accept="image/png, image/jpeg" onChange={handleChange} />
+          <label htmlFor="imageSrc">Upload image:</label>
+          <input id="imageSrc" name="imageSrc" type="file" accept="image/jpeg" onChange={showPreview} className={applyErrorClass('imageSrc')} />
+          <img src={values.imageSrc} alt="Preview"/>
 
           <div className="actions-section">
             <button className="button blue" type="submit">

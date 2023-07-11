@@ -127,6 +127,12 @@ input {
   border-radius: 5px;
 }
 
+.invalid-field {
+  border-color: red;
+  color: red;
+  background-color: white;
+}
+
 /* Loading loading-spinner */
 @keyframes spinner {
     0% {
