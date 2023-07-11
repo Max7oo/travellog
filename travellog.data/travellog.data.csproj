@@ -24,4 +24,8 @@
     <ProjectReference Include="..\travellog.models\travellog.models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

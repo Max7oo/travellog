@@ -57,7 +57,6 @@ public static class PlaceAPI
     {
         try
         {
-            place.ImageName = await SaveImage(place.ImageFile);
             place.UserId = context.GetUserId(userName);
             var result = context.Add(place);
             return result != null ? Results.Ok(result) : Results.NotFound();
@@ -98,18 +97,5 @@ public static class PlaceAPI
         {
             return Results.Problem(ex.Message);
         }
-    }
-
-    [NonAction]
-    public static async Task<string> SaveImage(IFormFile imageFile)
-    {
-        string imageName = new String(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');
-        imageName = imageName + DateTime.Now.ToString("yymmssfff")+Path.GetExtension(imageFile.FileName);
-        var imagePath = Path.Combine("D:\\Temporary\\travellog\\travellog.wwwapi\\Images\\", imageName);
-        using (var fileStream = new FileStream(imagePath, FileMode.Create))
-        {
-            await imageFile.CopyToAsync(fileStream);
-        }
-        return imageName;
     }
 }

@@ -11,8 +11,8 @@ using travellog.data;
 namespace travellog.data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230711114742_FourthMigration")]
-    partial class FourthMigration
+    [Migration("20230711135950_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,9 +36,6 @@ namespace travellog.data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Country")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ImageName")
                         .HasColumnType("text");
 
                     b.Property<int>("Rating")

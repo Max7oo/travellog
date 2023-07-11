@@ -12,10 +12,11 @@ const initialState = {
   rating: "",
   visitedAt: "",
   stayedFor: "",
-  imageName: "",
-  imageSrc: defaultImageSrc,
-  imageFile: null
 };
+
+const initialStateImage = {
+  imageSrc: defaultImageSrc,
+}
 
 function PlacesPost(props) {
   const navigate = useNavigate();
@@ -23,7 +24,8 @@ function PlacesPost(props) {
 
   const { setPlaces, places } = props;
   const userName = localStorage.getItem("UserName");
-  const [values, setValues] = useState(initialState);
+  const [formData, setFormData] = useState(initialState);
+  const [image, setImage] = useState(initialStateImage)
   const [errors, setErros] = useState({})
 
   useEffect(function () {
@@ -36,35 +38,21 @@ function PlacesPost(props) {
 
   const validate = () => {
     let temp = {}
-    temp.country = values.country === "" ? false:true;
-    temp.city = values.city === "" ? false:true;
-    temp.rating = values.rating === "" ? false:true;
-    temp.visitedAt = values.visitedAt === "" ? false:true;
-    temp.stayedFor = values.stayedFor === "" ? false:true;
-    temp.imageSrc = values.imageSrc === defaultImageSrc ? false:true;
+    temp.country = formData.country === "" ? false:true;
+    temp.city = formData.city === "" ? false:true;
+    temp.rating = formData.rating === "" ? false:true;
+    temp.visitedAt = formData.visitedAt === "" ? false:true;
+    temp.stayedFor = formData.stayedFor === "" ? false:true;
+    temp.imageSrc = formData.imageSrc === defaultImageSrc ? false:true;
     setErros(temp)
     return Object.values(temp).every(x => x===true)
   }
 
   const applyErrorClass = field => ((field in errors && errors[field] === false) ? "invalid-field" : "")
 
-  console.log(values.imageName)
-  console.log(values.imageFile)
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
-      var formData = new FormData()
-      formData = [
-        { country: values.country },
-        { city: values.city },
-        { rating: values.rating },
-        { visitedAt: values.visitedAt },
-        { stayedFor: values.stayedFor },
-        { imageName: values.imageName },
-        { imageFile: values.imageFile },
-      ]
-      console.log(formData)
       const res = await fetch(`https://localhost:7209/${userName}/places`, {
         method: "POST",
         headers: {
@@ -73,15 +61,31 @@ function PlacesPost(props) {
         body: JSON.stringify(formData),
       });
       res.json().then((data) => {
-        console.log(data)
         setPlaces([...places, data]);
         navigate(`/${userName}/places`);
       });
     }
   };
 
+  // console.log(JSON.stringify(image))
+
+  const uploadImage = async (e) => {
+    e.preventDefault();
+      const res = await fetch(`https://api.upload.io/v2/accounts/${process.env.REACT_APP_IMAGE_ACCOUNT_ID}/uploads/binary`, {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + process.env.REACT_APP_IMAGE_UPLOAD,
+          "Content-Type": "image/jpeg",
+        },
+        body: JSON.stringify(image),
+      });
+      res.json().then((data) => {
+        console.log(data)
+      });
+  };
+
   const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const showPreview = (e) => {
@@ -89,18 +93,13 @@ function PlacesPost(props) {
       let imageFile = e.target.files[0]
       const reader = new FileReader()
       reader.onload = x => {
-        setValues({
-          ...values,
-          imageFile,
-          imageName: e.target.files[0].name,
+        setImage({
           imageSrc: x.target.result
         })
       }
       reader.readAsDataURL(imageFile)
     } else {
-      setValues({
-        ...values,
-        imageFile: null,
+      setImage({
         imageSrc: defaultImageSrc
       })
     }
@@ -120,7 +119,7 @@ function PlacesPost(props) {
             type="text"
             placeholder="The Netherlands"
             onChange={handleChange}
-            value={values.country}
+            value={formData.country}
             className={applyErrorClass('country')}
           />
 
@@ -131,7 +130,7 @@ function PlacesPost(props) {
             type="text"
             placeholder="Amsterdam"
             onChange={handleChange}
-            value={values.city}
+            value={formData.city}
             className={applyErrorClass('city')}
           />
 
@@ -142,7 +141,7 @@ function PlacesPost(props) {
             type="number"
             placeholder="10"
             onChange={handleChange}
-            value={values.rating}
+            value={formData.rating}
             className={applyErrorClass('rating')}
           />
 
@@ -152,7 +151,7 @@ function PlacesPost(props) {
             name="visitedAt"
             type="date"
             onChange={handleChange}
-            value={values.visitedAt}
+            value={formData.visitedAt}
             className={applyErrorClass('visitedAt')}
           />
 
@@ -163,17 +162,20 @@ function PlacesPost(props) {
             type="number"
             placeholder="∞"
             onChange={handleChange}
-            value={values.stayedFor}
+            value={formData.stayedFor}
             className={applyErrorClass('stayedFor')}
           />
 
           <label htmlFor="imageSrc">Upload image:</label>
           <input id="imageSrc" name="imageSrc" type="file" accept="image/jpeg" onChange={showPreview} className={applyErrorClass('imageSrc')} />
-          <img src={values.imageSrc} alt="Preview"/>
+          <img src={image.imageSrc} alt="Preview"/>
 
           <div className="actions-section">
             <button className="button blue" type="submit">
               Create
+            </button>
+            <button className="button blue" onClick={uploadImage}>
+              Upload Image
             </button>
           </div>
         </form>

@@ -35,9 +35,6 @@ namespace travellog.data.Migrations
                     b.Property<string>("Country")
                         .HasColumnType("text");
 
-                    b.Property<string>("ImageName")
-                        .HasColumnType("text");
-
                     b.Property<int>("Rating")
                         .HasColumnType("integer");
 
