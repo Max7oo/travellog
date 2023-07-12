@@ -19,26 +19,27 @@ function PlacesList(props) {
   const [loading, setLoading] = useState(false);
   const [order, setOrder] = useState("ASC");
   const [cityData] = useState([]);
+  const [viewingMode, setViewingMode] = useState(true)
 
   useEffect(function () {
     if (localStorage.length === 0) {
       navigate(`/`);
     } else if (userName !== params.userName) {
-      navigate(`/`);
+      setViewingMode(false);
     }
   });
 
   useEffect(
     function () {
       setLoading(true);
-      fetch(`https://localhost:7209/${userName}/places`)
+      fetch(`https://localhost:7209/${params.userName}/places`)
         .then((res) => res.json())
         .then((data) => setPlaces(data))
         .then((e) => {
           setLoading(false);
         });
     },
-    [userName, setPlaces]
+    [params.userName, setPlaces]
   );
 
   useEffect(function () {
@@ -106,7 +107,7 @@ function PlacesList(props) {
     <>
       <Nav />
       <section>
-        <h2>Places</h2>
+        {viewingMode ? (<h2>Places</h2>) : (<h2>Places {params.userName} has visited</h2>)}
 
         <div className="content">
           <div className="table">
@@ -172,7 +173,7 @@ function PlacesList(props) {
                       <th>{rating}</th>
                       <th className="small-hide">{visitedAt}</th>
                       <th className="medium-hide">{stayedFor}</th>
-                      <th>
+                      {viewingMode ? (<th>
                         <Link to={`/${userName}/places/${place.id}`}>
                           <button className="view">View</button>
                         </Link>
@@ -188,7 +189,7 @@ function PlacesList(props) {
                         >
                           <button className="delete">Delete</button>
                         </Link>
-                      </th>
+                      </th>) : (<th></th>)}
                     </tr>
                   );
                 })}

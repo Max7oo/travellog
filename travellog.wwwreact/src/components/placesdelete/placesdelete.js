@@ -26,6 +26,13 @@ function PlacesDelete(props) {
   }, []);
 
   const deletePlace = async (e) => {
+    await fetch(`https://api.upload.io/v2/accounts/${process.env.REACT_APP_ID_UPLOAD}/files?filePath=${place.filePath}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + process.env.REACT_APP_SECRET_UPLOAD,
+        "Content-Type": "image/jpeg",
+      },
+    });
     await fetch(`https://localhost:7209/${userName}/places/${params.id}`, {
       method: "DELETE",
       headers: {
@@ -76,6 +83,7 @@ function PlacesDelete(props) {
                 </tr>
               </thead>
             </table>
+            {place.fileUrl ? (<img src={place.fileUrl} alt={place.city} className="item__info_image"/>) : (<></>)}
           </div>
           <div className="item__options">
             <p>Are you sure you want to delete this place?</p>

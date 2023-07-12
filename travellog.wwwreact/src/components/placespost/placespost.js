@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import Nav from "../nav/nav";
+import "./placespost.css"
 import defaultImage from "../../images/default-image.jpg";
 
 const defaultImageSrc = defaultImage
@@ -12,11 +13,12 @@ const initialState = {
   rating: "",
   visitedAt: "",
   stayedFor: "",
+  fileUrl: ""
 };
 
-const initialStateImage = {
+const initialPreviewImage = {
   imageSrc: defaultImageSrc,
-}
+};
 
 function PlacesPost(props) {
   const navigate = useNavigate();
@@ -25,8 +27,9 @@ function PlacesPost(props) {
   const { setPlaces, places } = props;
   const userName = localStorage.getItem("UserName");
   const [formData, setFormData] = useState(initialState);
-  const [image, setImage] = useState(initialStateImage)
-  const [errors, setErros] = useState({})
+  const [image, setImage] = useState(defaultImageSrc)
+  const [previewImage, setPreviewImage] = useState(initialPreviewImage)
+  const [errors, setErrors] = useState({})
 
   useEffect(function () {
     if (localStorage.length === 0) {
@@ -43,8 +46,8 @@ function PlacesPost(props) {
     temp.rating = formData.rating === "" ? false:true;
     temp.visitedAt = formData.visitedAt === "" ? false:true;
     temp.stayedFor = formData.stayedFor === "" ? false:true;
-    temp.imageSrc = formData.imageSrc === defaultImageSrc ? false:true;
-    setErros(temp)
+    temp.imageSrc = previewImage.imageSrc === defaultImageSrc ? false:true;
+    setErrors(temp)
     return Object.values(temp).every(x => x===true)
   }
 
@@ -53,6 +56,28 @@ function PlacesPost(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
+      uploadImage();
+    }
+  };
+
+  const uploadImage = async (e) => {
+    // e.preventDefault();
+    const res = await fetch(`https://api.upload.io/v2/accounts/${process.env.REACT_APP_ID_UPLOAD}/uploads/binary`, {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + process.env.REACT_APP_PUBLIC_UPLOAD,
+        "Content-Type": "image/jpeg",
+      },
+      body: image,
+    });
+    res.json().then((data) => {
+      const info = { ...formData, fileUrl: data.fileUrl, filePath: data.filePath }
+      uploadFormData(info)
+    });
+  };
+
+  const uploadFormData = async (formData) => {
+    // e.preventDefault();
       const res = await fetch(`https://localhost:7209/${userName}/places`, {
         method: "POST",
         headers: {
@@ -64,24 +89,6 @@ function PlacesPost(props) {
         setPlaces([...places, data]);
         navigate(`/${userName}/places`);
       });
-    }
-  };
-
-  // console.log(JSON.stringify(image))
-
-  const uploadImage = async (e) => {
-    e.preventDefault();
-      const res = await fetch(`https://api.upload.io/v2/accounts/${process.env.REACT_APP_IMAGE_ACCOUNT_ID}/uploads/binary`, {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer " + process.env.REACT_APP_IMAGE_UPLOAD,
-          "Content-Type": "image/jpeg",
-        },
-        body: JSON.stringify(image),
-      });
-      res.json().then((data) => {
-        console.log(data)
-      });
   };
 
   const handleChange = (e) => {
@@ -89,17 +96,19 @@ function PlacesPost(props) {
   };
 
   const showPreview = (e) => {
+    const blob = new Blob( [ e.target.files[0] ], { type: "image/jpeg" } )
+    setImage(blob)
     if(e.target.files && e.target.files[0]) {
       let imageFile = e.target.files[0]
       const reader = new FileReader()
       reader.onload = x => {
-        setImage({
+        setPreviewImage({
           imageSrc: x.target.result
         })
       }
       reader.readAsDataURL(imageFile)
     } else {
-      setImage({
+      setPreviewImage({
         imageSrc: defaultImageSrc
       })
     }
@@ -168,14 +177,13 @@ function PlacesPost(props) {
 
           <label htmlFor="imageSrc">Upload image:</label>
           <input id="imageSrc" name="imageSrc" type="file" accept="image/jpeg" onChange={showPreview} className={applyErrorClass('imageSrc')} />
-          <img src={image.imageSrc} alt="Preview"/>
+          <div className="preview-image">
+            <img src={previewImage.imageSrc} alt="Preview"/>
+          </div>
 
           <div className="actions-section">
             <button className="button blue" type="submit">
               Create
-            </button>
-            <button className="button blue" onClick={uploadImage}>
-              Upload Image
             </button>
           </div>
         </form>

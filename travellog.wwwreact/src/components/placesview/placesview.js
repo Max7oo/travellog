@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import Nav from "../nav/nav";
+import "./placesview.css"
 
 function PlacesView() {
   const params = useParams();
@@ -61,6 +62,7 @@ function PlacesView() {
                 </tr>
               </thead>
             </table>
+            {place.fileUrl ? (<img src={place.fileUrl} alt={place.city} className="item__info_image"/>) : (<></>)}
           </div>
           <Link to={`/${userName}/places/edit/${place.id}`}>
             <button className="edit">Edit</button>

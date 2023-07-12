@@ -3,6 +3,13 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 
 import Nav from "../nav/nav";
 import "./placesedit.css";
+import defaultImage from "../../images/default-image.jpg";
+
+const defaultImageSrc = defaultImage
+
+const initialPreviewImage = {
+  imageSrc: defaultImageSrc,
+};
 
 const initialState = {
   country: "",
@@ -19,6 +26,9 @@ function PlacesEdit(props) {
   const { setPlaces } = props;
   const userName = localStorage.getItem("UserName");
   const [formData, setFormData] = useState(initialState);
+  const [image, setImage] = useState(defaultImageSrc)
+  const [previewImage, setPreviewImage] = useState(initialPreviewImage)
+  const [errors, setErrors] = useState({})
 
   useEffect(function () {
     if (localStorage.length === 0) {
@@ -36,17 +46,42 @@ function PlacesEdit(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await fetch(`https://localhost:7209/${userName}/places`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-    await fetch(`https://localhost:7209/${userName}/places`)
-      .then((res) => res.json())
-      .then((data) => setPlaces(data));
-    navigate(`/${params.userName}/places`);
+    if (validate()) {
+      await fetch(`https://api.upload.io/v2/accounts/${process.env.REACT_APP_ID_UPLOAD}/files?filePath=${formData.filePath}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: "Bearer " + process.env.REACT_APP_SECRET_UPLOAD,
+          "Content-Type": "image/jpeg",
+        },
+      });
+
+      const res = await fetch(`https://api.upload.io/v2/accounts/${process.env.REACT_APP_ID_UPLOAD}/uploads/binary`, {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + process.env.REACT_APP_PUBLIC_UPLOAD,
+          "Content-Type": "image/jpeg",
+        },
+        body: image,
+      });
+      res.json().then((data) => {
+        const info = { ...formData, fileUrl: data.fileUrl, filePath: data.filePath }
+        uploadFormData(info)
+      });
+
+      const uploadFormData = async (formData) => {
+        await fetch(`https://localhost:7209/${userName}/places`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+        await fetch(`https://localhost:7209/${userName}/places`)
+        .then((res) => res.json())
+        .then((data) => setPlaces(data));
+        navigate(`/${params.userName}/places`);
+      };
+    }
   };
 
   const handleChange = (e) => {
@@ -56,6 +91,39 @@ function PlacesEdit(props) {
   const goBack = () => {
     navigate(-1);
   };
+
+  const validate = () => {
+    let temp = {}
+    temp.country = formData.country === "" ? false:true;
+    temp.city = formData.city === "" ? false:true;
+    temp.rating = formData.rating === "" ? false:true;
+    temp.visitedAt = formData.visitedAt === "" ? false:true;
+    temp.stayedFor = formData.stayedFor === "" ? false:true;
+    temp.imageSrc = previewImage.imageSrc === defaultImageSrc ? false:true;
+    setErrors(temp)
+    return Object.values(temp).every(x => x===true)
+  }
+
+  const applyErrorClass = field => ((field in errors && errors[field] === false) ? "invalid-field" : "")
+
+  const showPreview = (e) => {
+    const blob = new Blob( [ e.target.files[0] ], { type: "image/jpeg" } )
+    setImage(blob)
+    if(e.target.files && e.target.files[0]) {
+      let imageFile = e.target.files[0]
+      const reader = new FileReader()
+      reader.onload = x => {
+        setPreviewImage({
+          imageSrc: x.target.result
+        })
+      }
+      reader.readAsDataURL(imageFile)
+    } else {
+      setPreviewImage({
+        imageSrc: defaultImageSrc
+      })
+    }
+  }
 
   return (
     <>
@@ -107,6 +175,12 @@ function PlacesEdit(props) {
             onChange={handleChange}
             value={formData.stayedFor}
           />
+
+          <label htmlFor="imageSrc">Upload image:</label>
+          <input id="imageSrc" name="imageSrc" type="file" accept="image/jpeg" onChange={showPreview} className={applyErrorClass('imageSrc')} />
+          <div className="preview-image">
+            {previewImage.imageSrc === defaultImageSrc ? (<img src={formData.fileUrl} alt={formData.city} />) : (<img src={previewImage.imageSrc} alt={formData.city} />)}
+          </div>
 
           <div className="buttons">
             <button type="submit">Save edits</button>

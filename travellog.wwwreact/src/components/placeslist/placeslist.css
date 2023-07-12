@@ -96,9 +96,13 @@ input[type=checkbox] {
 
 .mapbox {
     width: 50%;
-    height: 600px;
+    height: 800px;
 
     margin-top: 50px;
+}
+
+.mapbox .mapboxgl-map {
+    border-radius: 25px;
 }
 
 .marker {
@@ -115,7 +119,7 @@ input[type=checkbox] {
 
     .mapbox {
         width: 100%;
-        height: 800px;
+        height: 600px;
         max-width: 3000px;
     }
 }

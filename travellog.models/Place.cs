@@ -11,6 +11,8 @@ public class Place
     public int Rating { get; set; }
     public string VisitedAt { get; set; }
     public int StayedFor { get; set; }
+    public string FileUrl { get; set; }
+    public string FilePath { get; set; }
 
     [ForeignKey("User")]
     public int UserId { get; set; }
