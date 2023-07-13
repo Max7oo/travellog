@@ -4,6 +4,9 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "./components/home/home";
 import Login from "./components/login/login";
 import SignUp from "./components/signup/signup";
+import Profile from "./components/profile/profile";
+import EditProfile from "./components/profile/editprofile";
+import UserProfile from "./components/profile/userprofile";
 import PlacesList from "./components/placeslist/placeslist";
 import PlacesView from "./components/placesview/placesview";
 import PlacesPost from "./components/placespost/placespost";
@@ -27,6 +30,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/:userName" element={<Profile />} />
+          <Route path="/:userName/edit" element={<EditProfile />} />
+          <Route path="/user/:userName" element={<UserProfile />} />
           <Route
             path="/:userName/places"
             element={<PlacesList places={places} setPlaces={setPlaces} />}

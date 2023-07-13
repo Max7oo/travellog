@@ -1,0 +1,6 @@
+@media only screen and (max-width: 620px) {
+    .item__info table thead tr {
+        display: block;
+        padding-top: 5px;
+    }
+}

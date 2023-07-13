@@ -53,11 +53,14 @@ public static class PlaceAPI
 
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    private static async Task<IResult> Add(string userName, Place place, IPlaceRepository context)
+    private static async Task<IResult> Add(string userName, Place place, IPlaceRepository context, IUserRepository usercontext)
     {
         try
         {
             place.UserId = context.GetUserId(userName);
+            var user = usercontext.GetByUserName(userName);
+            user.CitiesVisited += 1;
+            usercontext.Update(user);
             var result = context.Add(place);
             return result != null ? Results.Ok(result) : Results.NotFound();
         }
@@ -85,10 +88,13 @@ public static class PlaceAPI
 
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    private static async Task<IResult> Delete(string userName, int id, IPlaceRepository context)
+    private static async Task<IResult> Delete(string userName, int id, IPlaceRepository context, IUserRepository usercontext)
     {
         try
         {
+            var user = usercontext.GetByUserName(userName);
+            user.CitiesVisited -= 1;
+            usercontext.Update(user);
             if (context.Delete(id)) return Results.Ok();
             return Results.NotFound();
 

@@ -1,0 +1,97 @@
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+
+import Nav from "../nav/nav";
+import "./profile.css"
+
+const initialState = {
+    id: "",
+    profilePicture: "",
+    firstName: "",
+    lastName: "",
+    userName: "",
+    citiesVisited: null,
+    email: "",
+};
+
+function Profile() {
+    const params = useParams();
+    const navigate = useNavigate();
+
+    const [user, setUser] = useState(initialState);
+
+    const userName = localStorage.getItem("UserName");
+    const email = localStorage.getItem("Email");
+
+    useEffect(function () {
+        if (localStorage.length === 0) {
+        navigate(`/`);
+        } else if (userName !== params.userName) {
+        navigate(`/`);
+        }
+    });
+
+    useEffect(
+        function () {
+          fetch(`https://localhost:7209/${userName}/${email}`)
+            .then((res) => res.json())
+            .then((data) => setUser(data))
+        },
+        [userName, setUser]
+      );
+
+      if (!user) {
+        return (
+          <div className="spinner-container">
+            <div className="loading-spinner"></div>
+          </div>
+        );
+      } else {
+    return (
+        <>
+            <Nav />
+            <section>
+                <h2>{user.firstName} {user.lastName}</h2>
+                <div className="item__info">
+            {user.profilePicture ? (<div className="profile-picture-normal" style={{backgroundImage: `url(${user.profilePicture})`}}/>) : (<></>)}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Cities visited:</th>
+                                <th>{user.citiesVisited}</th>
+                            </tr>
+                            <tr>
+                                <th>Your first name:</th>
+                                <th>{user.firstName}</th>
+                            </tr>
+                            <tr>
+                                <th>Your last name:</th>
+                                <th>{user.lastName}</th>
+                            </tr>
+                            <tr>
+                                <th>Your username:</th>
+                                <th>{userName}</th>
+                            </tr>
+                            <tr>
+                                <th>Your email:</th>
+                                <th>{email}</th>
+                            </tr>
+                            <tr>
+                                <th>Share profile:</th>
+                                <th>{`www.travellog.com/${userName}`}</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <Link
+                          to={`/${userName}/edit`}
+                        >
+                          <button className="edit">Edit account</button>
+                        </Link>
+            </section>
+        </>
+    );
+      }
+}
+
+export default Profile;

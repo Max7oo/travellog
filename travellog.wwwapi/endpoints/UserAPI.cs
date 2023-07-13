@@ -8,24 +8,96 @@ public static class UserAPI
 {
     public static void ConfigureUserAPI(this WebApplication app)
     {
-        app.MapGet("/users/{username}/{password}", GetByUserNamePassword);
+        app.MapGet("/users/{email}/{password}", GetByEmailPassword);
+        app.MapGet("/{username}/{email}", GetByAccount);
+        app.MapGet("/{userName}", GetByUserName);
         app.MapPost("/users", Add);
+        app.MapGet("/users/edit/{username}/{email}", GetForEdit);
         app.MapPatch("/users", Update);
         app.MapDelete("/users/{id}", Delete);
     }
 
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    private static async Task<IResult> GetByUserNamePassword(string username, string password, IUserRepository context)
+    private static async Task<IResult> GetByEmailPassword(string email, string password, IUserRepository context)
     {
         try
         {
             return await Task.Run(() =>
             {
-                var item = context.GetByUserNamePassword(username, password);
+                var item = context.GetByEmailPassword(email, password);
                 if (item != null)
                 {
                     var user = new { Id = item.Id, UserName = item.UserName, Email = item.Email };
+                    return Results.Ok(user);
+                }
+                return Results.NotFound();
+            });
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem(ex.Message);
+        }
+    }
+
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    private static async Task<IResult> GetByAccount(string username, string email, IUserRepository context)
+    {
+        try
+        {
+            return await Task.Run(() =>
+            {
+                var item = context.GetByAccount(username, email);
+                if (item != null)
+                {
+                    var account = new { Id = item.Id, ProfilePicture = item.ProfilePicture, FirstName = item.FirstName, LastName = item.LastName, CitiesVisited = item.CitiesVisited, Email = item.Email };
+                    return Results.Ok(account);
+                }
+                return Results.NotFound();
+            });
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem(ex.Message);
+        }
+    }
+
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    private static async Task<IResult> GetForEdit(string username, string email, IUserRepository context)
+    {
+        try
+        {
+            return await Task.Run(() =>
+            {
+                var item = context.GetForEdit(username, email);
+                if (item != null)
+                {
+                    var account = new { Id = item.Id, ProfilePicture = item.ProfilePicture, ProfilePicturePath = item.ProfilePicturePath, FirstName = item.FirstName, LastName = item.LastName, UserName = item.UserName, CitiesVisited = item.CitiesVisited, Email = item.Email, Password = item.Password };
+                    return Results.Ok(account);
+                }
+                return Results.NotFound();
+            });
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem(ex.Message);
+        }
+    }
+
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    private static async Task<IResult> GetByUserName(string username, IUserRepository context)
+    {
+        try
+        {
+            return await Task.Run(() =>
+            {
+                var item = context.GetByUserName(username);
+                if (item != null)
+                {
+                    var user = new { Id = item.Id, ProfilePicture = item.ProfilePicture, FirstName = item.FirstName, LastName = item.LastName, UserName = item.UserName, CitiesVisited = item.CitiesVisited };
                     return Results.Ok(user);
                 }
                 return Results.NotFound();

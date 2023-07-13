@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import Nav from "../nav/nav";
 
 const initialState = {
-  userName: "",
+  email: "",
   password: "",
 };
 
@@ -17,7 +17,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await fetch(
-      `https://localhost:7209/users/${formData.userName}/${formData.password}`
+      `https://localhost:7209/users/${formData.email}/${formData.password}`
     )
       .then((res) => {
         if (!res.ok) {
@@ -30,7 +30,7 @@ function Login() {
           localStorage.setItem("UserId", data.id);
           localStorage.setItem("UserName", data.userName);
           localStorage.setItem("Email", data.email);
-          navigate(`/${formData.userName}/places`);
+          navigate(`/${data.userName}/places`);
         }
       })
       .catch((e) => {});
@@ -43,19 +43,19 @@ function Login() {
   return (
     <>
       <Nav />
-      <section className="fs">
+      <section>
         <form onSubmit={handleSubmit}>
           <h2>Login</h2>
 
-          <label htmlFor="userName">Username:</label>
+          <label htmlFor="email">Email:</label>
           <input
-            id="userName"
-            name="userName"
+            id="email"
+            name="email"
             type="text"
-            placeholder="username"
+            placeholder="email@email.com"
             required
             onChange={handleChange}
-            value={formData.userName}
+            value={formData.email}
           />
 
           <label htmlFor="password">Password:</label>
@@ -74,6 +74,7 @@ function Login() {
             <button type="submit">Login</button>
           </div>
         </form>
+            <Link to={`/signup`} className="sub-link">Create new account</Link>
       </section>
     </>
   );

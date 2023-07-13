@@ -92,10 +92,25 @@ namespace travellog.data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CitiesVisited")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Email")
                         .HasColumnType("text");
 
+                    b.Property<string>("FirstName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("text");
+
                     b.Property<string>("Password")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProfilePicture")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProfilePicturePath")
                         .HasColumnType("text");
 
                     b.Property<string>("Salt")

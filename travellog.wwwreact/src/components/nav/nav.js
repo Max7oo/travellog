@@ -118,6 +118,18 @@ function Nav() {
               </span>
             </Link>
             <div className="nav__cta">
+            <Link to={`/${userName}`}>
+                <li
+                  className={
+                    window.location.pathname.toString() ===
+                    "/" + userName
+                      ? "current-page-desktop"
+                      : ""
+                  }
+                >
+                  Profile
+                </li>
+              </Link>
               <Link to={`/${userName}/places`}>
                 <li
                   className={
@@ -181,6 +193,18 @@ function Nav() {
                 openMenu ? "nav__mobile__items__active" : "nav__mobile__items"
               }
             >
+              <Link to={`/${userName}`}>
+                <li
+                  className={
+                    window.location.pathname.toString() ===
+                    "/" + userName
+                      ? "current-page"
+                      : ""
+                  }
+                >
+                  Profile
+                </li>
+              </Link>
               <Link to={`/${userName}/places`}>
                 <li
                   className={

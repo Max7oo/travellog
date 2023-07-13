@@ -17,7 +17,12 @@ namespace travellog.data.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ProfilePicture = table.Column<string>(type: "text", nullable: true),
+                    ProfilePicturePath = table.Column<string>(type: "text", nullable: true),
+                    FirstName = table.Column<string>(type: "text", nullable: true),
+                    LastName = table.Column<string>(type: "text", nullable: true),
                     UserName = table.Column<string>(type: "text", nullable: true),
+                    CitiesVisited = table.Column<int>(type: "integer", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: true),
                     Password = table.Column<string>(type: "text", nullable: true),
                     Salt = table.Column<string>(type: "text", nullable: true)
@@ -38,6 +43,8 @@ namespace travellog.data.Migrations
                     Rating = table.Column<int>(type: "integer", nullable: false),
                     VisitedAt = table.Column<string>(type: "text", nullable: true),
                     StayedFor = table.Column<int>(type: "integer", nullable: false),
+                    FileUrl = table.Column<string>(type: "text", nullable: true),
+                    FilePath = table.Column<string>(type: "text", nullable: true),
                     UserId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>

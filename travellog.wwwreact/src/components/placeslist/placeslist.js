@@ -17,7 +17,7 @@ function PlacesList(props) {
   const [placesPerPage] = useState(10);
   const userName = localStorage.getItem("UserName");
   const [loading, setLoading] = useState(false);
-  const [order, setOrder] = useState("ASC");
+  const [order, setOrder] = useState("DSC");
   const [cityData] = useState([]);
   const [viewingMode, setViewingMode] = useState(true)
 

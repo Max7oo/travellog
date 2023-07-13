@@ -43,18 +43,83 @@ namespace travellog.repository
             return false;
         }
 
-        public User GetByUserNamePassword(string username, string password)
+        public User GetByUserName(string username)
         {
             User result;
             using (var db = new DatabaseContext())
             {
-                var loginuser = db.Users.FirstOrDefault(x => x.UserName == username);
+                var user = db.Users.FirstOrDefault(x => x.UserName == username);
+
+                if (user != null)
+                {
+                    result = db.Users.Find(user.Id);
+                    db.SaveChanges();
+                    return result;
+                }
+            }
+            return null;
+        }
+
+        public User GetByEmailPassword(string email, string password)
+        {
+            User result;
+            using (var db = new DatabaseContext())
+            {
+                var loginuser = db.Users.FirstOrDefault(x => x.Email == email);
 
                 if (loginuser != null)
                 {
                     if (HashPassword($"{password}{loginuser.Salt}") == loginuser.Password)
                     {
                         result = db.Users.Find(loginuser.Id);
+                        db.SaveChanges();
+                        return result;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+            return null;
+        }
+
+        public User GetByAccount(string username, string email)
+        {
+            User result;
+            using (var db = new DatabaseContext())
+            {
+                var account = db.Users.FirstOrDefault(x => x.UserName == username);
+
+                if (account != null)
+                {
+                    if (account.Email == email)
+                    {
+                        result = db.Users.Find(account.Id);
+                        db.SaveChanges();
+                        return result;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+            return null;
+        }
+
+        public User GetForEdit(string username, string email)
+        {
+            User result;
+            using (var db = new DatabaseContext())
+            {
+                var account = db.Users.FirstOrDefault(x => x.UserName == username);
+
+                if (account != null)
+                {
+                    if (account.Email == email)
+                    {
+                        result = db.Users.Find(account.Id);
                         db.SaveChanges();
                         return result;
                     }

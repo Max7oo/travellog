@@ -11,7 +11,7 @@ using travellog.data;
 namespace travellog.data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230712133134_InitialMigration")]
+    [Migration("20230713151210_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -36,6 +36,12 @@ namespace travellog.data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Country")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FilePath")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FileUrl")
                         .HasColumnType("text");
 
                     b.Property<int>("Rating")
@@ -89,10 +95,25 @@ namespace travellog.data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CitiesVisited")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Email")
                         .HasColumnType("text");
 
+                    b.Property<string>("FirstName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("text");
+
                     b.Property<string>("Password")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProfilePicture")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProfilePicturePath")
                         .HasColumnType("text");
 
                     b.Property<string>("Salt")
