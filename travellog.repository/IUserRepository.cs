@@ -8,6 +8,7 @@ public interface IUserRepository
     User GetByAccount(string username, string email);
     User GetForEdit(string username, string email);
     User GetByUserName(string username);
+    bool AddFollower(int userid, int followerid);
     bool Add(User user);
     bool Update(User user);
     bool Delete(int id);

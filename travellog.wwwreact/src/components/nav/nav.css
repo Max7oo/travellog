@@ -70,7 +70,7 @@ span img {
     display: none;
 }
 
-@media only screen and (max-width: 1110px) {
+@media only screen and (max-width: 1200px) {
     .nav__cta {
         display: none;
     }

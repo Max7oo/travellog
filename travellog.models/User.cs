@@ -10,6 +10,8 @@ public class User
     public string LastName { get; set; }
     public string UserName { get; set; }
     public int CitiesVisited { get; set; }
+    public List<int> FollowedUsers { get; set; }
+    public List<int> FollowedBy { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
     public string Salt { get; set; }

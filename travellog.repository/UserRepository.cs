@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Security.Cryptography;
+using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
 using travellog.data;
@@ -130,6 +131,21 @@ namespace travellog.repository
                 }
             }
             return null;
+        }
+
+        public bool AddFollower(int userid, int followerid )
+        {
+            using (var db = new DatabaseContext())
+            {
+                User user = db.Users.Find(userid);
+                User follower = db.Users.Find(followerid);
+
+                user.FollowedBy.Add(follower.Id);
+                follower.FollowedUsers.Add(user.Id);
+
+                db.SaveChanges();
+            }
+            return true;
         }
 
         public bool Update(User user)

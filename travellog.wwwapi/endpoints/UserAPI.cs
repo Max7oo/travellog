@@ -13,6 +13,7 @@ public static class UserAPI
         app.MapGet("/{userName}", GetByUserName);
         app.MapPost("/users", Add);
         app.MapGet("/users/edit/{username}/{email}", GetForEdit);
+        app.MapGet("/addfollower/{userid}/{followerid}", AddFollower);
         app.MapPatch("/users", Update);
         app.MapDelete("/users/{id}", Delete);
     }
@@ -79,6 +80,22 @@ public static class UserAPI
                 }
                 return Results.NotFound();
             });
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem(ex.Message);
+        }
+    }
+
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    private static async Task<IResult> AddFollower(int userid, int followerid, IUserRepository context)
+    {
+        try
+        {
+            if (context.AddFollower(userid, followerid)) return Results.Ok();
+            return Results.NotFound();
+
         }
         catch (Exception ex)
         {
