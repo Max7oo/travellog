@@ -17,6 +17,7 @@ namespace travellog.data
             optionsBuilder.UseNpgsql(GetConnectionString());
         }
         public DbSet<User> Users { get; set; }
+        public DbSet<FollowerModel> Followers { get; set; }
         public DbSet<Place> Places { get; set; }
         public DbSet<Suggestion> Suggestions { get; set; }
     }

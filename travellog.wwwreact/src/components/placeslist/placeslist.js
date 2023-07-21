@@ -19,7 +19,7 @@ function PlacesList(props) {
   const [loading, setLoading] = useState(false);
   const [order, setOrder] = useState("DSC");
   const [cityData] = useState([]);
-  const [viewingMode, setViewingMode] = useState(true)
+  const [viewingMode, setViewingMode] = useState(true);
 
   useEffect(function () {
     if (localStorage.length === 0) {
@@ -107,17 +107,21 @@ function PlacesList(props) {
     <>
       <Nav />
       <section>
-        {viewingMode ? (<h2>Places</h2>) : (<h2>Places {params.userName} has visited</h2>)}
+        {viewingMode ? (
+          <h2>Places</h2>
+        ) : (
+          <h2>Places {params.userName} has visited</h2>
+        )}
 
         <div className="content">
           <div className="table">
-          {loading ? (
-                      <div className="spinner-container">
-                        <div className="loading-spinner"></div>
-                      </div>
-                    ) : (
-                      <></>
-                    )}
+            {loading ? (
+              <div className="spinner-container">
+                <div className="loading-spinner"></div>
+              </div>
+            ) : (
+              <></>
+            )}
             <table>
               <thead>
                 <tr>
@@ -173,23 +177,27 @@ function PlacesList(props) {
                       <th>{rating}</th>
                       <th className="small-hide">{visitedAt}</th>
                       <th className="medium-hide">{stayedFor}</th>
-                      {viewingMode ? (<th>
-                        <Link to={`/${userName}/places/${place.id}`}>
-                          <button className="view">View</button>
-                        </Link>
-                        <Link
-                          className="large-hide"
-                          to={`/${userName}/places/edit/${place.id}`}
-                        >
-                          <button className="edit">Edit</button>
-                        </Link>
-                        <Link
-                          className="large-hide"
-                          to={`/${userName}/places/delete/${place.id}`}
-                        >
-                          <button className="delete">Delete</button>
-                        </Link>
-                      </th>) : (<th></th>)}
+                      {viewingMode ? (
+                        <th>
+                          <Link to={`/${userName}/places/${place.id}`}>
+                            <button className="view">View</button>
+                          </Link>
+                          <Link
+                            className="large-hide"
+                            to={`/${userName}/places/edit/${place.id}`}
+                          >
+                            <button className="edit">Edit</button>
+                          </Link>
+                          <Link
+                            className="large-hide"
+                            to={`/${userName}/places/delete/${place.id}`}
+                          >
+                            <button className="delete">Delete</button>
+                          </Link>
+                        </th>
+                      ) : (
+                        <th></th>
+                      )}
                     </tr>
                   );
                 })}

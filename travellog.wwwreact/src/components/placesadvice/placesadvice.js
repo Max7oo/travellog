@@ -38,8 +38,8 @@ function PlacesRequest(props) {
       fetch(`https://localhost:7209/${userName}/places`)
         .then((res) => res.json())
         .then((data) => {
-          data.sort((a, b) => (a.city > b.city) ? 1 : -1)
-          setPlaces(data) 
+          data.sort((a, b) => (a.city > b.city ? 1 : -1));
+          setPlaces(data);
         })
         .then((e) => {
           setLoading(false);
@@ -118,33 +118,38 @@ function PlacesRequest(props) {
       <Nav />
       <section>
         <h2>Request</h2>
-        <p className="item">Select cities, from the list of cities you have been to, that you want to base the travel advice on.</p>
-          {loading ? (
-                <div className="spinner-container">
-                  <div className="loading-spinner"></div>
-                </div>
-              ) : (
-                <></>
-              )}
+        <p className="item">
+          Select cities, from the list of cities you have been to, that you want
+          to base the travel advice on.
+        </p>
+        {loading ? (
+          <div className="spinner-container">
+            <div className="loading-spinner"></div>
+          </div>
+        ) : (
+          <></>
+        )}
         <table>
           <tbody>
-        {places.map((place, index) => {
-          const { country, city } = place;
-          return (
-            <tr className="tr-align-center" key={index}>
-              <th className="th-small">
-                <input
-                  type="checkbox"
-                  id={place.city}
-                  name="addToCityList"
-                  onClick={() => addToCityList(place)}
-                />
-              </th>
-              <th>{city}, {country}</th>
-            </tr>
-          );
-        })}
-        </tbody>
+            {places.map((place, index) => {
+              const { country, city } = place;
+              return (
+                <tr className="tr-align-center" key={index}>
+                  <th className="th-small">
+                    <input
+                      type="checkbox"
+                      id={place.city}
+                      name="addToCityList"
+                      onClick={() => addToCityList(place)}
+                    />
+                  </th>
+                  <th>
+                    {city}, {country}
+                  </th>
+                </tr>
+              );
+            })}
+          </tbody>
         </table>
 
         {isRequested && (

@@ -362,6 +362,6 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /travellog.data/appsettings.json
-/travellog.wwwreact/.env
-/travellog.wwwreact/appsettings.json
 /travellog.wwwapi/appsettings.json
+/travellog.wwwreact/appsettings.json
+

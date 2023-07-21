@@ -13,7 +13,10 @@ public static class UserAPI
         app.MapGet("/{userName}", GetByUserName);
         app.MapPost("/users", Add);
         app.MapGet("/users/edit/{username}/{email}", GetForEdit);
-        app.MapGet("/addfollower/{userid}/{followerid}", AddFollower);
+        app.MapGet("/addfollower/{username}/{followername}", AddFollower);
+        app.MapGet("/checkfollowing/{username}/{followername}", CheckFollowing);
+        app.MapGet("/followeramount/{username}", FollowerAmount);
+        app.MapGet("/followingamount/{username}", FollowingAmount);
         app.MapPatch("/users", Update);
         app.MapDelete("/users/{id}", Delete);
     }
@@ -75,7 +78,7 @@ public static class UserAPI
                 var item = context.GetForEdit(username, email);
                 if (item != null)
                 {
-                    var account = new { Id = item.Id, ProfilePicture = item.ProfilePicture, ProfilePicturePath = item.ProfilePicturePath, FirstName = item.FirstName, LastName = item.LastName, UserName = item.UserName, CitiesVisited = item.CitiesVisited, Email = item.Email, Password = item.Password };
+                    var account = new { Id = item.Id, ProfilePicture = item.ProfilePicture, ProfilePicturePath = item.ProfilePicturePath, FirstName = item.FirstName, LastName = item.LastName, UserName = item.UserName, CitiesVisited = item.CitiesVisited, Email = item.Email, Password = item.Password, Salt = item.Salt };
                     return Results.Ok(account);
                 }
                 return Results.NotFound();
@@ -89,13 +92,76 @@ public static class UserAPI
 
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    private static async Task<IResult> AddFollower(int userid, int followerid, IUserRepository context)
+    private static async Task<IResult> AddFollower(string username, string followername, IUserRepository context)
     {
         try
         {
-            if (context.AddFollower(userid, followerid)) return Results.Ok();
+            if (context.AddFollower(username, followername)) return Results.Ok();
             return Results.NotFound();
 
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem(ex.Message);
+        }
+    }
+
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    private static async Task<IResult> CheckFollowing(string username, string followername, IUserRepository context)
+    {
+        try
+        {
+            return await Task.Run(() =>
+            {
+                var flag = context.CheckFollowing(username, followername);
+                if (flag)
+                {
+                    return Results.Ok(flag);
+                } 
+                else
+                {
+                    return Results.NotFound(flag);
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem(ex.Message);
+        }
+    }
+
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    private static async Task<IResult> FollowerAmount(string username, IUserRepository context)
+    {
+        try
+        {
+            return await Task.Run(() =>
+            {
+                int amount = context.FollowerAmount(username);
+
+                return Results.Ok(amount);
+            });
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem(ex.Message);
+        }
+    }
+
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    private static async Task<IResult> FollowingAmount(string username, IUserRepository context)
+    {
+        try
+        {
+            return await Task.Run(() =>
+            {
+                int amount = context.FollowingAmount(username);
+                
+                return Results.Ok(amount);
+            });
         }
         catch (Exception ex)
         {

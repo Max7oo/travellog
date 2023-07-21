@@ -1,5 +1,6 @@
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore.Design;
+using Swashbuckle.AspNetCore;
 using travellog.repository;
 using travellog.wwwapi;
 

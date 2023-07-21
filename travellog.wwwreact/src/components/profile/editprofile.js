@@ -5,21 +5,22 @@ import Nav from "../nav/nav";
 import "./profile.css";
 import defaultImage from "../../images/default-image.jpg";
 
-const defaultImageSrc = defaultImage
+const defaultImageSrc = defaultImage;
 
 const initialPreviewImage = {
   imageSrc: defaultImageSrc,
 };
 
 const initialState = {
-    id: "",
-    profilePicture: "",
-    profilePicturePath: "",
-    firstName: "",
-    lastName: "",
-    userName: "",
-    email: "",
-    password: ""
+  id: "",
+  profilePicture: "",
+  profilePicturePath: "",
+  firstName: "",
+  lastName: "",
+  userName: "",
+  email: "",
+  password: "",
+  salt: "",
 };
 
 function EditProfile() {
@@ -29,9 +30,8 @@ function EditProfile() {
   const userName = localStorage.getItem("UserName");
   const email = localStorage.getItem("Email");
   const [formData, setFormData] = useState(initialState);
-  const [image, setImage] = useState(defaultImageSrc)
-  const [previewImage, setPreviewImage] = useState(initialPreviewImage)
-  const [errors, setErrors] = useState({})
+  const [image, setImage] = useState(defaultImageSrc);
+  const [previewImage, setPreviewImage] = useState(initialPreviewImage);
 
   useEffect(function () {
     if (localStorage.length === 0) {
@@ -41,51 +41,67 @@ function EditProfile() {
     }
   });
 
-  useEffect(function () {
-    fetch(`https://localhost:7209/users/edit/${userName}/${email}`)
-      .then((res) => res.json())
-      .then((data) => setFormData(data));
-  }, []);
+  useEffect(
+    function () {
+      fetch(`https://localhost:7209/users/edit/${userName}/${email}`)
+        .then((res) => res.json())
+        .then((data) => setFormData(data));
+    },
+    [userName, email]
+  );
 
-  console.log(formData)
+  console.log(formData);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validate()) {
-      await fetch(`https://api.upload.io/v2/accounts/${process.env.REACT_APP_ID_UPLOAD}/files?filePath=${formData.filePath}`, {
+    await fetch(
+      `https://api.upload.io/v2/accounts/${process.env.REACT_APP_ID_UPLOAD}/files?filePath=${formData.profilePicturePath}`,
+      {
         method: "DELETE",
         headers: {
           Authorization: "Bearer " + process.env.REACT_APP_SECRET_UPLOAD,
           "Content-Type": "image/jpeg",
         },
-      });
+      }
+    );
 
-      const res = await fetch(`https://api.upload.io/v2/accounts/${process.env.REACT_APP_ID_UPLOAD}/uploads/binary`, {
+    const res = await fetch(
+      `https://api.upload.io/v2/accounts/${process.env.REACT_APP_ID_UPLOAD}/uploads/binary`,
+      {
         method: "POST",
         headers: {
           Authorization: "Bearer " + process.env.REACT_APP_PUBLIC_UPLOAD,
           "Content-Type": "image/jpeg",
         },
         body: image,
-      });
-      res.json().then((data) => {
-        const info = { ...formData, profilePicture: data.fileUrl, profilePicturePath: data.filePath }
-        uploadFormData(info)
-      });
-
-      const uploadFormData = async (formData) => {
-        const userName = (formData.firstName.toLowerCase().replace(/\s+/g, '-') + "-" + formData.lastName.toLowerCase().replace(/\s+/g, '-') + "-" + Date.now().toString())
-        const formDataComplete = { ...formData, userName: userName }
-        await fetch(`https://localhost:7209/users`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formDataComplete),
-        });
-        // navigate("/login");
+      }
+    );
+    res.json().then((data) => {
+      const info = {
+        ...formData,
+        profilePicture: data.fileUrl,
+        profilePicturePath: data.filePath,
       };
-    }
+      uploadFormData(info);
+    });
+
+    const uploadFormData = async (formData) => {
+      // const userName =
+      //   formData.firstName.toLowerCase().replace(/\s+/g, "-") +
+      //   "-" +
+      //   formData.lastName.toLowerCase().replace(/\s+/g, "-") +
+      //   "-" +
+      //   Date.now().toString();
+      const formDataComplete = { ...formData, userName: userName };
+      await fetch(`https://localhost:7209/users`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formDataComplete),
+      });
+      navigate(`/${userName}`);
+    };
   };
 
   const handleChange = (e) => {
@@ -96,37 +112,24 @@ function EditProfile() {
     navigate(-1);
   };
 
-  const validate = () => {
-    let temp = {}
-    temp.imageSrc = previewImage.imageSrc === defaultImageSrc ? false:true;
-    temp.firstName = formData.firstName === "" ? false:true;
-    temp.lastName = formData.lastName === "" ? false:true;
-    temp.email = formData.email === "" ? false:true;
-    temp.password = formData.password === "" ? false:true;
-    setErrors(temp)
-    return Object.values(temp).every(x => x===true)
-  }
-
-  const applyErrorClass = field => ((field in errors && errors[field] === false) ? "invalid-field" : "")
-
   const showPreview = (e) => {
-    const blob = new Blob( [ e.target.files[0] ], { type: "image/jpeg" } )
-    setImage(blob)
-    if(e.target.files && e.target.files[0]) {
-      let imageFile = e.target.files[0]
-      const reader = new FileReader()
-      reader.onload = x => {
+    const blob = new Blob([e.target.files[0]], { type: "image/jpeg" });
+    setImage(blob);
+    if (e.target.files && e.target.files[0]) {
+      let imageFile = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = (x) => {
         setPreviewImage({
-          imageSrc: x.target.result
-        })
-      }
-      reader.readAsDataURL(imageFile)
+          imageSrc: x.target.result,
+        });
+      };
+      reader.readAsDataURL(imageFile);
     } else {
       setPreviewImage({
-        imageSrc: defaultImageSrc
-      })
+        imageSrc: defaultImageSrc,
+      });
     }
-  }
+  };
 
   return (
     <>
@@ -135,9 +138,19 @@ function EditProfile() {
         <h2>Update profile</h2>
         <form onSubmit={handleSubmit}>
           <label htmlFor="imageSrc">Upload image:</label>
-          <input id="imageSrc" name="imageSrc" type="file" accept="image/jpeg" onChange={showPreview} className={applyErrorClass('imageSrc')} />
+          <input
+            id="imageSrc"
+            name="imageSrc"
+            type="file"
+            accept="image/jpeg"
+            onChange={showPreview}
+          />
           <div className="preview-image">
-            {previewImage.imageSrc === defaultImageSrc ? (<img src={formData.profilePicture} alt={formData.firstName} />) : (<img src={previewImage.imageSrc} alt={formData.firstName} />)}
+            {previewImage.imageSrc === defaultImageSrc ? (
+              <img src={formData.profilePicture} alt={formData.firstName} />
+            ) : (
+              <img src={previewImage.imageSrc} alt={formData.firstName} />
+            )}
           </div>
 
           <label htmlFor="firstName">First name:</label>

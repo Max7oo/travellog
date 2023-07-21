@@ -21,7 +21,8 @@ public static class SuggestionAPI
     {
         try
         {
-            return await Task.Run(() => {
+            return await Task.Run(() =>
+            {
                 return Results.Ok(context.GetAll().Where(i => i.UserId == context.GetUserId(userName)));
             });
         }

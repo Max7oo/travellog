@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
@@ -133,19 +134,99 @@ namespace travellog.repository
             return null;
         }
 
-        public bool AddFollower(int userid, int followerid )
+        public bool AddFollower(string username, string followername)
         {
             using (var db = new DatabaseContext())
             {
-                User user = db.Users.Find(userid);
-                User follower = db.Users.Find(followerid);
+                User user = GetByUserName(username);
+                User follower = GetByUserName(followername);
+                var followermodel = new FollowerModel { UserId = user.Id, FollowerId = follower.Id };
 
-                user.FollowedBy.Add(follower.Id);
-                follower.FollowedUsers.Add(user.Id);
+                if (db.Followers.Any(x => x.UserId == user.Id))
+                {
+                    var item = db.Followers.SingleOrDefault(x => x.FollowerId == follower.Id);
+                    if (item != null)
+                    {
+                        db.Followers.Remove(item);
+                    }
+                } else
+                {
+                    db.Followers.Add(followermodel);
+                }
 
                 db.SaveChanges();
             }
             return true;
+        }
+
+        public bool CheckFollowing(string username, string followername)
+        {
+            using (var db = new DatabaseContext())
+            {
+                User user = GetByUserName(username);
+                User follower = GetByUserName(followername);
+
+                if (user != null && follower != null)
+                {
+                    if (db.Followers.Any(x => x.UserId == user.Id))
+                    {
+                        if (db.Followers.Any(x => x.FollowerId == follower.Id))
+                        {
+                            return true;
+                        }
+                        return false;
+                    }
+                    return false;
+                }
+                return false;
+            }
+        }
+
+        public int FollowerAmount(string username)
+        {
+            using (var db = new DatabaseContext())
+            {
+                List<int> followerAmount = new List<int> { 0 };
+
+                User user = GetByUserName(username);
+
+                if (user != null)
+                {
+                    foreach (var item in db.Followers)
+                    {
+                        if (item.UserId != user.Id)
+                        {
+                            if (!followerAmount.Contains(item.FollowerId))
+                            {
+                                followerAmount.Add(item.FollowerId);
+                            }
+                        }
+                    }
+                    return followerAmount.Count - 1;
+                }
+                return 0;
+            }
+        }
+
+        public int FollowingAmount(string username)
+        {
+            using (var db = new DatabaseContext())
+            {
+                int followingAmount = 0;
+                User user = GetByUserName(username);
+
+                if (user != null)
+                {
+                    foreach (var item in db.Followers)
+                    {
+                        if (item.UserId == user.Id)
+                        {
+                            return followingAmount += 1;
+                        }
+                    }
+                }
+                return 0;
+            }
         }
 
         public bool Update(User user)

@@ -11,18 +11,41 @@ using travellog.data;
 namespace travellog.data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230713151210_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20230721120903_FirstMigration")]
+    partial class FirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "7.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("travellog.models.FollowerModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("FollowerId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FollowerId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Followers");
+                });
 
             modelBuilder.Entity("travellog.models.Place", b =>
                 {
@@ -125,6 +148,25 @@ namespace travellog.data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("travellog.models.FollowerModel", b =>
+                {
+                    b.HasOne("travellog.models.User", "Follower")
+                        .WithMany()
+                        .HasForeignKey("FollowerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("travellog.models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Follower");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("travellog.models.Place", b =>
