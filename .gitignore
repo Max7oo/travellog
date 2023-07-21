@@ -365,3 +365,5 @@ FodyWeavers.xsd
 /travellog.wwwapi/appsettings.json
 /travellog.wwwreact/appsettings.json
 
+/travellog.wwwreact/.env
+/travellog.wwwreact/.env
