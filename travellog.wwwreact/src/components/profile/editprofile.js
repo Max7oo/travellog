@@ -31,6 +31,7 @@ function EditProfile() {
   const email = localStorage.getItem("Email");
   const [formData, setFormData] = useState(initialState);
   const [image, setImage] = useState(defaultImageSrc);
+  const [oldImage] = useState(defaultImageSrc);
   const [previewImage, setPreviewImage] = useState(initialPreviewImage);
 
   useEffect(function () {
@@ -45,45 +46,57 @@ function EditProfile() {
     function () {
       fetch(`https://localhost:7209/users/edit/${userName}/${email}`)
         .then((res) => res.json())
-        .then((data) => setFormData(data));
+        .then((data) => {
+          setFormData(data);
+        });
     },
     [userName, email]
   );
 
-  console.log(formData);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await fetch(
-      `https://api.upload.io/v2/accounts/${process.env.REACT_APP_ID_UPLOAD}/files?filePath=${formData.profilePicturePath}`,
-      {
-        method: "DELETE",
+    if (image === oldImage) {
+      const formDataComplete = { ...formData, userName: userName };
+      await fetch(`https://localhost:7209/users`, {
+        method: "PATCH",
         headers: {
-          Authorization: "Bearer " + process.env.REACT_APP_SECRET_UPLOAD,
-          "Content-Type": "image/jpeg",
+          "Content-Type": "application/json",
         },
-      }
-    );
+        body: JSON.stringify(formDataComplete),
+      });
+      navigate(`/${userName}`);
+    } else if (image !== oldImage) {
+      await fetch(
+        `https://api.upload.io/v2/accounts/${process.env.REACT_APP_ID_UPLOAD}/files?filePath=${formData.profilePicturePath}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: "Bearer " + process.env.REACT_APP_SECRET_UPLOAD,
+            "Content-Type": "image/jpeg",
+          },
+        }
+      );
 
-    const res = await fetch(
-      `https://api.upload.io/v2/accounts/${process.env.REACT_APP_ID_UPLOAD}/uploads/binary`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer " + process.env.REACT_APP_PUBLIC_UPLOAD,
-          "Content-Type": "image/jpeg",
-        },
-        body: image,
-      }
-    );
-    res.json().then((data) => {
-      const info = {
-        ...formData,
-        profilePicture: data.fileUrl,
-        profilePicturePath: data.filePath,
-      };
-      uploadFormData(info);
-    });
+      const res = await fetch(
+        `https://api.upload.io/v2/accounts/${process.env.REACT_APP_ID_UPLOAD}/uploads/binary`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer " + process.env.REACT_APP_PUBLIC_UPLOAD,
+            "Content-Type": "image/jpeg",
+          },
+          body: image,
+        }
+      );
+      res.json().then((data) => {
+        const info = {
+          ...formData,
+          profilePicture: data.fileUrl,
+          profilePicturePath: data.filePath,
+        };
+        uploadFormData(info);
+      });
+    }
 
     const uploadFormData = async (formData) => {
       // const userName =
@@ -145,11 +158,19 @@ function EditProfile() {
             accept="image/jpeg"
             onChange={showPreview}
           />
-          <div className="preview-image">
+          <div>
             {previewImage.imageSrc === defaultImageSrc ? (
-              <img src={formData.profilePicture} alt={formData.firstName} />
+              <img
+                src={formData.profilePicture}
+                className="profile-picture-normal"
+                alt={formData.firstName}
+              />
             ) : (
-              <img src={previewImage.imageSrc} alt={formData.firstName} />
+              <img
+                src={previewImage.imageSrc}
+                className="profile-picture-normal"
+                alt={formData.firstName}
+              />
             )}
           </div>
 
@@ -178,15 +199,6 @@ function EditProfile() {
             type="text"
             onChange={handleChange}
             value={formData.email}
-          />
-
-          <label htmlFor="password">Password:</label>
-          <input
-            id="password"
-            name="password"
-            type="text"
-            onChange={handleChange}
-            value={formData.password}
           />
 
           <div className="buttons">

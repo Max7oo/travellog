@@ -60,8 +60,6 @@ function Profile() {
     [userName]
   );
 
-  console.log(user);
-
   if (!user) {
     return (
       <div className="spinner-container">
@@ -123,7 +121,7 @@ function Profile() {
             </table>
           </div>
           <Link to={`/${userName}/edit`}>
-            <button className="edit">Edit account</button>
+            <button className="edit">Edit profile</button>
           </Link>
         </section>
       </>

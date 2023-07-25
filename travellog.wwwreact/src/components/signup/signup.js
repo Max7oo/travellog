@@ -4,7 +4,7 @@ import { useState } from "react";
 import Nav from "../nav/nav";
 import defaultImage from "../../images/default-image.jpg";
 
-const defaultImageSrc = defaultImage
+const defaultImageSrc = defaultImage;
 
 const initialPreviewImage = {
   imageSrc: defaultImageSrc,
@@ -24,8 +24,8 @@ function SignUp() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState(initialState);
-  const [image, setImage] = useState(defaultImageSrc)
-  const [previewImage, setPreviewImage] = useState(initialPreviewImage)
+  const [image, setImage] = useState(defaultImageSrc);
+  const [previewImage, setPreviewImage] = useState(initialPreviewImage);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,31 +33,43 @@ function SignUp() {
   };
 
   const uploadImage = async (e) => {
-    const res = await fetch(`https://api.upload.io/v2/accounts/${process.env.REACT_APP_ID_UPLOAD}/uploads/binary`, {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + process.env.REACT_APP_PUBLIC_UPLOAD,
-        "Content-Type": "image/jpeg",
-      },
-      body: image,
-    });
+    const res = await fetch(
+      `https://api.upload.io/v2/accounts/${process.env.REACT_APP_ID_UPLOAD}/uploads/binary`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + process.env.REACT_APP_PUBLIC_UPLOAD,
+          "Content-Type": "image/jpeg",
+        },
+        body: image,
+      }
+    );
     res.json().then((data) => {
-      const info = { ...formData, profilePicture: data.fileUrl, profilePicturePath: data.filePath }
-      uploadFormData(info)
+      const info = {
+        ...formData,
+        profilePicture: data.fileUrl,
+        profilePicturePath: data.filePath,
+      };
+      uploadFormData(info);
     });
   };
 
   const uploadFormData = async (formData) => {
-    const userName = (formData.firstName.toLowerCase().replace(/\s+/g, '-') + "-" + formData.lastName.toLowerCase().replace(/\s+/g, '-') + "-" + Date.now().toString())
-    const formDataComplete = { ...formData, userName: userName }
-      const res = await fetch(`https://localhost:7209/users`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formDataComplete),
-      });
-      navigate("/login");
+    const userName =
+      formData.firstName.toLowerCase().replace(/\s+/g, "-") +
+      "-" +
+      formData.lastName.toLowerCase().replace(/\s+/g, "-") +
+      "-" +
+      Date.now().toString();
+    const formDataComplete = { ...formData, userName: userName };
+    await fetch(`https://localhost:7209/users`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formDataComplete),
+    });
+    navigate("/login");
   };
 
   const handleChange = (e) => {
@@ -65,23 +77,23 @@ function SignUp() {
   };
 
   const showPreview = (e) => {
-    const blob = new Blob( [ e.target.files[0] ], { type: "image/jpeg" } )
-    setImage(blob)
-    if(e.target.files && e.target.files[0]) {
-      let imageFile = e.target.files[0]
-      const reader = new FileReader()
-      reader.onload = x => {
+    const blob = new Blob([e.target.files[0]], { type: "image/jpeg" });
+    setImage(blob);
+    if (e.target.files && e.target.files[0]) {
+      let imageFile = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = (x) => {
         setPreviewImage({
-          imageSrc: x.target.result
-        })
-      }
-      reader.readAsDataURL(imageFile)
+          imageSrc: x.target.result,
+        });
+      };
+      reader.readAsDataURL(imageFile);
     } else {
       setPreviewImage({
-        imageSrc: defaultImageSrc
-      })
+        imageSrc: defaultImageSrc,
+      });
     }
-  }
+  };
 
   return (
     <>
@@ -91,9 +103,19 @@ function SignUp() {
           <h2>Sign up</h2>
 
           <label htmlFor="imageSrc">Profile picture:</label>
-          <input id="imageSrc" name="imageSrc" type="file" accept="image/jpeg" onChange={showPreview} />
-          <div className="preview-image">
-            <img src={previewImage.imageSrc} alt="Preview"/>
+          <input
+            id="imageSrc"
+            name="imageSrc"
+            type="file"
+            accept="image/jpeg"
+            onChange={showPreview}
+          />
+          <div>
+            <img
+              src={previewImage.imageSrc}
+              className="profile-picture-normal"
+              alt="Preview"
+            />
           </div>
 
           <label htmlFor="firstName">First name:</label>
@@ -145,7 +167,9 @@ function SignUp() {
             <button type="submit">Create account</button>
           </div>
         </form>
-        <Link to={`/login`} className="sub-link">Already have an account?</Link>
+        <Link to={`/login`} className="sub-link">
+          Already have an account?
+        </Link>
       </section>
     </>
   );

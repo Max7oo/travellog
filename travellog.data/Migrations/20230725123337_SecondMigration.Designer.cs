@@ -11,8 +11,8 @@ using travellog.data;
 namespace travellog.data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230721120903_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20230725123337_SecondMigration")]
+    partial class SecondMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -67,11 +67,23 @@ namespace travellog.data.Migrations
                     b.Property<string>("FileUrl")
                         .HasColumnType("text");
 
+                    b.Property<string>("Follower")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FollowerPicture")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FollowerUserName")
+                        .HasColumnType("text");
+
                     b.Property<int>("Rating")
                         .HasColumnType("integer");
 
                     b.Property<int>("StayedFor")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Story")
+                        .HasColumnType("text");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");

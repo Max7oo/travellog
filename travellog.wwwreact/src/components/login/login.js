@@ -74,7 +74,9 @@ function Login() {
             <button type="submit">Login</button>
           </div>
         </form>
-            <Link to={`/signup`} className="sub-link">Create new account</Link>
+        <Link to={`/signup`} className="sub-link">
+          Create new account
+        </Link>
       </section>
     </>
   );

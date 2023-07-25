@@ -8,6 +8,7 @@ public static class UserAPI
 {
     public static void ConfigureUserAPI(this WebApplication app)
     {
+        app.MapGet("/users", GetAll);
         app.MapGet("/users/{email}/{password}", GetByEmailPassword);
         app.MapGet("/{username}/{email}", GetByAccount);
         app.MapGet("/{userName}", GetByUserName);
@@ -17,8 +18,26 @@ public static class UserAPI
         app.MapGet("/checkfollowing/{username}/{followername}", CheckFollowing);
         app.MapGet("/followeramount/{username}", FollowerAmount);
         app.MapGet("/followingamount/{username}", FollowingAmount);
+        app.MapGet("/activity/{username}", GetActivity);
         app.MapPatch("/users", Update);
         app.MapDelete("/users/{id}", Delete);
+    }
+
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    private static async Task<IResult> GetAll(IUserRepository context)
+    {
+        try
+        {
+            return await Task.Run(() =>
+            {
+                return Results.Ok(context.GetAll());
+            });
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem(ex.Message);
+        }
     }
 
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -161,6 +180,25 @@ public static class UserAPI
                 int amount = context.FollowingAmount(username);
                 
                 return Results.Ok(amount);
+            });
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem(ex.Message);
+        }
+    }
+
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    private static async Task<IResult> GetActivity(string username, IUserRepository context)
+    {
+        try
+        {
+            return await Task.Run(() =>
+            {
+                List<Place> activity = context.GetActivity(username);
+
+                return Results.Ok(activity);
             });
         }
         catch (Exception ex)

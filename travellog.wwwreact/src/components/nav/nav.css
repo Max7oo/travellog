@@ -66,6 +66,10 @@ span img {
     height: 25px;
 }
 
+.searchbar {
+    padding: 10px 0px;
+}
+
 .nav__mobile, .nav__mobile__items, .nav__mobile__items__active {
     display: none;
 }

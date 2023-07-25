@@ -5,12 +5,15 @@ import "./nav.css";
 
 import location from "../../images/location.svg";
 import Home from "../home/home";
+import SearchBar from "../search/searchbar";
+import SearchResults from "../search/searchresults";
 
 function Nav() {
   const navigate = useNavigate();
 
   const [openMenu, setOpenMenu] = useState(false);
   const userName = localStorage.getItem("UserName");
+  const [results, setResults] = useState([]);
 
   const handleLogOut = async (e) => {
     e.preventDefault();
@@ -118,11 +121,10 @@ function Nav() {
               </span>
             </Link>
             <div className="nav__cta">
-            <Link to={`/${userName}`}>
+              <Link to={`/${userName}`}>
                 <li
                   className={
-                    window.location.pathname.toString() ===
-                    "/" + userName
+                    window.location.pathname.toString() === "/" + userName
                       ? "current-page-desktop"
                       : ""
                   }
@@ -152,6 +154,18 @@ function Nav() {
                   }
                 >
                   Add place
+                </li>
+              </Link>
+              <Link to={`/${userName}/activity`}>
+                <li
+                  className={
+                    window.location.pathname.toString() ===
+                    "/" + userName + "/activity"
+                      ? "current-page-desktop"
+                      : ""
+                  }
+                >
+                  Activity
                 </li>
               </Link>
               <Link to={`/${userName}/places/advice`}>
@@ -178,6 +192,10 @@ function Nav() {
                   Previous suggestions
                 </li>
               </Link>
+              <div className="searchbar">
+                <SearchBar setResults={setResults} />
+                <SearchResults results={results} />
+              </div>
               <Link onClick={handleLogOut}>
                 <li>Log out</li>
               </Link>
@@ -196,8 +214,7 @@ function Nav() {
               <Link to={`/${userName}`}>
                 <li
                   className={
-                    window.location.pathname.toString() ===
-                    "/" + userName
+                    window.location.pathname.toString() === "/" + userName
                       ? "current-page"
                       : ""
                   }
@@ -227,6 +244,18 @@ function Nav() {
                   }
                 >
                   Add place
+                </li>
+              </Link>
+              <Link to={`/${userName}/activity`}>
+                <li
+                  className={
+                    window.location.pathname.toString() ===
+                    "/" + userName + "/activity"
+                      ? "current-page-desktop"
+                      : ""
+                  }
+                >
+                  Activity
                 </li>
               </Link>
               <Link to={`/${userName}/places/advice`}>

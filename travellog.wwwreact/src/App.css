@@ -84,7 +84,6 @@ button:hover {
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  margin-bottom: 25px;
 
   background-repeat: no-repeat;
   background-position: center center;
@@ -145,9 +144,13 @@ label {
 }
 
 input {
-  margin-top: 5px;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  
   width: 250px;
   height: 25px;
+  padding-left: 5px;
 
   border: 3px solid #0f1322;
   border-radius: 5px;
@@ -330,9 +333,7 @@ input {
   .small-mobile-hide {
     display: none;
   }
-}
 
-@media only screen and (max-width: 470px) {
   .mini-mobile-hide {
     display: none;
   }

@@ -71,6 +71,9 @@ namespace travellog.data.Migrations
                     StayedFor = table.Column<int>(type: "integer", nullable: false),
                     FileUrl = table.Column<string>(type: "text", nullable: true),
                     FilePath = table.Column<string>(type: "text", nullable: true),
+                    Follower = table.Column<string>(type: "text", nullable: true),
+                    FollowerUserName = table.Column<string>(type: "text", nullable: true),
+                    FollowerPicture = table.Column<string>(type: "text", nullable: true),
                     UserId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>

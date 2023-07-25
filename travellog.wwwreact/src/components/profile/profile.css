@@ -1,3 +1,7 @@
+.item__info .profile-picture-normal {
+    margin-bottom: 25px;
+}
+
 @media only screen and (max-width: 620px) {
     .item__info table thead tr {
         display: block;

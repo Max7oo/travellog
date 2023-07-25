@@ -1,0 +1,121 @@
+.activity__place {
+    margin-bottom: 25px;
+    padding-bottom: 25px;
+    border-bottom: 2px solid #91d4e0;
+}
+
+.activity__place:last-child {
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    border-bottom: 0px solid #91d4e0;
+}
+
+.activity__place p {
+    color: #91d4e0;
+}
+
+.activity__place__user {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.activity__place__profile {
+    display: flex;
+    align-items: center;
+}
+
+.activity__place__profile__picture {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+
+.activity__place__profile__info {
+    margin-left: 25px;
+}
+
+.activity__place__profile__info h3 {
+    margin: 0;
+}
+
+.activity__place__text {
+    display: inline-block;
+    margin-bottom: 25px;
+}
+
+.activity__place__text .sub-link {
+    color: #91d4e0;
+    font-size: 1rem;
+    width: fit-content;
+    margin-top: 0;
+    display: inline-block;
+}
+
+.activity__image {
+    position: relative;
+    width: fit-content;
+}
+
+.activity__place .item__info_image {
+    max-height: 350px;
+    width: 100%;
+    margin-top: 0px;
+}
+
+.activity__image__overlay {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    height: 100px;
+    width: 100px;
+    margin: 15px;
+    right: 0px;
+    border-radius: 50%;
+    background-color: #91d4e0;
+}
+
+.activity__image__rating {
+    margin-top: -10px;
+    display: flex;
+    text-align: center;
+}
+
+.activity__image__rating p {
+    color: #0f1322;
+    align-self: flex-end;
+}
+
+@media only screen and (max-width: 735px) {
+    .activity__place__profile__picture {
+        height: 75px;
+        width: 75px;
+    }
+
+    .activity__image__overlay {
+        height: 75px;
+        width: 75px;
+    }
+}
+
+@media only screen and (max-width: 620px) {
+    .activity__place__profile__picture {
+        height: 50px;
+        width: 50px;
+    }
+
+    .activity__image__overlay {
+        height: 50px;
+        width: 50px;
+    }
+
+    .activity__image__rating {
+        margin-top: 0px;
+    }
+}
