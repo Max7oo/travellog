@@ -1,5 +1,4 @@
 .input-wrapper {
-    width: 287px;
     height: 2rem;
     background-color: white;
     border-radius: 10px;
@@ -44,6 +43,16 @@
 
 .searchbar-activity {
     display: none;
+}
+
+@media only screen and (max-width: 1300px) {
+    .input-wrapper {
+        width: 200px;
+    }
+
+    .results-list {
+        width: 230px;
+    }
 }
 
 @media only screen and (max-width: 1200px) {

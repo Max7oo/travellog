@@ -32,7 +32,6 @@ section {
 span {
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
 button {
@@ -83,6 +82,18 @@ button:hover {
   display: inline-block;
   width: 150px;
   height: 150px;
+  border-radius: 50%;
+
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+.profile-picture-mini {
+  display: inline-block;
+  margin-bottom: 15px;
+  width: 125px;
+  height: 125px;
   border-radius: 50%;
 
   background-repeat: no-repeat;

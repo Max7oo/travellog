@@ -30,6 +30,7 @@ function Login() {
           localStorage.setItem("UserId", data.id);
           localStorage.setItem("UserName", data.userName);
           localStorage.setItem("Email", data.email);
+          localStorage.setItem("ProfilePicture", data.profilePicture);
           navigate(`/${data.userName}/places`);
         }
       })

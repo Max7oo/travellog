@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation, useParams, useNavigate } from "react-router-dom";
+import { useLocation, useParams, useNavigate, Link } from "react-router-dom";
 
 import Nav from "../nav/nav";
 import "./placesadvice.css";
@@ -117,7 +117,12 @@ function PlacesRequest(props) {
     <>
       <Nav />
       <section>
-        <h2>Request</h2>
+        <span>
+          <h2>Request</h2>
+          <Link to={`/${userName}/places/suggested`}>
+            <button>Previous suggestions</button>
+          </Link>
+        </span>
         <p className="item">
           Select cities, from the list of cities you have been to, that you want
           to base the travel advice on.

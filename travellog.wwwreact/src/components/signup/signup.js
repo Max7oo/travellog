@@ -26,6 +26,7 @@ function SignUp() {
   const [formData, setFormData] = useState(initialState);
   const [image, setImage] = useState(defaultImageSrc);
   const [previewImage, setPreviewImage] = useState(initialPreviewImage);
+  const [isShown, setIsShown] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -68,8 +69,23 @@ function SignUp() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formDataComplete),
+    }).then((res) => {
+      if (!res.ok) {
+        setIsShown(true);
+        fetch(
+          `https://api.upload.io/v2/accounts/${process.env.REACT_APP_ID_UPLOAD}/files?filePath=${formData.profilePicturePath}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: "Bearer " + process.env.REACT_APP_SECRET_UPLOAD,
+              "Content-Type": "image/jpeg",
+            },
+          }
+        );
+      } else {
+        navigate("/login");
+      }
     });
-    navigate("/login");
   };
 
   const handleChange = (e) => {
@@ -108,6 +124,7 @@ function SignUp() {
             name="imageSrc"
             type="file"
             accept="image/jpeg"
+            required
             onChange={showPreview}
           />
           <div>
@@ -150,6 +167,9 @@ function SignUp() {
             onChange={handleChange}
             value={formData.email}
           />
+          {isShown && (
+            <p className="red">Another user is already using this email.</p>
+          )}
 
           <label htmlFor="password">Password:</label>
           <input
@@ -162,7 +182,6 @@ function SignUp() {
             onChange={handleChange}
             value={formData.password}
           />
-
           <div>
             <button type="submit">Create account</button>
           </div>

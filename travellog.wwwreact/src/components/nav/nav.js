@@ -13,6 +13,7 @@ function Nav() {
 
   const [openMenu, setOpenMenu] = useState(false);
   const userName = localStorage.getItem("UserName");
+  const profilePicture = localStorage.getItem("ProfilePicture");
   const [results, setResults] = useState([]);
 
   const handleLogOut = async (e) => {
@@ -144,18 +145,6 @@ function Nav() {
                   Places
                 </li>
               </Link>
-              <Link to={`/${userName}/places/add`}>
-                <li
-                  className={
-                    window.location.pathname.toString() ===
-                    "/" + userName + "/places/add"
-                      ? "current-page-desktop"
-                      : ""
-                  }
-                >
-                  Add place
-                </li>
-              </Link>
               <Link to={`/${userName}/activity`}>
                 <li
                   className={
@@ -178,18 +167,6 @@ function Nav() {
                   }
                 >
                   Travel advice
-                </li>
-              </Link>
-              <Link to={`/${userName}/places/suggested`}>
-                <li
-                  className={
-                    window.location.pathname.toString() ===
-                    "/" + userName + "/places/suggested"
-                      ? "current-page-desktop"
-                      : ""
-                  }
-                >
-                  Previous suggestions
                 </li>
               </Link>
               <div className="searchbar">
@@ -212,15 +189,11 @@ function Nav() {
               }
             >
               <Link to={`/${userName}`}>
-                <li
-                  className={
-                    window.location.pathname.toString() === "/" + userName
-                      ? "current-page"
-                      : ""
-                  }
-                >
-                  Profile
-                </li>
+                <img
+                  src={profilePicture}
+                  className="profile-picture-mini"
+                  alt={userName}
+                />
               </Link>
               <Link to={`/${userName}/places`}>
                 <li
@@ -232,18 +205,6 @@ function Nav() {
                   }
                 >
                   Places
-                </li>
-              </Link>
-              <Link to={`/${userName}/places/add`}>
-                <li
-                  className={
-                    window.location.pathname.toString() ===
-                    "/" + userName + "/places/add"
-                      ? "current-page"
-                      : ""
-                  }
-                >
-                  Add place
                 </li>
               </Link>
               <Link to={`/${userName}/activity`}>
@@ -268,18 +229,6 @@ function Nav() {
                   }
                 >
                   Travel advice
-                </li>
-              </Link>
-              <Link to={`/${userName}/places/suggested`}>
-                <li
-                  className={
-                    window.location.pathname.toString() ===
-                    "/" + userName + "/places/suggested"
-                      ? "current-page"
-                      : ""
-                  }
-                >
-                  Previous suggestions
                 </li>
               </Link>
               <Link onClick={handleLogOut}>

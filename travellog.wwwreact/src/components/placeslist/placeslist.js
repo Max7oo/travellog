@@ -108,7 +108,12 @@ function PlacesList(props) {
       <Nav />
       <section>
         {viewingMode ? (
-          <h2>Places</h2>
+          <span>
+            <h2>Places</h2>
+            <Link to={`/${userName}/places/add`}>
+              <button>Add place</button>
+            </Link>
+          </span>
         ) : (
           <h2>Places {params.userName} has visited</h2>
         )}

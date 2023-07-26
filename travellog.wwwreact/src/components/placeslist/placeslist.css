@@ -1,5 +1,10 @@
 .content {
     display: flex;
+    justify-content: space-between;
+}
+
+span button {
+    margin-top: 0px;
 }
 
 table {

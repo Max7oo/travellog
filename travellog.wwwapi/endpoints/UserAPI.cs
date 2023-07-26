@@ -51,7 +51,7 @@ public static class UserAPI
                 var item = context.GetByEmailPassword(email, password);
                 if (item != null)
                 {
-                    var user = new { Id = item.Id, UserName = item.UserName, Email = item.Email };
+                    var user = new { Id = item.Id, UserName = item.UserName, Email = item.Email, ProfilePicture = item.ProfilePicture };
                     return Results.Ok(user);
                 }
                 return Results.NotFound();
@@ -237,7 +237,7 @@ public static class UserAPI
         try
         {
             var result = context.Add(user);
-            return result != null ? Results.Ok(true) : Results.NotFound();
+            return result != false ? Results.Ok(true) : Results.NotFound();
         }
         catch (Exception ex)
         {

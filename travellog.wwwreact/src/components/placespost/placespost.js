@@ -30,7 +30,6 @@ function PlacesPost(props) {
   const [formData, setFormData] = useState(initialState);
   const [image, setImage] = useState(defaultImageSrc);
   const [previewImage, setPreviewImage] = useState(initialPreviewImage);
-  const [errors, setErrors] = useState({});
 
   useEffect(function () {
     if (localStorage.length === 0) {
@@ -40,27 +39,9 @@ function PlacesPost(props) {
     }
   });
 
-  const validate = () => {
-    let temp = {};
-    temp.country = formData.country === "" ? false : true;
-    temp.city = formData.city === "" ? false : true;
-    temp.rating = formData.rating === "" ? false : true;
-    temp.visitedAt = formData.visitedAt === "" ? false : true;
-    temp.stayedFor = formData.stayedFor === "" ? false : true;
-    temp.story = formData.story === "" ? false : true;
-    temp.imageSrc = previewImage.imageSrc === defaultImageSrc ? false : true;
-    setErrors(temp);
-    return Object.values(temp).every((x) => x === true);
-  };
-
-  const applyErrorClass = (field) =>
-    field in errors && errors[field] === false ? "invalid-field" : "";
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validate()) {
-      uploadImage();
-    }
+    uploadImage();
   };
 
   const uploadImage = async (e) => {
@@ -137,9 +118,9 @@ function PlacesPost(props) {
             name="country"
             type="text"
             placeholder="The Netherlands"
+            required
             onChange={handleChange}
             value={formData.country}
-            className={applyErrorClass("country")}
           />
 
           <label htmlFor="city">City:</label>
@@ -148,9 +129,9 @@ function PlacesPost(props) {
             name="city"
             type="text"
             placeholder="Amsterdam"
+            required
             onChange={handleChange}
             value={formData.city}
-            className={applyErrorClass("city")}
           />
 
           <label htmlFor="rating">Rating:</label>
@@ -159,9 +140,9 @@ function PlacesPost(props) {
             name="rating"
             type="number"
             placeholder="10"
+            required
             onChange={handleChange}
             value={formData.rating}
-            className={applyErrorClass("rating")}
           />
 
           <label htmlFor="visitedAt">Visited at:</label>
@@ -169,9 +150,9 @@ function PlacesPost(props) {
             id="visitedAt"
             name="visitedAt"
             type="date"
+            required
             onChange={handleChange}
             value={formData.visitedAt}
-            className={applyErrorClass("visitedAt")}
           />
 
           <label htmlFor="stayedFor">Stayed for (days):</label>
@@ -180,9 +161,9 @@ function PlacesPost(props) {
             name="stayedFor"
             type="number"
             placeholder="∞"
+            required
             onChange={handleChange}
             value={formData.stayedFor}
-            className={applyErrorClass("stayedFor")}
           />
 
           <label htmlFor="story">Your story:</label>
@@ -191,9 +172,9 @@ function PlacesPost(props) {
             name="story"
             type="textarea"
             placeholder="It was amazing, because..."
+            required
             onChange={handleChange}
             value={formData.story}
-            className={applyErrorClass("story")}
           />
 
           <label htmlFor="imageSrc">Upload image:</label>
@@ -202,8 +183,8 @@ function PlacesPost(props) {
             name="imageSrc"
             type="file"
             accept="image/jpeg"
+            required
             onChange={showPreview}
-            className={applyErrorClass("imageSrc")}
           />
           <div className="preview-image">
             <img src={previewImage.imageSrc} alt="Preview" />
