@@ -1,6 +1,4 @@
 using Microsoft.OpenApi.Models;
-using Microsoft.EntityFrameworkCore.Design;
-using Swashbuckle.AspNetCore;
 using travellog.repository;
 using travellog.wwwapi;
 
@@ -13,6 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPlaceRepository, PlaceRepository>();
 builder.Services.AddScoped<ISuggestionRepository, SuggestionRepository>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -24,7 +23,7 @@ builder.Services.AddSwaggerGen(options =>
     {
         Version = "v1",
         Title = "Individual Challenge",
-        Description = "This API manages the place I have been.",
+        Description = "This API manages the places I have been.",
         Contact = new OpenApiContact
         {
             Name = "Max de Ruiter",
@@ -50,6 +49,7 @@ if (app.Environment.IsDevelopment())
 app.ConfigureUserAPI();
 app.ConfigurePlaceAPI();
 app.ConfigureSuggestionAPI();
+app.ConfigureCommentAPI();
 
 app.UseHttpsRedirection();
 

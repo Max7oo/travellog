@@ -92,8 +92,8 @@ button:hover {
 .profile-picture-mini {
   display: inline-block;
   margin-bottom: 15px;
-  width: 125px;
-  height: 125px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
 
   background-repeat: no-repeat;

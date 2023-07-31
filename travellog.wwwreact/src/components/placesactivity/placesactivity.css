@@ -92,6 +92,10 @@
     align-self: flex-end;
 }
 
+.activity__comment {
+    display: flex;
+}
+
 @media only screen and (max-width: 735px) {
     .activity__place__profile__picture {
         height: 75px;

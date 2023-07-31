@@ -9,6 +9,7 @@ public static class UserAPI
     public static void ConfigureUserAPI(this WebApplication app)
     {
         app.MapGet("/users", GetAll);
+        app.MapGet("/user/{id}", GetById);
         app.MapGet("/users/{email}/{password}", GetByEmailPassword);
         app.MapGet("/{username}/{email}", GetByAccount);
         app.MapGet("/{userName}", GetByUserName);
@@ -33,6 +34,26 @@ public static class UserAPI
             {
                 return Results.Ok(context.GetAll());
             });
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem(ex.Message);
+        }
+    }
+
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    private static async Task<IResult> GetById(int id, IUserRepository context)
+    {
+        try
+        {
+            return await Task.Run(() =>
+            {
+                var user = context.GetById(id);
+                if (user == null) return Results.NotFound();
+                return Results.Ok(user);
+            });
+
         }
         catch (Exception ex)
         {

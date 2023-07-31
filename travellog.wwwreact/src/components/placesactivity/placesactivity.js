@@ -5,12 +5,21 @@ import Nav from "../nav/nav";
 import "./placesactivity.css";
 import SearchBar from "../search/searchbar";
 import SearchResults from "../search/searchresults";
+import PlacesComments from "./placescomments";
+
+const initialState = {
+  text: "",
+  postedAt: "",
+  placeId: null,
+  userId: 1,
+};
 
 function PlacesActivity() {
   const [loading, setLoading] = useState(false);
   const [places, setPlaces] = useState([]);
   const userName = localStorage.getItem("UserName");
   const [results, setResults] = useState([]);
+  const [formData, setFormData] = useState(initialState);
 
   useEffect(
     function () {
@@ -24,6 +33,35 @@ function PlacesActivity() {
     },
     [userName, setPlaces]
   );
+
+  const handleComments = (id) => {
+    fetch(`https://localhost:7209/${id}/comments`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (id) => {
+    let date = new Date();
+    formData.postedAt = date.toString();
+    formData.placeId = id;
+    fetch(`https://localhost:7209/${userName}/add/comment`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
+  };
 
   return (
     <>
@@ -44,6 +82,7 @@ function PlacesActivity() {
           )}
           {places.map((place, index) => {
             const {
+              id,
               follower,
               followerUserName,
               followerPicture,
@@ -82,7 +121,7 @@ function PlacesActivity() {
                   has visited {city}, {country} on {visitedAt} and stayed there
                   for {stayedFor} days.
                 </p>
-                <p className="activity__place__text">{story}</p>
+                <p className="activity__place__text">"{story}"</p>
                 {fileUrl ? (
                   <div className="activity__image">
                     <div className="activity__image__overlay">
@@ -100,6 +139,25 @@ function PlacesActivity() {
                 ) : (
                   <></>
                 )}
+                <PlacesComments id={id} />
+                <input
+                  id="text"
+                  name="text"
+                  type="textarea"
+                  placeholder="Add a comment..."
+                  required
+                  onChange={handleChange}
+                  value={formData.text}
+                />
+
+                <div className="actions-section">
+                  <button
+                    className="button blue"
+                    onClick={() => handleSubmit(id)}
+                  >
+                    Comment
+                  </button>
+                </div>
               </div>
             );
           })}

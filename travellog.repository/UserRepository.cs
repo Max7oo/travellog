@@ -77,14 +77,9 @@ namespace travellog.repository
             User result;
             using (var db = new DatabaseContext())
             {
-                var user = db.Users.FirstOrDefault(x => x.Id == id);
-
-                if (user != null)
-                {
-                    result = db.Users.Find(user.Id);
-                    db.SaveChanges();
-                    return result;
-                }
+                result = db.Users.Find(id);
+                db.SaveChanges();
+                return result;
             }
             return null;
         }

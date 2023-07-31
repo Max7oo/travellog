@@ -122,7 +122,7 @@ function UserProfile() {
               </thead>
             </table>
           </div>
-          <Link to={`/${user.userName}/places`}>
+          <Link to={`/${user.userName}/places`} user={user}>
             <button className="view">View places</button>
           </Link>
           {following ? (
