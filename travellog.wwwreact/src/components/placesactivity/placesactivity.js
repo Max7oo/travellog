@@ -7,19 +7,11 @@ import SearchBar from "../search/searchbar";
 import SearchResults from "../search/searchresults";
 import PlacesComments from "./placescomments";
 
-const initialState = {
-  text: "",
-  postedAt: "",
-  placeId: null,
-  userId: 1,
-};
-
 function PlacesActivity() {
   const [loading, setLoading] = useState(false);
   const [places, setPlaces] = useState([]);
   const userName = localStorage.getItem("UserName");
   const [results, setResults] = useState([]);
-  const [formData, setFormData] = useState(initialState);
 
   useEffect(
     function () {
@@ -33,35 +25,6 @@ function PlacesActivity() {
     },
     [userName, setPlaces]
   );
-
-  const handleComments = (id) => {
-    fetch(`https://localhost:7209/${id}/comments`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-      });
-  };
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (id) => {
-    let date = new Date();
-    formData.postedAt = date.toString();
-    formData.placeId = id;
-    fetch(`https://localhost:7209/${userName}/add/comment`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-      });
-  };
 
   return (
     <>
@@ -127,7 +90,7 @@ function PlacesActivity() {
                     <div className="activity__image__overlay">
                       <div className="activity__image__rating">
                         <h2>{rating}</h2>
-                        <p className="medium-small-hide">/10</p>
+                        <p className="medium-small-hide bold">/10</p>
                       </div>
                     </div>
                     <img
@@ -140,24 +103,6 @@ function PlacesActivity() {
                   <></>
                 )}
                 <PlacesComments id={id} />
-                <input
-                  id="text"
-                  name="text"
-                  type="textarea"
-                  placeholder="Add a comment..."
-                  required
-                  onChange={handleChange}
-                  value={formData.text}
-                />
-
-                <div className="actions-section">
-                  <button
-                    className="button blue"
-                    onClick={() => handleSubmit(id)}
-                  >
-                    Comment
-                  </button>
-                </div>
               </div>
             );
           })}

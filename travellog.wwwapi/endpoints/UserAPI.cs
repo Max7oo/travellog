@@ -109,6 +109,29 @@ public static class UserAPI
 
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    private static async Task<IResult> GetByUserName(string username, IUserRepository context)
+    {
+        try
+        {
+            return await Task.Run(() =>
+            {
+                var item = context.GetByUserName(username);
+                if (item != null)
+                {
+                    var user = new { Id = item.Id, ProfilePicture = item.ProfilePicture, FirstName = item.FirstName, LastName = item.LastName, UserName = item.UserName, CitiesVisited = item.CitiesVisited };
+                    return Results.Ok(user);
+                }
+                return Results.NotFound();
+            });
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem(ex.Message);
+        }
+    }
+
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> GetForEdit(string username, string email, IUserRepository context)
     {
         try
@@ -228,28 +251,6 @@ public static class UserAPI
         }
     }
 
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    private static async Task<IResult> GetByUserName(string username, IUserRepository context)
-    {
-        try
-        {
-            return await Task.Run(() =>
-            {
-                var item = context.GetByUserName(username);
-                if (item != null)
-                {
-                    var user = new { Id = item.Id, ProfilePicture = item.ProfilePicture, FirstName = item.FirstName, LastName = item.LastName, UserName = item.UserName, CitiesVisited = item.CitiesVisited };
-                    return Results.Ok(user);
-                }
-                return Results.NotFound();
-            });
-        }
-        catch (Exception ex)
-        {
-            return Results.Problem(ex.Message);
-        }
-    }
 
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]

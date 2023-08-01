@@ -19,6 +19,7 @@ function PlacesRequest(props) {
 
   const [messageChatGPT, setMessageChatGPT] = useState();
   const [loading, setLoading] = useState(false);
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [isRequested, setIsRequested] = useState(true);
   const [isShown, setIsShown] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
@@ -74,7 +75,7 @@ function PlacesRequest(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    setLoadingSubmit(true);
     setIsRequested((current) => !current);
     setIsShown((current) => !current);
     await fetch("https://api.openai.com/v1/chat/completions", {
@@ -96,7 +97,7 @@ function PlacesRequest(props) {
         });
       })
       .then(() => {
-        setLoading(false);
+        setLoadingSubmit(false);
         setIsSaved((current) => !current);
       });
   };
@@ -171,7 +172,7 @@ function PlacesRequest(props) {
         {isShown && (
           <div className="response">
             <h2>Response:</h2>
-            {loading ? (
+            {loadingSubmit ? (
               <div className="spinner-container">
                 <div className="loading-spinner"></div>
               </div>

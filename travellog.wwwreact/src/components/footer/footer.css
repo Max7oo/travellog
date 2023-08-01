@@ -16,6 +16,7 @@ footer p {
 footer a {
     color: #91d4e0;
     text-decoration: underline;
+    font-weight: 600;
 }
 
 footer a:hover {

@@ -173,39 +173,48 @@ function PlacesList(props) {
                 </tr>
               </thead>
               <tbody>
-                {currentPlaces.map((place, index) => {
-                  const { country, city, rating, visitedAt, stayedFor } = place;
-                  return (
-                    <tr key={index}>
-                      <th className="medium-small-hide">{country}</th>
-                      <th>{city}</th>
-                      <th>{rating}</th>
-                      <th className="small-hide">{visitedAt}</th>
-                      <th className="medium-hide">{stayedFor}</th>
-                      {viewingMode ? (
-                        <th>
-                          <Link to={`/${userName}/places/${place.id}`}>
-                            <button className="view">View</button>
-                          </Link>
-                          <Link
-                            className="large-hide"
-                            to={`/${userName}/places/edit/${place.id}`}
-                          >
-                            <button className="edit">Edit</button>
-                          </Link>
-                          <Link
-                            className="large-hide"
-                            to={`/${userName}/places/delete/${place.id}`}
-                          >
-                            <button className="delete">Delete</button>
-                          </Link>
-                        </th>
-                      ) : (
-                        <th></th>
-                      )}
-                    </tr>
-                  );
-                })}
+                {currentPlaces.length === 0 ? (
+                  <>
+                    <p className="bold">Start by adding some places</p>
+                  </>
+                ) : (
+                  <>
+                    {currentPlaces.map((place, index) => {
+                      const { country, city, rating, visitedAt, stayedFor } =
+                        place;
+                      return (
+                        <tr key={index}>
+                          <th className="medium-small-hide">{country}</th>
+                          <th>{city}</th>
+                          <th>{rating}</th>
+                          <th className="small-hide">{visitedAt}</th>
+                          <th className="medium-hide">{stayedFor}</th>
+                          {viewingMode ? (
+                            <th>
+                              <Link to={`/${userName}/places/${place.id}`}>
+                                <button className="view">View</button>
+                              </Link>
+                              <Link
+                                className="large-hide"
+                                to={`/${userName}/places/edit/${place.id}`}
+                              >
+                                <button className="edit">Edit</button>
+                              </Link>
+                              <Link
+                                className="large-hide"
+                                to={`/${userName}/places/delete/${place.id}`}
+                              >
+                                <button className="delete">Delete</button>
+                              </Link>
+                            </th>
+                          ) : (
+                            <th></th>
+                          )}
+                        </tr>
+                      );
+                    })}
+                  </>
+                )}
               </tbody>
             </table>
             <div className="pagination">

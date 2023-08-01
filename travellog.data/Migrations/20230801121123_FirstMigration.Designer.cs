@@ -11,7 +11,7 @@ using travellog.data;
 namespace travellog.data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230731142323_FirstMigration")]
+    [Migration("20230801121123_FirstMigration")]
     partial class FirstMigration
     {
         /// <inheritdoc />
