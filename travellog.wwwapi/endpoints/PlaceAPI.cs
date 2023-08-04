@@ -13,6 +13,8 @@ public static class PlaceAPI
         app.MapPost("/{userName}/places", Add);
         app.MapPatch("/{userName}/places", Update);
         app.MapDelete("/{userName}/places/{id}", Delete);
+        app.MapGet("/like/{userName}/{id}", LikePlace);
+        app.MapGet("/liked/{userName}/{id}", CheckLiked);
     }
 
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -99,6 +101,56 @@ public static class PlaceAPI
             if (context.Delete(id)) return Results.Ok();
             return Results.NotFound();
 
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem(ex.Message);
+        }
+    }
+
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    private static async Task<IResult> LikePlace(string username, int placeid, IPlaceRepository context)
+    {
+        try
+        {
+            return await Task.Run(() =>
+            {
+                var flag = context.LikePlace(username, placeid);
+                if (flag)
+                {
+                    return Results.Ok(flag);
+                }
+                else
+                {
+                    return Results.NotFound(flag);
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem(ex.Message);
+        }
+    }
+
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    private static async Task<IResult> CheckLiked(string username, int placeid, IPlaceRepository context)
+    {
+        try
+        {
+            return await Task.Run(() =>
+            {
+                var flag = context.CheckLiked(username, placeid);
+                if (flag)
+                {
+                    return Results.Ok(flag);
+                }
+                else
+                {
+                    return Results.NotFound(flag);
+                }
+            });
         }
         catch (Exception ex)
         {

@@ -1,6 +1,14 @@
-.content {
+.flex-list {
     display: flex;
-    justify-content: space-between;
+    gap: 50px;
+}
+  
+.first-list {
+    width: calc(50% - 25px);
+}
+  
+.second-list {
+    width: calc(50% - 25px);
 }
 
 span button {
@@ -99,44 +107,31 @@ input[type=checkbox] {
     color: #ea4c89;
 }
 
-.mapbox {
-    width: 50%;
-    height: 800px;
-
-    margin-top: 50px;
-}
-
-.mapbox .mapboxgl-map {
-    border-radius: 25px;
-}
-
-.marker {
-    cursor: pointer;
-}
-.marker img {
-    width: 40px;
-}
-
-@media only screen and (max-width: 1785px) {
-    .content {
-        display: block;
+@media only screen and (max-width: 1950px) {
+    .flex-list {
+      display: flex;
+      gap: 50px;
     }
-
-    .mapbox {
-        width: 100%;
-        height: 600px;
-        max-width: 3000px;
+    
+    .first-list {
+      width: 60%;
     }
-}
-
-@media only screen and (max-width: 1050px) {
-    .mapbox {
-        height: 600px;
+    
+    .second-list {
+      width: 40%;
     }
-}
+  }
 
-@media only screen and (max-width: 1050px) {
-    .mapbox {
-        height: 400px;
+@media only screen and (max-width: 1650px) {
+    .flex-list {
+      display: block;
     }
-}
+    
+    .first-list {
+      width: 100%;
+    }
+    
+    .second-list {
+      width: 100%;
+    }
+  }

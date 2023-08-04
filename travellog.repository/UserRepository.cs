@@ -164,19 +164,32 @@ namespace travellog.repository
                 User user = GetByUserName(username);
                 User follower = GetByUserName(followername);
                 var followermodel = new FollowerModel { UserId = user.Id, FollowerId = follower.Id };
+                FollowerModel itemToRemove = null;
 
-                FollowerModel item = db.Followers.SingleOrDefault(x => x.FollowerId == follower.Id);
-                if (item != null)
+                foreach (var item in db.Followers)
                 {
-                    db.Followers.Remove(item);
+                    if (item.UserId == user.Id)
+                    {
+                        if (item.FollowerId == follower.Id)
+                        {
+                            itemToRemove = item;
+                        }
+                    }
                 }
+
+                if (itemToRemove != null)
+                {
+                    db.Followers.Remove(itemToRemove);
+                    db.SaveChanges();
+                    return false;
+                } 
                 else
                 {
                     db.Followers.Add(followermodel);
+                    db.SaveChanges();
+                    return true;
                 }
-                db.SaveChanges();
             }
-            return true;
         }
 
         public bool CheckFollowing(string username, string followername)

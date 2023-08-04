@@ -100,6 +100,19 @@ button:hover {
   background-size: cover;
 }
 
+.flex {
+  display: flex;
+  gap: 50px;
+}
+
+.first {
+  width: calc(50% - 25px);
+}
+
+.second {
+  width: calc(50% - 25px);
+}
+
 /* Text styling */
 h1 {
   font-family: 'Raleway', sans-serif;
@@ -213,7 +226,6 @@ input {
   margin-top: 25px;
   padding: 25px;
   margin: 25px 0px 0px 0px;
-  max-width: 800px;
   border-radius: 25px;
   background-color: #0f1322;
 }
@@ -229,6 +241,12 @@ input {
 
 .item__info th:last-child {
   font-weight: 300;
+}
+
+.item__info__image {
+  width: 100%;
+  margin-top: 25px;
+  border-radius: 25px;
 }
 
 .item__options {
@@ -248,6 +266,34 @@ input {
 @media only screen and (max-width: 1785px) {
   .large-hide {
     display: flex;
+  }
+
+  .flex {
+    display: flex;
+    gap: 50px;
+  }
+  
+  .first {
+    width: 60%;
+  }
+  
+  .second {
+    width: 40%;
+  }
+}
+
+@media only screen and (max-width: 1250px) {
+  .flex {
+    display: block;
+    gap: 50px;
+  }
+  
+  .first {
+    width: 100%;
+  }
+  
+  .second {
+    display: none;
   }
 }
 

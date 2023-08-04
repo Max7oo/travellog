@@ -36,7 +36,10 @@ function UserProfile() {
     function () {
       fetch(`https://localhost:7209/${params.userName}`)
         .then((res) => res.json())
-        .then((data) => setUser(data));
+        .then((data) => {
+          setUser(data);
+          localStorage.setItem("OtherUser", JSON.stringify(data));
+        });
     },
     [params.userName, setUser]
   );
@@ -88,52 +91,56 @@ function UserProfile() {
           <h2>
             {user.firstName} {user.lastName}
           </h2>
-          <div className="item__info">
-            <div
-              className="profile-picture-normal"
-              style={{ backgroundImage: `url(${user.profilePicture})` }}
-            />
-            <table>
-              <thead>
-                <tr>
-                  <th>Cities visited:</th>
-                  <th>{user.citiesVisited}</th>
-                </tr>
-                <tr>
-                  <th>First name:</th>
-                  <th>{user.firstName}</th>
-                </tr>
-                <tr>
-                  <th>Last name:</th>
-                  <th>{user.lastName}</th>
-                </tr>
-                <tr>
-                  <th>Username:</th>
-                  <th>{user.userName}</th>
-                </tr>
-                <tr>
-                  <th>Followers:</th>
-                  <th>{followerAmount}</th>
-                </tr>
-                <tr>
-                  <th>Following:</th>
-                  <th>{followingAmount}</th>
-                </tr>
-              </thead>
-            </table>
+          <div className="flex">
+            <div className="first">
+              <div className="item__info">
+                <div
+                  className="profile-picture-normal"
+                  style={{ backgroundImage: `url(${user.profilePicture})` }}
+                />
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Cities visited:</th>
+                      <th>{user.citiesVisited}</th>
+                    </tr>
+                    <tr>
+                      <th>First name:</th>
+                      <th>{user.firstName}</th>
+                    </tr>
+                    <tr>
+                      <th>Last name:</th>
+                      <th>{user.lastName}</th>
+                    </tr>
+                    <tr>
+                      <th>Username:</th>
+                      <th>{user.userName}</th>
+                    </tr>
+                    <tr>
+                      <th>Followers:</th>
+                      <th>{followerAmount}</th>
+                    </tr>
+                    <tr>
+                      <th>Following:</th>
+                      <th>{followingAmount}</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+              <Link to={`/user/${user.userName}/places`}>
+                <button className="view">View places</button>
+              </Link>
+              {following ? (
+                <Link onClick={followUser}>
+                  <button className="view">Unfollow</button>
+                </Link>
+              ) : (
+                <Link onClick={followUser}>
+                  <button className="view">Follow</button>
+                </Link>
+              )}
+            </div>
           </div>
-          <Link to={`/${user.userName}/places`} user={user}>
-            <button className="view">View places</button>
-          </Link>
-          {following ? (
-            <Link onClick={followUser}>
-              <button className="view">Unfollow</button>
-            </Link>
-          ) : (
-            <Link onClick={followUser}>
-              <button className="view">Follow</button>
-            </Link>
-          )}
         </section>
       </>
     );

@@ -3,6 +3,7 @@ import { useLocation, useParams, useNavigate, Link } from "react-router-dom";
 
 import Nav from "../nav/nav";
 import "./placesadvice.css";
+import Mapbox from "../mapbox/mapbox";
 
 const initialState = {
   basedOn: "",
@@ -124,65 +125,72 @@ function PlacesRequest(props) {
             <button>Previous suggestions</button>
           </Link>
         </span>
-        <p className="item">
-          Select cities, from the list of cities you have been to, that you want
-          to base the travel advice on.
-        </p>
-        {loading ? (
-          <div className="spinner-container">
-            <div className="loading-spinner"></div>
-          </div>
-        ) : (
-          <></>
-        )}
-        <table>
-          <tbody>
-            {places.map((place, index) => {
-              const { country, city } = place;
-              return (
-                <tr className="tr-align-center" key={index}>
-                  <th className="th-small">
-                    <input
-                      type="checkbox"
-                      id={place.city}
-                      name="addToCityList"
-                      onClick={() => addToCityList(place)}
-                    />
-                  </th>
-                  <th>
-                    {city}, {country}
-                  </th>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-
-        {isRequested && (
-          <>
-            <div className="item">
-              <p>
-                By clicking on 'Send request' you are asking for travel advise
-                based on the list of cities above.
-              </p>
-            </div>
-            <button onClick={handleSubmit}>Send request</button>
-          </>
-        )}
-        {isShown && (
-          <div className="response">
-            <h2>Response:</h2>
-            {loadingSubmit ? (
+        <div className="flex">
+          <div className="first">
+            <p className="item">
+              Select cities, from the list of cities you have been to, that you
+              want to base the travel advice on.
+            </p>
+            {loading ? (
               <div className="spinner-container">
                 <div className="loading-spinner"></div>
               </div>
             ) : (
               <></>
             )}
-            <div dangerouslySetInnerHTML={{ __html: messageChatGPT }} />
+            <table>
+              <tbody>
+                {places.map((place, index) => {
+                  const { country, city } = place;
+                  return (
+                    <tr className="tr-align-center" key={index}>
+                      <th className="th-small">
+                        <input
+                          type="checkbox"
+                          id={place.city}
+                          name="addToCityList"
+                          onClick={() => addToCityList(place)}
+                        />
+                      </th>
+                      <th>
+                        {city}, {country}
+                      </th>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+
+            {isRequested && (
+              <>
+                <div className="item">
+                  <p>
+                    By clicking on 'Send request' you are asking for travel
+                    advise based on the list of cities above.
+                  </p>
+                </div>
+                <button onClick={handleSubmit}>Send request</button>
+              </>
+            )}
+            {isShown && (
+              <div className="response">
+                <h2>Response:</h2>
+                {loadingSubmit ? (
+                  <div className="spinner-container">
+                    <div className="loading-spinner"></div>
+                  </div>
+                ) : (
+                  <></>
+                )}
+                <div dangerouslySetInnerHTML={{ __html: messageChatGPT }} />
+              </div>
+            )}
+            {isSaved && <button onClick={handleSave}>Save suggestion</button>}
           </div>
-        )}
-        {isSaved && <button onClick={handleSave}>Save suggestion</button>}
+          <div className="second">
+            <Mapbox />
+          </div>
+        </div>
       </section>
     </>
   );

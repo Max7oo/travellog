@@ -159,9 +159,18 @@ public static class UserAPI
     {
         try
         {
-            if (context.AddFollower(username, followername)) return Results.Ok();
-            return Results.NotFound();
-
+            return await Task.Run(() =>
+            {
+                var flag = context.AddFollower(username, followername);
+                if (flag)
+                {
+                    return Results.Ok(flag);
+                }
+                else
+                {
+                    return Results.NotFound(flag);
+                }
+            });
         }
         catch (Exception ex)
         {

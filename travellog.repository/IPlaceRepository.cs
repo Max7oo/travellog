@@ -10,4 +10,6 @@ public interface IPlaceRepository
     Place Add(Place place);
     bool Update(Place place);
     bool Delete(int id);
+    bool LikePlace(string username, int placeid);
+    bool CheckLiked(string username, int placeid);
 }

@@ -4,6 +4,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Nav from "../nav/nav";
 import "./placessuggested.css";
 import React from "react";
+import Mapbox from "../mapbox/mapbox";
 
 function SuggestedView() {
   const location = useLocation();
@@ -11,19 +12,17 @@ function SuggestedView() {
   const params = useParams();
 
   const suggestion = location.state;
-  const userName = localStorage.getItem("UserName")
+  const userName = localStorage.getItem("UserName");
 
-  useEffect(
-    function () {
-      if (localStorage.length === 0) {
-        navigate(`/`)
-      } else if (userName !== params.userName) {
-        navigate(`/`)
-      }
+  useEffect(function () {
+    if (localStorage.length === 0) {
+      navigate(`/`);
+    } else if (userName !== params.userName) {
+      navigate(`/`);
     }
-  )
+  });
 
-  const deletePlace = async (e) => {
+  const deleteSuggestion = async (e) => {
     await fetch(`https://localhost:7209/${userName}/suggestions/${params.id}`, {
       method: "DELETE",
       headers: {
@@ -45,16 +44,23 @@ function SuggestedView() {
         <Nav />
         <section>
           <h2>The saved suggestion below is based on: {suggestion.basedOn}</h2>
-          <div className="item__info">
-            <div className="response">
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: suggestion.suggestionText,
-                }}
-              />
+          <div className="flex">
+            <div className="first">
+              <div className="item__info">
+                <div className="response">
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: suggestion.suggestionText,
+                    }}
+                  />
+                </div>
+              </div>
+              <button onClick={deleteSuggestion}>Delete suggestion</button>
+            </div>
+            <div className="second">
+              <Mapbox />
             </div>
           </div>
-            <button onClick={deletePlace}>Delete suggestion</button>
         </section>
       </>
     );

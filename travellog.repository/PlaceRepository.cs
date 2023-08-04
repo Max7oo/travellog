@@ -71,5 +71,65 @@ namespace travellog.repository
             }
             return -1;
         }
+
+        public bool LikePlace(string username, int placeid)
+        {
+            using (var db = new DatabaseContext())
+            {
+                int userid = GetUserId(username);
+                Place place = GetById(placeid);
+                var likeModel = new LikeModel { UserId = userid, PlaceId = placeid };
+                LikeModel itemToRemove = null;
+
+                foreach (var item in db.Likes)
+                {
+                    if (item.UserId == userid)
+                    {
+                        if (item.PlaceId == placeid)
+                        {
+                            itemToRemove = item;
+                        }
+                    }
+                }
+
+                if (itemToRemove != null)
+                {
+                    db.Likes.Remove(itemToRemove);
+                    place.Likes = place.Likes - 1;
+                    db.Places.Update(place);
+                    db.SaveChanges();
+                    return false;
+                }
+                else
+                {
+                    db.Likes.Add(likeModel);
+                    place.Likes = place.Likes + 1;
+                    db.Places.Update(place);
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+        }
+
+        public bool CheckLiked(string username, int placeid)
+        {
+            using (var db = new DatabaseContext())
+            {
+                int userid = GetUserId(username);
+                Place place = GetById(placeid);
+
+                var likeModel = new LikeModel { UserId = userid, PlaceId = placeid };
+
+                LikeModel item = db.Likes.SingleOrDefault(x => x.UserId == userid);
+                if (item != null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
     }
 }

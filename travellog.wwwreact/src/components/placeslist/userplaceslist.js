@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
 
 import Nav from "../nav/nav";
 import "./placeslist.css";
@@ -10,38 +9,29 @@ import Map, { Marker } from "react-map-gl";
 import "../mapbox/mapbox.css";
 import pin from "../../images/pin.svg";
 
-function PlacesList(props) {
-  const navigate = useNavigate();
-  const params = useParams();
-
-  const { places, setPlaces } = props;
+function UserPlacesList() {
+  const [places, setPlaces] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [placesPerPage] = useState(10);
-  const userName = localStorage.getItem("UserName");
   const [loading, setLoading] = useState(false);
   const [order, setOrder] = useState("DSC");
+  const user = JSON.parse(localStorage.getItem("OtherUser"));
   const [cityData] = useState([]);
-
-  useEffect(function () {
-    if (localStorage.length === 0) {
-      navigate(`/`);
-    }
-  });
 
   useEffect(
     function () {
       setLoading(true);
-      fetch(`https://localhost:7209/${params.userName}/places`)
+      fetch(`https://localhost:7209/${user.userName}/places`)
         .then((res) => res.json())
         .then((data) => {
           setPlaces(data);
-          localStorage.setItem("Places", JSON.stringify(data));
+          localStorage.setItem("UserPlaces", JSON.stringify(data));
         })
         .then((e) => {
           setLoading(false);
         });
     },
-    [params.userName, setPlaces]
+    [user.userName, setPlaces]
   );
 
   useEffect(function () {
@@ -109,12 +99,9 @@ function PlacesList(props) {
     <>
       <Nav />
       <section>
-        <span>
-          <h2>Places</h2>
-          <Link to={`/${userName}/places/add`}>
-            <button>Add place</button>
-          </Link>
-        </span>
+        <h2>
+          Places {user.firstName} {user.lastName} has visited
+        </h2>
 
         <div className="flex-list">
           <div className="first-list">
@@ -188,19 +175,6 @@ function PlacesList(props) {
                             <th>{rating}</th>
                             <th className="small-hide">{visitedAt}</th>
                             <th className="medium-hide">{stayedFor}</th>
-                            <th>
-                              <Link to={`/${userName}/places/${place.id}`}>
-                                <button className="view">View</button>
-                              </Link>
-                              <Link to={`/${userName}/places/edit/${place.id}`}>
-                                <button className="edit">Edit</button>
-                              </Link>
-                              <Link
-                                to={`/${userName}/places/delete/${place.id}`}
-                              >
-                                <button className="delete">Delete</button>
-                              </Link>
-                            </th>
                           </tr>
                         );
                       })}
@@ -262,4 +236,4 @@ function PlacesList(props) {
   );
 }
 
-export default PlacesList;
+export default UserPlacesList;

@@ -12,6 +12,7 @@ public class Place
     public string VisitedAt { get; set; }
     public int StayedFor { get; set; }
     public string Story { get; set; } 
+    public int Likes { get; set; }
     public string FileUrl { get; set; }
     public string FilePath { get; set; }
     public string Follower { get; set; }

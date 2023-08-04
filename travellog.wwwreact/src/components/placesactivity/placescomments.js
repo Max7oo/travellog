@@ -4,6 +4,12 @@ import "./placesactivity.css";
 import PlacesComment from "./placescomment";
 import { Link } from "react-router-dom";
 
+import like from "../../images/like.svg";
+import liked from "../../images/liked.svg";
+import chat from "../../images/chat.svg";
+import chatactive from "../../images/chatactive.svg";
+import send from "../../images/send.svg";
+
 const initialState = {
   text: "",
   postedAt: null,
@@ -16,6 +22,8 @@ function PlacesComments({ id }) {
   const userName = localStorage.getItem("UserName");
   const [flag, setFlag] = useState(false);
   const [lessThanThree, setLessThanThree] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const [showChat, setShowChat] = useState(false);
 
   useEffect(
     function () {
@@ -30,6 +38,28 @@ function PlacesComments({ id }) {
     },
     [id, setComments]
   );
+
+  // const checkLiked = async (id) => {
+  //   await fetch(
+  //     `https://localhost:7209/like/${userName}/{id}?placeid=${id}`
+  //   ).then((res) => {
+  //     if (res.ok) {
+  //       setIsLiked(true);
+  //     }
+  //   });
+  // };
+
+  const likePlace = async (id) => {
+    await fetch(
+      `https://localhost:7209/like/${userName}/{id}?placeid=${id}`
+    ).then(setIsLiked(!isLiked));
+  };
+
+  const chatPlace = () => {
+    setShowChat(!showChat);
+  };
+
+  // const sendPlace = () => {};
 
   const loadMore = () => {
     setFlag(!flag);
@@ -57,64 +87,91 @@ function PlacesComments({ id }) {
 
   return (
     <>
-      <div className="activity__comments">
-        {comments.map((comment, index) => {
-          if (index < 3) {
-            const { text, postedAt, userId } = comment;
-            return (
-              <div className="activity__comment" key={index}>
-                <PlacesComment id={userId} postedAt={postedAt} text={text} />
-              </div>
-            );
-          } else if (flag === true) {
-            if (index >= 3) {
+      <div className="activity__place__options">
+        <Link onClick={() => likePlace(id)}>
+          {isLiked ? (
+            <img src={liked} alt="liked" />
+          ) : (
+            <img src={like} alt="like" />
+          )}
+        </Link>
+        <Link onClick={() => chatPlace()}>
+          {showChat ? (
+            <img src={chatactive} alt="chatactive" />
+          ) : (
+            <img src={chat} alt="chat" />
+          )}
+        </Link>
+        <Link>
+          <img src={send} alt="send" />
+        </Link>
+      </div>
+      {showChat ? (
+        <div className="activity__comments">
+          {comments.map((comment, index) => {
+            if (index < 3) {
               const { text, postedAt, userId } = comment;
               return (
                 <div className="activity__comment" key={index}>
                   <PlacesComment id={userId} postedAt={postedAt} text={text} />
                 </div>
               );
+            } else if (flag === true) {
+              if (index >= 3) {
+                const { text, postedAt, userId } = comment;
+                return (
+                  <div className="activity__comment" key={index}>
+                    <PlacesComment
+                      id={userId}
+                      postedAt={postedAt}
+                      text={text}
+                    />
+                  </div>
+                );
+              }
             }
-          }
-        })}
-        {lessThanThree ? (
-          <>
-            {flag ? (
-              <Link
-                className="activity__comment__more"
-                onClick={() => loadMore()}
-              >
-                Show less
-              </Link>
-            ) : (
-              <Link
-                className="activity__comment__more"
-                onClick={() => loadMore()}
-              >
-                Show more
-              </Link>
-            )}
-          </>
-        ) : (
-          <></>
-        )}
+          })}
+          {lessThanThree ? (
+            <>
+              {flag ? (
+                <Link
+                  className="activity__comment__more"
+                  onClick={() => loadMore()}
+                >
+                  Show less
+                </Link>
+              ) : (
+                <Link
+                  className="activity__comment__more"
+                  onClick={() => loadMore()}
+                >
+                  Show more
+                </Link>
+              )}
+            </>
+          ) : (
+            <></>
+          )}
 
-        <input
-          id="text"
-          name="text"
-          type="textarea"
-          placeholder="Add a comment..."
-          required
-          onChange={handleChange}
-          value={formData.text}
-        />
+          <input
+            id="text"
+            name="text"
+            type="textarea"
+            placeholder="Add a comment..."
+            required
+            onChange={handleChange}
+            value={formData.text}
+          />
 
-        <div className="activity__comment__button">
-          <button className="button blue" onClick={() => handleSubmit(id)}>
-            Comment
-          </button>
+          <div className="activity__comment__button">
+            <button className="button blue" onClick={() => handleSubmit(id)}>
+              Comment
+            </button>
+          </div>
         </div>
-      </div>
+      ) : (
+        <></>
+      )}
     </>
   );
 }

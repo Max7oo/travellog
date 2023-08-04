@@ -14,6 +14,7 @@ import PlacesEdit from "./components/placesedit/placesedit";
 import PlacesDelete from "./components/placesdelete/placesdelete";
 import PlacesAdvice from "./components/placesadvice/placesadvice";
 import PlacesActivity from "./components/placesactivity/placesactivity";
+import UserPlacesList from "./components/placeslist/userplaceslist";
 import PlacesSuggested from "./components/placessuggested/placessuggested";
 import SuggestedView from "./components/placessuggested/suggestedview";
 import Footer from "./components/footer/footer";
@@ -37,7 +38,11 @@ function App() {
             path="/:userName/places"
             element={<PlacesList places={places} setPlaces={setPlaces} />}
           />
-          <Route path="/:userName/places/:id" element={<PlacesView />} />
+          <Route path="/user/:userName/places" element={<UserPlacesList />} />
+          <Route
+            path="/:userName/places/:id"
+            element={<PlacesView places={places} setPlaces={setPlaces} />}
+          />
           <Route
             path="/:userName/places/add"
             element={<PlacesPost places={places} setPlaces={setPlaces} />}
@@ -50,18 +55,21 @@ function App() {
             path="/:userName/places/delete/:id"
             element={<PlacesDelete places={places} setPlaces={setPlaces} />}
           />
-          <Route path="/:userName/activity" element={<PlacesActivity />} />
+          <Route
+            path="/:userName/activity"
+            element={<PlacesActivity places={places} setPlaces={setPlaces} />}
+          />
           <Route
             path="/:userName/places/advice"
             element={<PlacesAdvice places={places} setPlaces={setPlaces} />}
           />
           <Route
             path="/:userName/places/suggested"
-            element={<PlacesSuggested />}
+            element={<PlacesSuggested places={places} setPlaces={setPlaces} />}
           />
           <Route
             path="/:userName/places/suggested/:id"
-            element={<SuggestedView />}
+            element={<SuggestedView places={places} setPlaces={setPlaces} />}
           />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

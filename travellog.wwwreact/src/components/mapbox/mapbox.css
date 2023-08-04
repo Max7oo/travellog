@@ -1,0 +1,38 @@
+.mapbox {
+    height: 800px;
+    margin-top: 25px;
+}
+
+.mapbox .mapboxgl-map {
+    border-radius: 25px;
+}
+
+.marker {
+    cursor: pointer;
+}
+.marker img {
+    width: 40px;
+}
+
+@media only screen and (max-width: 1785px) {
+    .content {
+        display: block;
+    }
+
+    .mapbox {
+        height: 600px;
+        max-width: 3000px;
+    }
+}
+
+@media only screen and (max-width: 1050px) {
+    .mapbox {
+        height: 600px;
+    }
+}
+
+@media only screen and (max-width: 1050px) {
+    .mapbox {
+        height: 400px;
+    }
+}

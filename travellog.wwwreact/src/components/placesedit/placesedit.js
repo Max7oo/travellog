@@ -4,6 +4,7 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import Nav from "../nav/nav";
 import "./placesedit.css";
 import defaultImage from "../../images/default-image.jpg";
+import Mapbox from "../mapbox/mapbox";
 
 const defaultImageSrc = defaultImage;
 
@@ -139,84 +140,91 @@ function PlacesEdit(props) {
       <Nav />
       <section>
         <h2>You are editing: {formData.city}</h2>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="country">Country:</label>
-          <input
-            id="country"
-            name="country"
-            type="text"
-            onChange={handleChange}
-            value={formData.country}
-          />
+        <div className="flex">
+          <div className="first">
+            <form onSubmit={handleSubmit}>
+              <label htmlFor="country">Country:</label>
+              <input
+                id="country"
+                name="country"
+                type="text"
+                onChange={handleChange}
+                value={formData.country}
+              />
 
-          <label htmlFor="city">City:</label>
-          <input
-            id="city"
-            name="city"
-            type="text"
-            onChange={handleChange}
-            value={formData.city}
-          />
+              <label htmlFor="city">City:</label>
+              <input
+                id="city"
+                name="city"
+                type="text"
+                onChange={handleChange}
+                value={formData.city}
+              />
 
-          <label htmlFor="rating">Rating:</label>
-          <input
-            id="rating"
-            name="rating"
-            type="number"
-            onChange={handleChange}
-            value={formData.rating}
-          />
+              <label htmlFor="rating">Rating:</label>
+              <input
+                id="rating"
+                name="rating"
+                type="number"
+                onChange={handleChange}
+                value={formData.rating}
+              />
 
-          <label htmlFor="visitedAt">Visited on:</label>
-          <input
-            id="visitedAt"
-            name="visitedAt"
-            type="date"
-            onChange={handleChange}
-            value={formData.visitedAt}
-          />
+              <label htmlFor="visitedAt">Visited on:</label>
+              <input
+                id="visitedAt"
+                name="visitedAt"
+                type="date"
+                onChange={handleChange}
+                value={formData.visitedAt}
+              />
 
-          <label htmlFor="stayedFor">Stayed for (days):</label>
-          <input
-            id="stayedFor"
-            name="stayedFor"
-            type="number"
-            onChange={handleChange}
-            value={formData.stayedFor}
-          />
+              <label htmlFor="stayedFor">Stayed for (days):</label>
+              <input
+                id="stayedFor"
+                name="stayedFor"
+                type="number"
+                onChange={handleChange}
+                value={formData.stayedFor}
+              />
 
-          <label htmlFor="story">Your story:</label>
-          <input
-            id="story"
-            name="story"
-            type="text"
-            onChange={handleChange}
-            value={formData.story}
-          />
+              <label htmlFor="story">Your story:</label>
+              <input
+                id="story"
+                name="story"
+                type="text"
+                onChange={handleChange}
+                value={formData.story}
+              />
 
-          <label htmlFor="imageSrc">Upload image:</label>
-          <input
-            id="imageSrc"
-            name="imageSrc"
-            type="file"
-            accept="image/jpeg"
-            onChange={showPreview}
-          />
-          <div className="preview-image">
-            {previewImage.imageSrc === defaultImageSrc ? (
-              <img src={formData.fileUrl} alt={formData.city} />
-            ) : (
-              <img src={previewImage.imageSrc} alt={formData.city} />
-            )}
+              <label htmlFor="imageSrc">Upload image:</label>
+              <input
+                id="imageSrc"
+                name="imageSrc"
+                type="file"
+                accept="image/jpeg"
+                onChange={showPreview}
+              />
+              <div className="preview-image">
+                {previewImage.imageSrc === defaultImageSrc ? (
+                  <img src={formData.fileUrl} alt={formData.city} />
+                ) : (
+                  <img src={previewImage.imageSrc} alt={formData.city} />
+                )}
+              </div>
+
+              <div className="buttons">
+                <button type="submit">Save edits</button>
+                <Link onClick={goBack}>
+                  <button className="cancel">Cancel</button>
+                </Link>
+              </div>
+            </form>
           </div>
-
-          <div className="buttons">
-            <button type="submit">Save edits</button>
-            <Link onClick={goBack}>
-              <button className="cancel">Cancel</button>
-            </Link>
+          <div className="second">
+            <Mapbox />
           </div>
-        </form>
+        </div>
       </section>
     </>
   );

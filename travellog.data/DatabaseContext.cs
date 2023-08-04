@@ -18,6 +18,7 @@ namespace travellog.data
         }
         public DbSet<User> Users { get; set; }
         public DbSet<FollowerModel> Followers { get; set; }
+        public DbSet<LikeModel> Likes { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Place> Places { get; set; }
         public DbSet<Suggestion> Suggestions { get; set; }

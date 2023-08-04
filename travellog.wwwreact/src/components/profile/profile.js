@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 import Nav from "../nav/nav";
 import "./profile.css";
+import Mapbox from "../mapbox/mapbox";
 
 const initialState = {
   id: "",
@@ -74,55 +75,62 @@ function Profile() {
           <h2>
             {user.firstName} {user.lastName}
           </h2>
-          <div className="item__info">
-            {user.profilePicture ? (
-              <div
-                className="profile-picture-normal"
-                style={{ backgroundImage: `url(${user.profilePicture})` }}
-              />
-            ) : (
-              <></>
-            )}
-            <table>
-              <thead>
-                <tr>
-                  <th>Cities visited:</th>
-                  <th>{user.citiesVisited}</th>
-                </tr>
-                <tr>
-                  <th>Your first name:</th>
-                  <th>{user.firstName}</th>
-                </tr>
-                <tr>
-                  <th>Your last name:</th>
-                  <th>{user.lastName}</th>
-                </tr>
-                <tr>
-                  <th>Your username:</th>
-                  <th>{userName}</th>
-                </tr>
-                <tr>
-                  <th>Your email:</th>
-                  <th>{email}</th>
-                </tr>
-                <tr>
-                  <th>Followers:</th>
-                  <th>{followerAmount}</th>
-                </tr>
-                <tr>
-                  <th>Following:</th>
-                  <th>{followingAmount}</th>
-                </tr>
-                <tr>
-                  <th>Share profile:</th>
-                  <th>{`www.travellog.com/${userName}`}</th>
-                </tr>
-              </thead>
-            </table>
+          <div className="flex">
+            <div className="first">
+              <div className="item__info">
+                {user.profilePicture ? (
+                  <div
+                    className="profile-picture-normal"
+                    style={{ backgroundImage: `url(${user.profilePicture})` }}
+                  />
+                ) : (
+                  <></>
+                )}
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Cities visited:</th>
+                      <th>{user.citiesVisited}</th>
+                    </tr>
+                    <tr>
+                      <th>Your first name:</th>
+                      <th>{user.firstName}</th>
+                    </tr>
+                    <tr>
+                      <th>Your last name:</th>
+                      <th>{user.lastName}</th>
+                    </tr>
+                    <tr>
+                      <th>Your username:</th>
+                      <th>{userName}</th>
+                    </tr>
+                    <tr>
+                      <th>Your email:</th>
+                      <th>{email}</th>
+                    </tr>
+                    <tr>
+                      <th>Followers:</th>
+                      <th>{followerAmount}</th>
+                    </tr>
+                    <tr>
+                      <th>Following:</th>
+                      <th>{followingAmount}</th>
+                    </tr>
+                    <tr>
+                      <th>Share profile:</th>
+                      <th>{`www.travellog.com/${userName}`}</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+              <Link to={`/${userName}/edit`}>
+                <button className="edit">Edit profile</button>
+              </Link>
+            </div>
+            <div className="second">
+              <Mapbox />
+            </div>
           </div>
-          <Link to={`/${userName}/edit`}>
-            <button className="edit">Edit profile</button>
-          </Link>
         </section>
       </>
     );
