@@ -24,7 +24,7 @@ function PlacesSuggested() {
   useEffect(
     function () {
       setLoading(true);
-      fetch(`https://localhost:7209/${userName}/suggestions`)
+      fetch(`${process.env.REACT_APP_API_LINK}/${userName}/suggestions`)
         .then((res) => res.json())
         .then((data) => setSuggestions(data))
         .then((e) => {

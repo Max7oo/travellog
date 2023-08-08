@@ -15,6 +15,7 @@ public static class SuggestionAPI
         app.MapDelete("/{userName}/suggestions/{id}", Delete);
     }
 
+    [HttpGet(Name = "Get_All")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> GetAll(string userName, ISuggestionRepository context)
@@ -32,6 +33,7 @@ public static class SuggestionAPI
         }
     }
 
+    [HttpGet(Name = "Get_ById")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> GetById(string userName, int id, ISuggestionRepository context)
@@ -52,6 +54,7 @@ public static class SuggestionAPI
         }
     }
 
+    [HttpPost(Name = "Add_Suggestion")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     private static async Task<IResult> Add(string userName, Suggestion suggestion, ISuggestionRepository context)
@@ -67,6 +70,10 @@ public static class SuggestionAPI
             return Results.Problem(ex.Message);
         }
     }
+
+    [HttpPatch(Name = "Update_Suggestion")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     private static async Task<IResult> Update(Suggestion suggestion, ISuggestionRepository context)
     {
         try
@@ -84,6 +91,7 @@ public static class SuggestionAPI
         }
     }
 
+    [HttpDelete(Name = "Delete_Suggestion")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> Delete(string userName, int id, ISuggestionRepository context)

@@ -12,6 +12,7 @@ public static class CommentAPI
         app.MapGet("/comments", GetByPlaceId);
     }
 
+    [HttpPost(Name = "Add_comment")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> Add(string username, Comment comment, ICommentRepository context, IUserRepository usercontext, IPlaceRepository placecontext)
@@ -33,6 +34,7 @@ public static class CommentAPI
         }
     }
 
+    [HttpGet(Name = "Get_ByPlaceId")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> GetByPlaceId(int placeId, ICommentRepository context)

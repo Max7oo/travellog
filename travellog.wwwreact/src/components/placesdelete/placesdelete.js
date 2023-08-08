@@ -21,7 +21,7 @@ function PlacesDelete(props) {
   });
 
   useEffect(function () {
-    fetch(`https://localhost:7209/${userName}/places/${params.id}`)
+    fetch(`${process.env.REACT_APP_API_LINK}/${userName}/places/${params.id}`)
       .then((res) => res.json())
       .then((data) => setPlace(data));
   }, []);
@@ -37,12 +37,15 @@ function PlacesDelete(props) {
         },
       }
     );
-    await fetch(`https://localhost:7209/${userName}/places/${params.id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    await fetch(
+      `${process.env.REACT_APP_API_LINK}/${userName}/places/${params.id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     navigate(`/${userName}/places`);
   };
 
@@ -93,7 +96,7 @@ function PlacesDelete(props) {
                   <img
                     src={place.fileUrl}
                     alt={place.city}
-                    className="item__info_image"
+                    className="item__info__image"
                   />
                 ) : (
                   <></>

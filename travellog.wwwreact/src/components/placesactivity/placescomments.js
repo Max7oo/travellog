@@ -27,7 +27,7 @@ function PlacesComments({ id }) {
 
   useEffect(
     function () {
-      fetch(`https://localhost:7209/comments?placeId=${id}`)
+      fetch(`${process.env.REACT_APP_API_LINK}/comments?placeId=${id}`)
         .then((res) => res.json())
         .then((data) => {
           if (data.length >= 3) {
@@ -51,7 +51,7 @@ function PlacesComments({ id }) {
 
   const likePlace = async (id) => {
     await fetch(
-      `https://localhost:7209/like/${userName}/{id}?placeid=${id}`
+      `${process.env.REACT_APP_API_LINK}/like/${userName}/{id}?placeid=${id}`
     ).then(setIsLiked(!isLiked));
   };
 
@@ -72,7 +72,7 @@ function PlacesComments({ id }) {
   const handleSubmit = (id) => {
     formData.postedAt = Date.now().toString();
     formData.placeId = id;
-    fetch(`https://localhost:7209/${userName}/add/comment`, {
+    fetch(`${process.env.REACT_APP_API_LINK}/${userName}/add/comment`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

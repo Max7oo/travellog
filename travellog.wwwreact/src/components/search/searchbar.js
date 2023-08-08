@@ -6,7 +6,7 @@ function SearchBar({ setResults }) {
   const [input, setInput] = useState("");
 
   const fetchData = (value) => {
-    fetch(`https://localhost:7209/users`)
+    fetch(`${process.env.REACT_APP_API_LINK}/users`)
       .then((res) => res.json())
       .then((data) => {
         const results = data.filter((user) => {

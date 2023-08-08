@@ -44,7 +44,7 @@ function EditProfile() {
 
   useEffect(
     function () {
-      fetch(`https://localhost:7209/users/edit/${userName}/${email}`)
+      fetch(`${process.env.REACT_APP_API_LINK}/users/edit/${userName}/${email}`)
         .then((res) => res.json())
         .then((data) => {
           setFormData(data);
@@ -57,7 +57,7 @@ function EditProfile() {
     e.preventDefault();
     if (image === oldImage) {
       const formDataComplete = { ...formData, userName: userName };
-      await fetch(`https://localhost:7209/users`, {
+      await fetch(`${process.env.REACT_APP_API_LINK}/users`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -106,7 +106,7 @@ function EditProfile() {
       //   "-" +
       //   Date.now().toString();
       const formDataComplete = { ...formData, userName: userName };
-      await fetch(`https://localhost:7209/users`, {
+      await fetch(`${process.env.REACT_APP_API_LINK}/users`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

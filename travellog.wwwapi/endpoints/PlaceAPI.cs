@@ -17,6 +17,7 @@ public static class PlaceAPI
         app.MapGet("/liked/{userName}/{id}", CheckLiked);
     }
 
+    [HttpGet(Name = "Get_All")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> GetAll(string userName, IPlaceRepository context)
@@ -34,6 +35,7 @@ public static class PlaceAPI
         }
     }
 
+    [HttpGet(Name = "Get_ById")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> GetById(string userName, int id, IPlaceRepository context)
@@ -54,6 +56,7 @@ public static class PlaceAPI
         }
     }
 
+    [HttpPost(Name = "Add_Place")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     private static async Task<IResult> Add(string userName, Place place, IPlaceRepository context, IUserRepository usercontext)
@@ -72,6 +75,10 @@ public static class PlaceAPI
             return Results.Problem(ex.Message);
         }
     }
+
+    [HttpPatch(Name = "Update_Place")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     private static async Task<IResult> Update(Place place, IPlaceRepository context)
     {
         try
@@ -89,6 +96,7 @@ public static class PlaceAPI
         }
     }
 
+    [HttpDelete(Name = "Delete_Place")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> Delete(string userName, int id, IPlaceRepository context, IUserRepository usercontext)
@@ -108,6 +116,7 @@ public static class PlaceAPI
         }
     }
 
+    [HttpGet(Name = "Like_Place")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> LikePlace(string username, int placeid, IPlaceRepository context)
@@ -133,6 +142,7 @@ public static class PlaceAPI
         }
     }
 
+    [HttpGet(Name = "Get_Liked")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> CheckLiked(string username, int placeid, IPlaceRepository context)

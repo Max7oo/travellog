@@ -17,7 +17,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await fetch(
-      `https://localhost:7209/users/${formData.email}/${formData.password}`
+      `${process.env.REACT_APP_API_LINK}/users/${formData.email}/${formData.password}`
     )
       .then((res) => {
         if (!res.ok) {

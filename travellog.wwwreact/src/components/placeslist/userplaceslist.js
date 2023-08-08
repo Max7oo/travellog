@@ -21,7 +21,7 @@ function UserPlacesList() {
   useEffect(
     function () {
       setLoading(true);
-      fetch(`https://localhost:7209/${user.userName}/places`)
+      fetch(`${process.env.REACT_APP_API_LINK}/${user.userName}/places`)
         .then((res) => res.json())
         .then((data) => {
           setPlaces(data);

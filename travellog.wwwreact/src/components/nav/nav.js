@@ -191,7 +191,7 @@ function Nav() {
               <Link to={`/${userName}`}>
                 <img
                   src={profilePicture}
-                  className="profile-picture-mini"
+                  className="profile-picture-small"
                   alt={userName}
                 />
               </Link>

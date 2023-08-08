@@ -89,6 +89,18 @@ button:hover {
   background-size: cover;
 }
 
+.profile-picture-small {
+  display: inline-block;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin-bottom: 13px;
+
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
 .profile-picture-mini {
   display: inline-block;
   width: 50px;
@@ -154,7 +166,7 @@ p {
 }
 
 .bold {
-  font-weight: 600;
+  font-weight: 600 !important;
 }
 
 a {

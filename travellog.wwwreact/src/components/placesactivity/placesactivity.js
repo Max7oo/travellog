@@ -17,7 +17,7 @@ function PlacesActivity() {
   useEffect(
     function () {
       setLoading(true);
-      fetch(`https://localhost:7209/activity/${userName}`)
+      fetch(`${process.env.REACT_APP_API_LINK}/activity/${userName}`)
         .then((res) => res.json())
         .then((data) => setPlaces(data))
         .then((e) => {
@@ -46,76 +46,87 @@ function PlacesActivity() {
               ) : (
                 <></>
               )}
-              {places.map((place, index) => {
-                const {
-                  id,
-                  follower,
-                  followerUserName,
-                  followerPicture,
-                  country,
-                  city,
-                  rating,
-                  visitedAt,
-                  stayedFor,
-                  fileUrl,
-                  story,
-                } = place;
-                return (
-                  <div className="activity__place" key={index}>
-                    <div className="activity__place__user">
-                      <Link to={`/user/${followerUserName}`}>
-                        <div className="activity__place__profile">
-                          {followerPicture ? (
-                            <div
-                              className="activity__place__profile__picture"
-                              style={{
-                                backgroundImage: `url(${followerPicture})`,
-                              }}
+              {loading === false && places.length === 0 ? (
+                <tr>
+                  <th className="bold">
+                    Whenever you start following other users, this will be the
+                    place to view newly added places by them.
+                  </th>
+                </tr>
+              ) : (
+                <>
+                  {places.map((place, index) => {
+                    const {
+                      id,
+                      follower,
+                      followerUserName,
+                      followerPicture,
+                      country,
+                      city,
+                      rating,
+                      visitedAt,
+                      stayedFor,
+                      fileUrl,
+                      story,
+                    } = place;
+                    return (
+                      <div className="activity__place" key={index}>
+                        <div className="activity__place__user">
+                          <Link to={`/user/${followerUserName}`}>
+                            <div className="activity__place__profile">
+                              {followerPicture ? (
+                                <div
+                                  className="activity__place__profile__picture"
+                                  style={{
+                                    backgroundImage: `url(${followerPicture})`,
+                                  }}
+                                />
+                              ) : (
+                                <></>
+                              )}
+                              <div className="activity__place__profile__info">
+                                <h3>{follower}</h3>
+                                <p>{followerUserName}</p>
+                              </div>
+                            </div>
+                          </Link>
+                        </div>
+                        <div className="activity__place__text">
+                          <p>
+                            <a
+                              href={`/user/${followerUserName}`}
+                              className="sub-link"
+                            >
+                              @{follower}
+                            </a>{" "}
+                            has visited {city}, {country} on {visitedAt} and
+                            stayed there for {stayedFor} days.
+                          </p>
+                          <p>"{story}"</p>
+                        </div>
+                        {fileUrl ? (
+                          <div className="activity__image">
+                            <div className="activity__image__overlay">
+                              <div className="activity__image__rating">
+                                <h2>{rating}</h2>
+                                <p className="medium-small-hide bold">/10</p>
+                              </div>
+                            </div>
+                            <img
+                              src={fileUrl}
+                              alt={city}
+                              className="item__info__image"
                             />
-                          ) : (
-                            <></>
-                          )}
-                          <div className="activity__place__profile__info">
-                            <h3>{follower}</h3>
-                            <p>{followerUserName}</p>
                           </div>
-                        </div>
-                      </Link>
-                    </div>
-                    <div className="activity__place__text">
-                      <p>
-                        <a
-                          href={`/user/${followerUserName}`}
-                          className="sub-link"
-                        >
-                          @{follower}
-                        </a>{" "}
-                        has visited {city}, {country} on {visitedAt} and stayed
-                        there for {stayedFor} days.
-                      </p>
-                      <p>"{story}"</p>
-                    </div>
-                    {fileUrl ? (
-                      <div className="activity__image">
-                        <div className="activity__image__overlay">
-                          <div className="activity__image__rating">
-                            <h2>{rating}</h2>
-                            <p className="medium-small-hide bold">/10</p>
-                          </div>
-                        </div>
-                        <img
-                          src={fileUrl}
-                          alt={city}
-                          className="item__info__image"
-                        />
+                        ) : (
+                          <></>
+                        )}
+                        <PlacesComments id={id} />
                       </div>
-                    ) : (
-                      <></>
-                    )}
-                    <PlacesComments id={id} />
-                  </div>
-                );
-              })}
+                    );
+                  })}
+                </>
+              )}
             </div>
           </div>
           <div className="second">

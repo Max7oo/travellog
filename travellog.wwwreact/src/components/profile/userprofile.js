@@ -34,7 +34,7 @@ function UserProfile() {
 
   useEffect(
     function () {
-      fetch(`https://localhost:7209/${params.userName}`)
+      fetch(`${process.env.REACT_APP_API_LINK}/${params.userName}`)
         .then((res) => res.json())
         .then((data) => {
           setUser(data);
@@ -46,20 +46,22 @@ function UserProfile() {
 
   useEffect(function () {
     fetch(
-      `https://localhost:7209/checkfollowing/${userName}/${params.userName}`
+      `${process.env.REACT_APP_API_LINK}/checkfollowing/${userName}/${params.userName}`
     )
       .then((res) => res.json())
       .then((data) => setFollowing(data));
   }, []);
 
   useEffect(function () {
-    fetch(`https://localhost:7209/followeramount/${params.userName}`)
+    fetch(`${process.env.REACT_APP_API_LINK}/followeramount/${params.userName}`)
       .then((res) => res.json())
       .then((data) => setFollowerAmount(data));
   }, []);
 
   useEffect(function () {
-    fetch(`https://localhost:7209/followingamount/${params.userName}`)
+    fetch(
+      `${process.env.REACT_APP_API_LINK}/followingamount/${params.userName}`
+    )
       .then((res) => res.json())
       .then((data) => setFollowingAmount(data));
   }, []);
@@ -67,7 +69,7 @@ function UserProfile() {
   const followUser = async (e) => {
     e.preventDefault();
     await fetch(
-      `https://localhost:7209/addfollower/${userName}/${params.userName}`
+      `${process.env.REACT_APP_API_LINK}/addfollower/${userName}/${params.userName}`
     )
       .then(setFollowing(!following))
       .then(

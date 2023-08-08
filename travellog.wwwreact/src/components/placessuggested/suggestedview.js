@@ -23,12 +23,15 @@ function SuggestedView() {
   });
 
   const deleteSuggestion = async (e) => {
-    await fetch(`https://localhost:7209/${userName}/suggestions/${params.id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    await fetch(
+      `${process.env.REACT_APP_API_LINK}/${userName}/suggestions/${params.id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     navigate(`/${userName}/places/suggested`);
   };
 

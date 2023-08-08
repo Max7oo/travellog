@@ -37,7 +37,7 @@ function PlacesRequest(props) {
   useEffect(
     function () {
       setLoading(true);
-      fetch(`https://localhost:7209/${userName}/places`)
+      fetch(`${process.env.REACT_APP_API_LINK}/${userName}/places`)
         .then((res) => res.json())
         .then((data) => {
           data.sort((a, b) => (a.city > b.city ? 1 : -1));
@@ -105,7 +105,7 @@ function PlacesRequest(props) {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    await fetch(`https://localhost:7209/${userName}/suggestions`, {
+    await fetch(`${process.env.REACT_APP_API_LINK}/${userName}/suggestions`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

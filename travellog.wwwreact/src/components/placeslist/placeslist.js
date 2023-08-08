@@ -31,7 +31,7 @@ function PlacesList(props) {
   useEffect(
     function () {
       setLoading(true);
-      fetch(`https://localhost:7209/${params.userName}/places`)
+      fetch(`${process.env.REACT_APP_API_LINK}/${params.userName}/places`)
         .then((res) => res.json())
         .then((data) => {
           setPlaces(data);
@@ -90,6 +90,10 @@ function PlacesList(props) {
       setPlaces(sorted);
       setOrder("ASC");
     }
+  };
+
+  const navigateToPlace = async (id) => {
+    navigate(`/${userName}/places/${id}`);
   };
 
   const indexOfLastPlace = currentPage * placesPerPage;
@@ -172,17 +176,23 @@ function PlacesList(props) {
                   </tr>
                 </thead>
                 <tbody>
-                  {currentPlaces.length === 0 ? (
+                  {loading === false && currentPlaces.length === 0 ? (
                     <tr>
                       <th className="bold">Start by adding some places</th>
                     </tr>
                   ) : (
                     <>
                       {currentPlaces.map((place, index) => {
-                        const { country, city, rating, visitedAt, stayedFor } =
-                          place;
+                        const {
+                          id,
+                          country,
+                          city,
+                          rating,
+                          visitedAt,
+                          stayedFor,
+                        } = place;
                         return (
-                          <tr key={index}>
+                          <tr key={index} onClick={() => navigateToPlace(id)}>
                             <th className="medium-small-hide">{country}</th>
                             <th>{city}</th>
                             <th>{rating}</th>
@@ -190,15 +200,21 @@ function PlacesList(props) {
                             <th className="medium-hide">{stayedFor}</th>
                             <th>
                               <Link to={`/${userName}/places/${place.id}`}>
-                                <button className="view">View</button>
+                                <button className="view large-hide">
+                                  View
+                                </button>
                               </Link>
                               <Link to={`/${userName}/places/edit/${place.id}`}>
-                                <button className="edit">Edit</button>
+                                <button className="edit large-hide">
+                                  Edit
+                                </button>
                               </Link>
                               <Link
                                 to={`/${userName}/places/delete/${place.id}`}
                               >
-                                <button className="delete">Delete</button>
+                                <button className="delete large-hide">
+                                  Delete
+                                </button>
                               </Link>
                             </th>
                           </tr>

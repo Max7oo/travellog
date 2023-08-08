@@ -41,7 +41,7 @@ function PlacesEdit(props) {
   });
 
   useEffect(function () {
-    fetch(`https://localhost:7209/${userName}/places/${params.id}`)
+    fetch(`${process.env.REACT_APP_API_LINK}/${userName}/places/${params.id}`)
       .then((res) => res.json())
       .then((data) => setFormData(data));
   }, []);
@@ -49,14 +49,14 @@ function PlacesEdit(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (image === oldImage) {
-      await fetch(`https://localhost:7209/${userName}/places`, {
+      await fetch(`${process.env.REACT_APP_API_LINK}/${userName}/places`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
-      await fetch(`https://localhost:7209/${userName}/places`)
+      await fetch(`${process.env.REACT_APP_API_LINK}/${userName}/places`)
         .then((res) => res.json())
         .then((data) => setPlaces(data));
       navigate(`/${params.userName}/places`);
@@ -94,14 +94,14 @@ function PlacesEdit(props) {
     }
 
     const uploadFormData = async (formData) => {
-      await fetch(`https://localhost:7209/${userName}/places`, {
+      await fetch(`${process.env.REACT_APP_API_LINK}/${userName}/places`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
-      await fetch(`https://localhost:7209/${userName}/places`)
+      await fetch(`${process.env.REACT_APP_API_LINK}/${userName}/places`)
         .then((res) => res.json())
         .then((data) => setPlaces(data));
       navigate(`/${params.userName}/places`);

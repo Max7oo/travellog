@@ -36,7 +36,7 @@ function Profile() {
 
   useEffect(
     function () {
-      fetch(`https://localhost:7209/${userName}/${email}`)
+      fetch(`${process.env.REACT_APP_API_LINK}/${userName}/${email}`)
         .then((res) => res.json())
         .then((data) => setUser(data));
     },
@@ -45,7 +45,7 @@ function Profile() {
 
   useEffect(
     function () {
-      fetch(`https://localhost:7209/followeramount/${userName}`)
+      fetch(`${process.env.REACT_APP_API_LINK}/followeramount/${userName}`)
         .then((res) => res.json())
         .then((data) => setFollowerAmount(data));
     },
@@ -54,7 +54,7 @@ function Profile() {
 
   useEffect(
     function () {
-      fetch(`https://localhost:7209/followingamount/${userName}`)
+      fetch(`${process.env.REACT_APP_API_LINK}/followingamount/${userName}`)
         .then((res) => res.json())
         .then((data) => setFollowingAmount(data));
     },
@@ -118,7 +118,7 @@ function Profile() {
                     </tr>
                     <tr>
                       <th>Share profile:</th>
-                      <th>{`www.travellog.com/${userName}`}</th>
+                      <th>{`www.travel-log.nl/${userName}`}</th>
                     </tr>
                   </thead>
                 </table>

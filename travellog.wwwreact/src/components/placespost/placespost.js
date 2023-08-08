@@ -71,13 +71,16 @@ function PlacesPost(props) {
 
   const uploadFormData = async (formData) => {
     // e.preventDefault();
-    const res = await fetch(`https://localhost:7209/${userName}/places`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+    const res = await fetch(
+      `${process.env.REACT_APP_API_LINK}/${userName}/places`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }
+    );
     res.json().then((data) => {
       setPlaces([...places, data]);
       navigate(`/${userName}/places`);

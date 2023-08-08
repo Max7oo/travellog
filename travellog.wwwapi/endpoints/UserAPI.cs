@@ -24,6 +24,7 @@ public static class UserAPI
         app.MapDelete("/users/{id}", Delete);
     }
 
+    [HttpGet(Name = "Get_All")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> GetAll(IUserRepository context)
@@ -41,6 +42,7 @@ public static class UserAPI
         }
     }
 
+    [HttpGet(Name = "Get_ById")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> GetById(int id, IUserRepository context)
@@ -61,6 +63,7 @@ public static class UserAPI
         }
     }
 
+    [HttpGet(Name = "Get_ByEmailPassword")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> GetByEmailPassword(string email, string password, IUserRepository context)
@@ -84,6 +87,7 @@ public static class UserAPI
         }
     }
 
+    [HttpGet(Name = "Get_ByAccount")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> GetByAccount(string username, string email, IUserRepository context)
@@ -107,6 +111,7 @@ public static class UserAPI
         }
     }
 
+    [HttpGet(Name = "Get_ByUsername")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> GetByUserName(string username, IUserRepository context)
@@ -130,6 +135,7 @@ public static class UserAPI
         }
     }
 
+    [HttpGet(Name = "Get_ForEdit")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> GetForEdit(string username, string email, IUserRepository context)
@@ -153,6 +159,7 @@ public static class UserAPI
         }
     }
 
+    [HttpPost(Name = "Add_Follower")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> AddFollower(string username, string followername, IUserRepository context)
@@ -178,6 +185,7 @@ public static class UserAPI
         }
     }
 
+    [HttpGet(Name = "Get_Following")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> CheckFollowing(string username, string followername, IUserRepository context)
@@ -203,6 +211,7 @@ public static class UserAPI
         }
     }
 
+    [HttpGet(Name = "Get_FollowerAmount")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> FollowerAmount(string username, IUserRepository context)
@@ -222,6 +231,7 @@ public static class UserAPI
         }
     }
 
+    [HttpGet(Name = "Get_FollowingAmount")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> FollowingAmount(string username, IUserRepository context)
@@ -241,6 +251,7 @@ public static class UserAPI
         }
     }
 
+    [HttpGet(Name = "Get_Activity")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> GetActivity(string username, IUserRepository context)
@@ -260,7 +271,7 @@ public static class UserAPI
         }
     }
 
-
+    [HttpPost(Name = "Add_User")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> Add(User user, IUserRepository context)
@@ -275,6 +286,10 @@ public static class UserAPI
             return Results.Problem(ex.Message);
         }
     }
+
+    [HttpPatch(Name = "Update_User")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> Update(User user, IUserRepository context)
     {
         try
@@ -292,6 +307,7 @@ public static class UserAPI
         }
     }
 
+    [HttpDelete(Name = "Delete_User")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     private static async Task<IResult> Delete(int id, IUserRepository context)

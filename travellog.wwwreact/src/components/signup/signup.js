@@ -63,7 +63,7 @@ function SignUp() {
       "-" +
       Date.now().toString();
     const formDataComplete = { ...formData, userName: userName };
-    await fetch(`https://localhost:7209/users`, {
+    await fetch(`${process.env.REACT_APP_API_LINK}/users`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
