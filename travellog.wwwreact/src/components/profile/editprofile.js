@@ -33,6 +33,7 @@ function EditProfile() {
   const [image, setImage] = useState(defaultImageSrc);
   const [oldImage] = useState(defaultImageSrc);
   const [previewImage, setPreviewImage] = useState(initialPreviewImage);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   useEffect(function () {
     if (localStorage.length === 0) {
@@ -56,6 +57,8 @@ function EditProfile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (image === oldImage) {
+      setIsButtonDisabled(true);
+
       const formDataComplete = { ...formData, userName: userName };
       await fetch(`${process.env.REACT_APP_API_LINK}/users`, {
         method: "PATCH",
@@ -64,8 +67,12 @@ function EditProfile() {
         },
         body: JSON.stringify(formDataComplete),
       });
+      setTimeout(() => {
+        setIsButtonDisabled(false);
+      }, 5000);
       navigate(`/${userName}`);
     } else if (image !== oldImage) {
+      setIsButtonDisabled(true);
       await fetch(
         `https://api.upload.io/v2/accounts/${process.env.REACT_APP_ID_UPLOAD}/files?filePath=${formData.profilePicturePath}`,
         {
@@ -113,6 +120,9 @@ function EditProfile() {
         },
         body: JSON.stringify(formDataComplete),
       });
+      setTimeout(() => {
+        setIsButtonDisabled(false);
+      }, 5000);
       navigate(`/${userName}`);
     };
   };
@@ -202,10 +212,20 @@ function EditProfile() {
           />
 
           <div className="buttons">
-            <button type="submit">Save edits</button>
-            <Link onClick={goBack}>
-              <button className="cancel">Cancel</button>
-            </Link>
+            {isButtonDisabled ? (
+              <>
+                <div className="spinner-container">
+                  <div className="loading-spinner-mini"></div>
+                </div>
+              </>
+            ) : (
+              <>
+                <button type="submit">Save edits</button>
+                <Link onClick={goBack}>
+                  <button className="cancel">Cancel</button>
+                </Link>
+              </>
+            )}
           </div>
         </form>
       </section>

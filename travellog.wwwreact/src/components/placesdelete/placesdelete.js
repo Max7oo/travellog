@@ -4,13 +4,13 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import Nav from "../nav/nav";
 import Mapbox from "../mapbox/mapbox";
 
-function PlacesDelete(props) {
+function PlacesDelete() {
   const navigate = useNavigate();
   const params = useParams();
 
-  const { setPlaces } = props;
   const userName = localStorage.getItem("UserName");
   const [place, setPlace] = useState();
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   useEffect(function () {
     if (localStorage.length === 0) {
@@ -27,6 +27,7 @@ function PlacesDelete(props) {
   }, []);
 
   const deletePlace = async (e) => {
+    setIsButtonDisabled(true);
     await fetch(
       `https://api.upload.io/v2/accounts/${process.env.REACT_APP_ID_UPLOAD}/files?filePath=${place.filePath}`,
       {
@@ -46,6 +47,9 @@ function PlacesDelete(props) {
         },
       }
     );
+    setTimeout(() => {
+      setIsButtonDisabled(false);
+    }, 5000);
     navigate(`/${userName}/places`);
   };
 
@@ -106,10 +110,20 @@ function PlacesDelete(props) {
                 <p className="bold">
                   Are you sure you want to delete this place?
                 </p>
-                <button onClick={deletePlace}>Yes</button>
-                <Link onClick={goBack}>
-                  <button className="cancel">No</button>
-                </Link>
+                {isButtonDisabled ? (
+                  <>
+                    <div className="spinner-container">
+                      <div className="loading-spinner-mini"></div>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <button onClick={deletePlace}>Yes</button>
+                    <Link onClick={goBack}>
+                      <button className="cancel">No</button>
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
             <div className="second">

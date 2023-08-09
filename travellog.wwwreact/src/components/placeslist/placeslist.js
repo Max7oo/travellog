@@ -92,10 +92,6 @@ function PlacesList(props) {
     }
   };
 
-  const navigateToPlace = async (id) => {
-    navigate(`/${userName}/places/${id}`);
-  };
-
   const indexOfLastPlace = currentPage * placesPerPage;
   const indexOfFirstPlace = indexOfLastPlace - placesPerPage;
   const currentPlaces = places.slice(indexOfFirstPlace, indexOfLastPlace);
@@ -192,7 +188,7 @@ function PlacesList(props) {
                           stayedFor,
                         } = place;
                         return (
-                          <tr key={index} onClick={() => navigateToPlace(id)}>
+                          <tr key={index}>
                             <th className="medium-small-hide">{country}</th>
                             <th>{city}</th>
                             <th>{rating}</th>
@@ -200,9 +196,7 @@ function PlacesList(props) {
                             <th className="medium-hide">{stayedFor}</th>
                             <th>
                               <Link to={`/${userName}/places/${place.id}`}>
-                                <button className="view large-hide">
-                                  View
-                                </button>
+                                <button className="view">View</button>
                               </Link>
                               <Link to={`/${userName}/places/edit/${place.id}`}>
                                 <button className="edit large-hide">

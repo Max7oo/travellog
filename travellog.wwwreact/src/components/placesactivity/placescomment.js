@@ -24,19 +24,22 @@ function PlacesComments({ id, postedAt, text }) {
   //   [id, setUser]
   // );
 
-  useEffect(function () {
-    let value = (now - then) / 1000 / 60;
+  useEffect(
+    function () {
+      let value = (now - then) / 1000 / 60;
 
-    if (value <= 60) {
-      setTime(`${Math.round(value)}m`);
-    } else if (value > 60 && value < 1440) {
-      value = value / 60;
-      setTime(`${Math.round(value)}h`);
-    } else if (value >= 1440) {
-      value = value / 1440;
-      setTime(`${Math.round(value)}d`);
-    }
-  });
+      if (value <= 60) {
+        setTime(`${Math.round(value)}m`);
+      } else if (value > 60 && value < 1440) {
+        value = value / 60;
+        setTime(`${Math.round(value)}h`);
+      } else if (value >= 1440) {
+        value = value / 1440;
+        setTime(`${Math.round(value)}d`);
+      }
+    },
+    [now, setTime, then]
+  );
 
   return (
     <>

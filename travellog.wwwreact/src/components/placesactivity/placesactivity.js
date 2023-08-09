@@ -47,12 +47,10 @@ function PlacesActivity() {
                 <></>
               )}
               {loading === false && places.length === 0 ? (
-                <tr>
-                  <th className="bold">
-                    Whenever you start following other users, this will be the
-                    place to view newly added places by them.
-                  </th>
-                </tr>
+                <p className="bold blue">
+                  Whenever you start following other users, this will be the
+                  place to view newly added places by them.
+                </p>
               ) : (
                 <>
                   {places.map((place, index) => {

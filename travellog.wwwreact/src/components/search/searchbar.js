@@ -23,7 +23,7 @@ function SearchBar({ setResults }) {
 
   const handleChange = (value) => {
     setInput(value);
-    fetchData(value);
+    fetchData(value.toLowerCase());
   };
 
   return (

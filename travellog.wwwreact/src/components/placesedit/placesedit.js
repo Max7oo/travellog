@@ -31,6 +31,7 @@ function PlacesEdit(props) {
   const [image, setImage] = useState(defaultImageSrc);
   const [oldImage] = useState(defaultImageSrc);
   const [previewImage, setPreviewImage] = useState(initialPreviewImage);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   useEffect(function () {
     if (localStorage.length === 0) {
@@ -48,6 +49,7 @@ function PlacesEdit(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsButtonDisabled(true);
     if (image === oldImage) {
       await fetch(`${process.env.REACT_APP_API_LINK}/${userName}/places`, {
         method: "PATCH",
@@ -59,6 +61,9 @@ function PlacesEdit(props) {
       await fetch(`${process.env.REACT_APP_API_LINK}/${userName}/places`)
         .then((res) => res.json())
         .then((data) => setPlaces(data));
+      setTimeout(() => {
+        setIsButtonDisabled(false);
+      }, 5000);
       navigate(`/${params.userName}/places`);
     } else if (image !== oldImage) {
       await fetch(
@@ -104,6 +109,9 @@ function PlacesEdit(props) {
       await fetch(`${process.env.REACT_APP_API_LINK}/${userName}/places`)
         .then((res) => res.json())
         .then((data) => setPlaces(data));
+      setTimeout(() => {
+        setIsButtonDisabled(false);
+      }, 5000);
       navigate(`/${params.userName}/places`);
     };
   };
@@ -214,10 +222,20 @@ function PlacesEdit(props) {
               </div>
 
               <div className="buttons">
-                <button type="submit">Save edits</button>
-                <Link onClick={goBack}>
-                  <button className="cancel">Cancel</button>
-                </Link>
+                {isButtonDisabled ? (
+                  <>
+                    <div className="spinner-container">
+                      <div className="loading-spinner-mini"></div>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <button type="submit">Save edits</button>
+                    <Link onClick={goBack}>
+                      <button className="cancel">Cancel</button>
+                    </Link>
+                  </>
+                )}
               </div>
             </form>
           </div>

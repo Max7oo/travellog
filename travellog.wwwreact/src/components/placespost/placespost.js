@@ -32,6 +32,7 @@ function PlacesPost(props) {
   const [formData, setFormData] = useState(initialState);
   const [image, setImage] = useState(defaultImageSrc);
   const [previewImage, setPreviewImage] = useState(initialPreviewImage);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   useEffect(function () {
     if (localStorage.length === 0) {
@@ -48,6 +49,7 @@ function PlacesPost(props) {
 
   const uploadImage = async (e) => {
     // e.preventDefault();
+    setIsButtonDisabled(true);
     const res = await fetch(
       `https://api.upload.io/v2/accounts/${process.env.REACT_APP_ID_UPLOAD}/uploads/binary`,
       {
@@ -85,6 +87,9 @@ function PlacesPost(props) {
       setPlaces([...places, data]);
       navigate(`/${userName}/places`);
     });
+    setTimeout(() => {
+      setIsButtonDisabled(false);
+    }, 5000);
   };
 
   const handleChange = (e) => {
@@ -196,11 +201,21 @@ function PlacesPost(props) {
                 <img src={previewImage.imageSrc} alt="Preview" />
               </div>
 
-              <div className="actions-section">
-                <button className="button blue" type="submit">
-                  Create
-                </button>
-              </div>
+              {isButtonDisabled ? (
+                <>
+                  <div className="spinner-container">
+                    <div className="loading-spinner-mini"></div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="actions-section">
+                    <button className="button" type="submit">
+                      Create
+                    </button>
+                  </div>
+                </>
+              )}
             </form>
           </div>
           <div className="second">

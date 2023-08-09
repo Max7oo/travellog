@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import Nav from "../nav/nav";
@@ -6,13 +6,15 @@ import "./placessuggested.css";
 import React from "react";
 import Mapbox from "../mapbox/mapbox";
 
-function SuggestedView() {
+function SuggestedView({ places }) {
   const location = useLocation();
   const navigate = useNavigate();
   const params = useParams();
 
   const suggestion = location.state;
   const userName = localStorage.getItem("UserName");
+  const [sure, setSure] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   useEffect(function () {
     if (localStorage.length === 0) {
@@ -22,7 +24,16 @@ function SuggestedView() {
     }
   });
 
+  const areYouSure = async (e) => {
+    setSure(true);
+  };
+
+  const cancel = async (e) => {
+    setSure(false);
+  };
+
   const deleteSuggestion = async (e) => {
+    setIsButtonDisabled(true);
     await fetch(
       `${process.env.REACT_APP_API_LINK}/${userName}/suggestions/${params.id}`,
       {
@@ -32,6 +43,9 @@ function SuggestedView() {
         },
       }
     );
+    setTimeout(() => {
+      setIsButtonDisabled(false);
+    }, 5000);
     navigate(`/${userName}/places/suggested`);
   };
 
@@ -58,10 +72,31 @@ function SuggestedView() {
                   />
                 </div>
               </div>
-              <button onClick={deleteSuggestion}>Delete suggestion</button>
+              {sure ? (
+                <>
+                  {isButtonDisabled ? (
+                    <>
+                      <div className="spinner-container">
+                        <div className="loading-spinner-mini"></div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <button onClick={deleteSuggestion}>Yes</button>
+                      <button className="cancel" onClick={cancel}>
+                        Cancel
+                      </button>
+                    </>
+                  )}
+                </>
+              ) : (
+                <>
+                  <button onClick={areYouSure}>Delete suggestion</button>
+                </>
+              )}
             </div>
             <div className="second">
-              <Mapbox />
+              <Mapbox places={places} />
             </div>
           </div>
         </section>

@@ -169,6 +169,14 @@ p {
   font-weight: 600 !important;
 }
 
+.blue {
+  color: #91d4e0 !important;
+}
+
+.red {
+  color: red !important;
+}
+
 a {
   font-family: 'Raleway', sans-serif;
   font-weight: 600;
@@ -229,6 +237,16 @@ input {
     animation: spinner 1.5s linear infinite;
 }
 
+.loading-spinner-mini {
+  margin-top: 25px;
+  width: 15px;
+  height: 15px;
+  border: 3px solid #f3f3f3; /* Light grey */
+  border-top: 3px solid #383636; /* Black */
+  border-radius: 50%;
+  animation: spinner 1.5s linear infinite;
+}
+
 /* Information styling */
 .item {
   margin-top: 25px;
@@ -236,7 +254,7 @@ input {
 
 .item__info {
   margin-top: 25px;
-  padding: 25px;
+  padding: 50px;
   margin: 25px 0px 0px 0px;
   border-radius: 25px;
   background-color: #0f1322;
@@ -346,6 +364,10 @@ input {
 @media only screen and (max-width: 620px) {
   .small-hide {
     display: none;
+  }
+
+  .item__info {
+    padding: 25px;
   }
 
   .profile-picture-normal {

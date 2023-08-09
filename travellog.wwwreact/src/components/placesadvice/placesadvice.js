@@ -25,6 +25,8 @@ function PlacesRequest(props) {
   const [isShown, setIsShown] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [suggestion, setSuggestion] = useState(initialState);
+  const [emptyRequest, setEmptyRequest] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   useEffect(function () {
     if (localStorage.length === 0) {
@@ -76,35 +78,41 @@ function PlacesRequest(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoadingSubmit(true);
-    setIsRequested((current) => !current);
-    setIsShown((current) => !current);
-    await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + process.env.REACT_APP_CHATGPT_API_KEY,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(apiRequestBody),
-    })
-      .then((data) => {
-        return data.json();
+    if (cityList.length !== 0) {
+      setEmptyRequest(false);
+      setLoadingSubmit(true);
+      setIsRequested((current) => !current);
+      setIsShown((current) => !current);
+      await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + process.env.REACT_APP_CHATGPT_API_KEY,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(apiRequestBody),
       })
-      .then((data) => {
-        setMessageChatGPT(data.choices[0].message.content);
-        setSuggestion({
-          basedOn: cityList.toString(),
-          suggestionText: data.choices[0].message.content,
+        .then((data) => {
+          return data.json();
+        })
+        .then((data) => {
+          setMessageChatGPT(data.choices[0].message.content);
+          setSuggestion({
+            basedOn: cityList.toString(),
+            suggestionText: data.choices[0].message.content,
+          });
+        })
+        .then(() => {
+          setLoadingSubmit(false);
+          setIsSaved((current) => !current);
         });
-      })
-      .then(() => {
-        setLoadingSubmit(false);
-        setIsSaved((current) => !current);
-      });
+    } else {
+      setEmptyRequest(true);
+    }
   };
 
   const handleSave = async (e) => {
     e.preventDefault();
+    setIsButtonDisabled(true);
     await fetch(`${process.env.REACT_APP_API_LINK}/${userName}/suggestions`, {
       method: "POST",
       headers: {
@@ -113,6 +121,9 @@ function PlacesRequest(props) {
       body: JSON.stringify(suggestion),
     });
     setIsSaved((current) => !current);
+    setTimeout(() => {
+      setIsButtonDisabled(false);
+    }, 5000);
   };
 
   return (
@@ -169,6 +180,9 @@ function PlacesRequest(props) {
                     advise based on the list of cities above.
                   </p>
                 </div>
+                {emptyRequest && (
+                  <p className="red">Select some cities first</p>
+                )}
                 <button onClick={handleSubmit}>Send request</button>
               </>
             )}
@@ -185,7 +199,19 @@ function PlacesRequest(props) {
                 <div dangerouslySetInnerHTML={{ __html: messageChatGPT }} />
               </div>
             )}
-            {isSaved && <button onClick={handleSave}>Save suggestion</button>}
+            {isButtonDisabled ? (
+              <>
+                <div className="spinner-container">
+                  <div className="loading-spinner-mini"></div>
+                </div>
+              </>
+            ) : (
+              <>
+                {isSaved && (
+                  <button onClick={handleSave}>Save suggestion</button>
+                )}
+              </>
+            )}
           </div>
           <div className="second">
             <Mapbox />

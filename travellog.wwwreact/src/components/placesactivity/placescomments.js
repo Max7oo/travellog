@@ -24,13 +24,15 @@ function PlacesComments({ id }) {
   const [lessThanThree, setLessThanThree] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [showChat, setShowChat] = useState(false);
+  const [emptyComment, setEmptyComment] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   useEffect(
     function () {
       fetch(`${process.env.REACT_APP_API_LINK}/comments?placeId=${id}`)
         .then((res) => res.json())
         .then((data) => {
-          if (data.length >= 3) {
+          if (data.length > 3) {
             setLessThanThree(true);
           }
           setComments(data);
@@ -70,19 +72,29 @@ function PlacesComments({ id }) {
   };
 
   const handleSubmit = (id) => {
-    formData.postedAt = Date.now().toString();
-    formData.placeId = id;
-    fetch(`${process.env.REACT_APP_API_LINK}/${userName}/add/comment`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setComments([...comments, data]);
-      });
+    if (formData.text !== "") {
+      setIsButtonDisabled(true);
+      formData.postedAt = Date.now().toString();
+      formData.placeId = id;
+      setEmptyComment(false);
+      fetch(`${process.env.REACT_APP_API_LINK}/${userName}/add/comment`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setComments([...comments, data]);
+        });
+      formData.text = "";
+      setTimeout(() => {
+        setIsButtonDisabled(false);
+      }, 5000);
+    } else {
+      setEmptyComment(true);
+    }
   };
 
   return (
@@ -162,12 +174,25 @@ function PlacesComments({ id }) {
             onChange={handleChange}
             value={formData.text}
           />
+          {emptyComment && (
+            <p className="red">You cannot post an empty comment.</p>
+          )}
 
-          <div className="activity__comment__button">
-            <button className="button blue" onClick={() => handleSubmit(id)}>
-              Comment
-            </button>
-          </div>
+          {isButtonDisabled ? (
+            <>
+              <div className="spinner-container">
+                <div className="loading-spinner-mini"></div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="activity__comment__button">
+                <button className="button" onClick={() => handleSubmit(id)}>
+                  Comment
+                </button>
+              </div>
+            </>
+          )}
         </div>
       ) : (
         <></>
