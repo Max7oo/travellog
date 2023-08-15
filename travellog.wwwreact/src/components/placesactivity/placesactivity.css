@@ -1,3 +1,8 @@
+.activity__feed {
+    overflow-y: auto;
+    height: calc(100vh - 480px);
+}
+
 .activity__place {
     margin-bottom: 25px;
     padding-bottom: 25px;
@@ -138,6 +143,11 @@
 }
 
 @media only screen and (max-width: 620px) {
+    .activity__feed {
+        overflow-y: auto;
+        height: calc(100vh - 365px);
+    }
+
     .activity__place__profile__picture {
         min-height: 50px;
         min-width: 50px;

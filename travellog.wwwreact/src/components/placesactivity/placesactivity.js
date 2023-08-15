@@ -38,7 +38,7 @@ function PlacesActivity() {
               <SearchBar setResults={setResults} />
               <SearchResults results={results} />
             </div>
-            <div className="item__info">
+            <div className="item__info activity__feed">
               {loading ? (
                 <div className="spinner-container">
                   <div className="loading-spinner"></div>

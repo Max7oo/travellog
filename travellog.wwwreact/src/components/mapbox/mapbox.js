@@ -1,32 +1,10 @@
-import { useState, useEffect } from "react";
-
 import "mapbox-gl/dist/mapbox-gl.css";
 import Map, { Marker } from "react-map-gl";
 import "./mapbox.css";
 import pin from "../../images/pin.svg";
 
 function Mapbox() {
-  const [cityData] = useState([]);
-
-  const places = JSON.parse(localStorage.getItem("Places"));
-
-  useEffect(function () {
-    places.map((place) => {
-      const { country, city } = place;
-      fetch(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${city}%2C%20${country}.json?proximity=ip&access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          cityData.push({
-            name: place.city,
-            latitude: data.features[0].center[1],
-            longitude: data.features[0].center[0],
-          });
-        });
-      return cityData;
-    });
-  });
+  const cityData = JSON.parse(localStorage.getItem("CityData"));
 
   return (
     <>

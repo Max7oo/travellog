@@ -329,7 +329,7 @@ input {
 
 @media only screen and (max-width: 1135px) {
   .large-hide {
-    display: none;
+    display: none !important;
   }
 
   h1 {
@@ -352,16 +352,16 @@ input {
 }
 
 @media only screen and (max-width: 735px) {
-  .medium-small-hide {
-    display: none;
-  }
-
   header {
     min-height: calc(100vh - 295px);
   }
 }
 
 @media only screen and (max-width: 620px) {
+  html {
+    padding: 10px;
+  }
+
   .small-hide {
     display: none;
   }
@@ -392,10 +392,6 @@ input {
 @media only screen and (max-width: 545px) {
   .mobile-hide {
     display: none;
-  }
-
-  html {
-    padding: 10px;
   }
 
   header {
@@ -433,16 +429,14 @@ input {
 }
 
 @media only screen and (max-width: 470px) {
-  .small-mobile-hide {
-    display: none;
-  }
-
-  .mini-mobile-hide {
-    display: none;
-  }
-
   .profile-picture-mini {
     height: 35px;
     width: 35px;
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  .mini-hide {
+    display: none;
   }
 }

@@ -44,23 +44,32 @@ function PlacesList(props) {
     [params.userName, setPlaces]
   );
 
-  useEffect(function () {
-    places.map((place) => {
-      const { country, city } = place;
-      fetch(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${city}%2C%20${country}.json?proximity=ip&access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          cityData.push({
-            name: place.city,
-            latitude: data.features[0].center[1],
-            longitude: data.features[0].center[0],
+  useEffect(
+    function () {
+      places.map((place) => {
+        const { country, city } = place;
+        fetch(
+          `https://api.mapbox.com/geocoding/v5/mapbox.places/${city}%2C%20${country}.json?proximity=ip&access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            cityData.push({
+              name: place.city,
+              latitude: data.features[0].center[1],
+              longitude: data.features[0].center[0],
+            });
           });
-        });
-      return cityData;
-    });
-  });
+        return cityData;
+      });
+      localStorage.removeItem("CityData");
+      localStorage.setItem("CityData", JSON.stringify(cityData));
+    },
+    [cityData, places]
+  );
+
+  const navigateTo = (id) => {
+    navigate(`/${userName}/places/${id}`);
+  };
 
   const sortingABC = (col) => {
     if (order === "ASC") {
@@ -119,18 +128,11 @@ function PlacesList(props) {
         <div className="flex-list">
           <div className="first-list">
             <div className="table">
-              {loading ? (
-                <div className="spinner-container">
-                  <div className="loading-spinner"></div>
-                </div>
-              ) : (
-                <></>
-              )}
               <table>
                 <thead>
                   <tr>
                     <th
-                      className="medium-small-hide"
+                      className="mini-hide"
                       onClick={() => sortingABC("country")}
                     >
                       <span>
@@ -168,7 +170,7 @@ function PlacesList(props) {
                         <img src={filter} alt="filter" />
                       </span>
                     </th>
-                    <th></th>
+                    <th className="large-hide"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -188,27 +190,23 @@ function PlacesList(props) {
                           stayedFor,
                         } = place;
                         return (
-                          <tr key={index}>
-                            <th className="medium-small-hide">{country}</th>
+                          <tr key={index} onClick={() => navigateTo(id)}>
+                            <th className="mini-hide">{country}</th>
                             <th>{city}</th>
                             <th>{rating}</th>
                             <th className="small-hide">{visitedAt}</th>
                             <th className="medium-hide">{stayedFor}</th>
-                            <th>
+                            <th className="large-hide">
                               <Link to={`/${userName}/places/${place.id}`}>
                                 <button className="view">View</button>
                               </Link>
                               <Link to={`/${userName}/places/edit/${place.id}`}>
-                                <button className="edit large-hide">
-                                  Edit
-                                </button>
+                                <button className="edit">Edit</button>
                               </Link>
                               <Link
                                 to={`/${userName}/places/delete/${place.id}`}
                               >
-                                <button className="delete large-hide">
-                                  Delete
-                                </button>
+                                <button className="delete">Delete</button>
                               </Link>
                             </th>
                           </tr>
@@ -218,6 +216,13 @@ function PlacesList(props) {
                   )}
                 </tbody>
               </table>
+              {loading ? (
+                <div className="spinner-container">
+                  <div className="loading-spinner"></div>
+                </div>
+              ) : (
+                <></>
+              )}
               <div className="pagination">
                 {pageNumbers.map((number) => (
                   <p

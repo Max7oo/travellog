@@ -6,7 +6,7 @@ import "./placessuggested.css";
 import React from "react";
 import Mapbox from "../mapbox/mapbox";
 
-function SuggestedView({ places }) {
+function SuggestedView() {
   const location = useLocation();
   const navigate = useNavigate();
   const params = useParams();
@@ -96,7 +96,7 @@ function SuggestedView({ places }) {
               )}
             </div>
             <div className="second">
-              <Mapbox places={places} />
+              <Mapbox />
             </div>
           </div>
         </section>

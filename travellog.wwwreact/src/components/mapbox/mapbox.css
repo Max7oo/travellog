@@ -1,5 +1,5 @@
 .mapbox {
-    height: 800px;
+    height: calc(100vh - 380px);
     margin-top: 25px;
 }
 
@@ -20,7 +20,6 @@
     }
 
     .mapbox {
-        height: 600px;
         max-width: 3000px;
     }
 }
@@ -28,11 +27,5 @@
 @media only screen and (max-width: 1050px) {
     .mapbox {
         height: 600px;
-    }
-}
-
-@media only screen and (max-width: 1050px) {
-    .mapbox {
-        height: 400px;
     }
 }

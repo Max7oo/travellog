@@ -10,16 +10,15 @@ const initialState = {
   suggestionText: "",
 };
 
-function PlacesRequest(props) {
+function PlacesRequest() {
   const params = useParams();
   const navigate = useNavigate();
 
-  const { places, setPlaces } = props;
+  const places = JSON.parse(localStorage.getItem("Places"));
   const userName = localStorage.getItem("UserName");
   const [cityList] = useState([]);
 
   const [messageChatGPT, setMessageChatGPT] = useState();
-  const [loading, setLoading] = useState(false);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [isRequested, setIsRequested] = useState(true);
   const [isShown, setIsShown] = useState(false);
@@ -35,22 +34,6 @@ function PlacesRequest(props) {
       navigate(`/`);
     }
   });
-
-  useEffect(
-    function () {
-      setLoading(true);
-      fetch(`${process.env.REACT_APP_API_LINK}/${userName}/places`)
-        .then((res) => res.json())
-        .then((data) => {
-          data.sort((a, b) => (a.city > b.city ? 1 : -1));
-          setPlaces(data);
-        })
-        .then((e) => {
-          setLoading(false);
-        });
-    },
-    [userName, setPlaces]
-  );
 
   function addToCityList(place) {
     if (cityList.includes(place.city)) {
@@ -133,7 +116,7 @@ function PlacesRequest(props) {
         <span>
           <h2>Request</h2>
           <Link to={`/${userName}/places/suggested`}>
-            <button>Previous suggestions</button>
+            <button>Previous</button>
           </Link>
         </span>
         <div className="flex">
@@ -142,13 +125,6 @@ function PlacesRequest(props) {
               Select cities, from the list of cities you have been to, that you
               want to base the travel advice on.
             </p>
-            {loading ? (
-              <div className="spinner-container">
-                <div className="loading-spinner"></div>
-              </div>
-            ) : (
-              <></>
-            )}
             <table>
               <tbody>
                 {places.map((place, index) => {
