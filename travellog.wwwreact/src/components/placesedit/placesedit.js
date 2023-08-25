@@ -41,11 +41,14 @@ function PlacesEdit(props) {
     }
   });
 
-  useEffect(function () {
-    fetch(`${process.env.REACT_APP_API_LINK}/${userName}/places/${params.id}`)
-      .then((res) => res.json())
-      .then((data) => setFormData(data));
-  }, []);
+  useEffect(
+    function () {
+      fetch(`${process.env.REACT_APP_API_LINK}/${userName}/places/${params.id}`)
+        .then((res) => res.json())
+        .then((data) => setFormData(data));
+    },
+    [params.id, userName]
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();

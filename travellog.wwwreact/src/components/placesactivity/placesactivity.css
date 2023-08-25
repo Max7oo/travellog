@@ -103,6 +103,10 @@
     gap: 15px;
 }
 
+.activity__comment p {
+    color: #91d4e0;
+}
+
 .activity__comments input {
     margin-top: 25px;
 }

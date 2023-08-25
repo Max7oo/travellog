@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation, useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 
 import Nav from "../nav/nav";
 import "./placesadvice.css";

@@ -61,15 +61,18 @@ function PlacesList(props) {
           });
         return cityData;
       });
-      localStorage.removeItem("CityData");
       localStorage.setItem("CityData", JSON.stringify(cityData));
     },
     [cityData, places]
   );
 
-  const navigateTo = (id) => {
-    navigate(`/${userName}/places/${id}`);
-  };
+  var widths = [0, 1135];
+
+  function navigateTo(id) {
+    if (window.innerWidth >= widths[0] && window.innerWidth < widths[1]) {
+      navigate(`/${userName}/places/${id}`);
+    }
+  }
 
   const sortingABC = (col) => {
     if (order === "ASC") {

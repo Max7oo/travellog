@@ -20,11 +20,14 @@ function PlacesDelete() {
     }
   });
 
-  useEffect(function () {
-    fetch(`${process.env.REACT_APP_API_LINK}/${userName}/places/${params.id}`)
-      .then((res) => res.json())
-      .then((data) => setPlace(data));
-  }, []);
+  useEffect(
+    function () {
+      fetch(`${process.env.REACT_APP_API_LINK}/${userName}/places/${params.id}`)
+        .then((res) => res.json())
+        .then((data) => setPlace(data));
+    },
+    [params.id, userName]
+  );
 
   const deletePlace = async (e) => {
     setIsButtonDisabled(true);

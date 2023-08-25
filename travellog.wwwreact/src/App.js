@@ -21,10 +21,6 @@ import Footer from "./components/footer/footer";
 
 import "./App.css";
 
-import ReactGA from "react-ga";
-const TRACKING_ID = "G-9RXB64N0SD"; // OUR_TRACKING_ID
-ReactGA.initialize(TRACKING_ID);
-
 function App() {
   const [places, setPlaces] = useState([]);
 

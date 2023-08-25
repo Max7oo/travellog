@@ -142,6 +142,7 @@ function PlacesComments({ id }) {
                 );
               }
             }
+            return true;
           })}
           {lessThanThree ? (
             <>

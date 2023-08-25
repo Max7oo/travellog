@@ -44,27 +44,38 @@ function UserProfile() {
     [params.userName, setUser]
   );
 
-  useEffect(function () {
-    fetch(
-      `${process.env.REACT_APP_API_LINK}/checkfollowing/${userName}/${params.userName}`
-    )
-      .then((res) => res.json())
-      .then((data) => setFollowing(data));
-  }, []);
+  useEffect(
+    function () {
+      fetch(
+        `${process.env.REACT_APP_API_LINK}/checkfollowing/${userName}/${params.userName}`
+      )
+        .then((res) => res.json())
+        .then((data) => setFollowing(data));
+    },
+    [params.userName, userName]
+  );
 
-  useEffect(function () {
-    fetch(`${process.env.REACT_APP_API_LINK}/followeramount/${params.userName}`)
-      .then((res) => res.json())
-      .then((data) => setFollowerAmount(data));
-  }, []);
+  useEffect(
+    function () {
+      fetch(
+        `${process.env.REACT_APP_API_LINK}/followeramount/${params.userName}`
+      )
+        .then((res) => res.json())
+        .then((data) => setFollowerAmount(data));
+    },
+    [params.userName]
+  );
 
-  useEffect(function () {
-    fetch(
-      `${process.env.REACT_APP_API_LINK}/followingamount/${params.userName}`
-    )
-      .then((res) => res.json())
-      .then((data) => setFollowingAmount(data));
-  }, []);
+  useEffect(
+    function () {
+      fetch(
+        `${process.env.REACT_APP_API_LINK}/followingamount/${params.userName}`
+      )
+        .then((res) => res.json())
+        .then((data) => setFollowingAmount(data));
+    },
+    [params.userName]
+  );
 
   const followUser = async (e) => {
     e.preventDefault();

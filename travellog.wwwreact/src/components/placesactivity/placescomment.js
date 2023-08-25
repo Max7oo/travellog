@@ -3,7 +3,7 @@ import "./placesactivity.css";
 import { Link } from "react-router-dom";
 
 function PlacesComments({ id, postedAt, text }) {
-  const [user, setUser] = useState([]);
+  // const [user, setUser] = useState([]);
   const [time, setTime] = useState();
   const [now, setNow] = useState();
   const [then, setThen] = useState();
@@ -44,7 +44,7 @@ function PlacesComments({ id, postedAt, text }) {
   return (
     <>
       <div className="activity__comment__single">
-        <Link to={`/user/test`}>
+        <Link to={`/user/max-de-ruiter-1690891947066`}>
           <div
             className="profile-picture-mini"
             style={{
@@ -55,7 +55,7 @@ function PlacesComments({ id, postedAt, text }) {
         </Link>
         <div>
           <div className="activity__comment__info">
-            <Link to={`/user/test`} className="bold">
+            <Link to={`/user/max-de-ruiter-1690891947066`} className="bold">
               {/* {user.firstName + " " + user.lastName} */}
               @Too many database instances
             </Link>
